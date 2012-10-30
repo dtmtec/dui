@@ -1,0 +1,29 @@
+@import 'compass/css3';
+
+// Feedback message container, displayed when any error or success message are to be displayed
+.feedback {
+  text-align: center;
+
+  .alert {
+    display: inline-block;
+    position: relative;
+
+    @include border-top-radius(0px);
+
+    cursor: pointer;
+
+    @include box-shadow(rgba(0, 0, 0, 0.5) 0 4px 15px -5px);
+
+    .close {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+    }
+
+    &:hover .close {
+      color: black;
+
+      @include opacity(0.4);
+    }
+  }
+}

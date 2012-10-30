@@ -1,0 +1,3 @@
+= CommonComponents
+
+This project aims to be used as a repository of common components used by applications created by DTM Tecnologia.

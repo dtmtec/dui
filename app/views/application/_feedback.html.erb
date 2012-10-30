@@ -1,0 +1,15 @@
+<div class="feedback">
+<% if flash[:alert].present? %>
+  <div class="alert alert-error">
+    <%= flash[:alert] %>
+    <a class="close" data-dismiss="alert" href="#">&times;</a>
+  </div>
+<% end %>
+
+<% if flash[:notice].present? %>
+  <div class="alert alert-success">
+    <%= flash[:notice] %>
+    <a class="close" data-dismiss="alert" href="#">&times;</a>
+  </div>
+<% end %>
+</div>
