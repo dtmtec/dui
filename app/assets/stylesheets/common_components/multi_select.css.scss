@@ -1,0 +1,146 @@
+.multi-select {
+  .multi-select-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    opacity: 0.6;
+  }
+
+  .multi-select-title {
+    background-color: #f4f4f4;
+    height: 28px;
+    padding-left: 12px;
+
+    h4 {
+      line-height: 28px;
+    }
+  }
+
+  .multi-select-actions {
+    position: relative;
+    background-color: #f4f4f4;
+    margin-top: 1px;
+    padding: 0 12px;
+    height: 40px;
+
+    .multi-select-search {
+      margin-top: 6px;
+      position: relative;
+
+      .clear-search {
+        position: absolute;
+        top: 0;
+        right: 5px;
+        float: none;
+      }
+
+      input {
+        width: 280px;
+        padding-right: 18px;
+      }
+    }
+
+    .all-button {
+      top: 6px;
+      right: 10px;
+      padding-right: 21px;
+      width: 40px;
+
+      .multi-select-icon { top: 1px; }
+
+      &:hover .multi-select-icon { opacity: 1; }
+    }
+  }
+
+  .available {
+    width: 50%;
+    float: left;
+
+    .multi-select-title {
+      margin-right: 7px;
+    }
+
+    .multi-select-actions {
+      margin-right: 7px;
+    }
+
+    .multi-select-icon {
+      background-image: url(/assets/avance.png);
+    }
+  }
+
+  .selected {
+    width: 50%;
+    float: left;
+
+    .multi-select-title {
+      margin-left: 7px;
+    }
+
+    .multi-select-actions {
+      margin-left: 7px;
+    }
+
+    ul {
+      margin-left: 7px;
+      margin-right: 0;
+    }
+
+    li:hover {
+      background-color: #fdeeee;
+    }
+
+    .multi-select-icon {
+      background-image: url(/assets/rewind.png);
+    }
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 3px 7px 8px 0px;
+    padding-right: 5px;
+    height: 300px;
+    overflow-y: auto;
+
+    &.loading li { display: none; }
+  }
+
+  li {
+    cursor: pointer;
+    position: relative;
+
+    color: #666;
+    padding: 0px 26px 0 12px;
+    border-bottom: 1px solid #E4F0F0;
+    text-transform: uppercase;
+
+    &:hover {
+      background-color: #e3fbe1;
+
+      label { color: #000; }
+      .multi-select-icon { opacity: 1; }
+    }
+
+    &.no-filters-message:hover {
+      background-color: inherit;
+      cursor: inherit;
+
+      label { color: inherit; }
+    }
+
+    &:last-child { border-bottom-width: 0; }
+
+    label {
+      padding: 4px 0;
+      margin: 0;
+      font-size: 12px;
+      float: none;
+      width: auto;
+      cursor: pointer;
+    }
+  }
+}

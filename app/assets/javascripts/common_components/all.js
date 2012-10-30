@@ -11,6 +11,9 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require common_components/feedback_view
+//= require common_components/movable
+//= require common_components/searchable_field
+//= require common_components/multi_select/multi_select_view
 
 $(function () {
   window.feedbackView = new FeedbackView({ el: $('.feedback') })
