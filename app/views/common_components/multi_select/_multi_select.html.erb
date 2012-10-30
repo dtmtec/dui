@@ -7,12 +7,12 @@
     <div class="multi-select-actions">
 
       <div class="multi-select-search input-prepend">
-        <span class="add-on left"><i class="icon-search"></i></span>
-        <%= text_field_tag "search", nil, placeholder: multi_select_search_placeholder, class: 'search-query' %>
+        <span class="add-on"><i class="icon-search"></i></span>
+        <%= text_field_tag "search", nil, placeholder: multi_select_search_placeholder %>
         <a class="close clear-search hide" href="#">&times;</a>
       </div>
 
-      <%= link_to '#', class: 'btn btn-mini all-button' do %>
+      <%= link_to '#', class: 'btn btn-mini multi-select-all-button' do %>
         <%= multi_select_all_label %>
         <i class="multi-select-icon"></i>
       <% end %>
@@ -42,7 +42,7 @@
     </div>
 
     <div class="multi-select-actions">
-      <%= link_to '#', class: 'btn btn-mini all-button' do %>
+      <%= link_to '#', class: 'btn btn-mini multi-select-all-button' do %>
         <%= multi_select_all_label %>
         <i class="multi-select-icon"></i>
       <% end %>

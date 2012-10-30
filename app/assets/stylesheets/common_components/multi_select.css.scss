@@ -30,11 +30,13 @@
     .multi-select-search {
       margin-top: 6px;
       position: relative;
+      display: inline-block;
 
       .clear-search {
         position: absolute;
-        top: 0;
+        top: 2px;
         right: 5px;
+        z-index: 3;
         float: none;
       }
 
@@ -44,11 +46,14 @@
       }
     }
 
-    .all-button {
-      top: 6px;
+    .multi-select-all-button {
+      position: absolute;
+      top: 9px;
       right: 10px;
-      padding-right: 21px;
+      text-transform: lowercase;
+      padding: 2px 21px 2px 2px;
       width: 40px;
+      font-size: 11px;
 
       .multi-select-icon { top: 1px; }
 
