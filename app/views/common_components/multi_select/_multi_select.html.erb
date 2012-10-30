@@ -1,0 +1,68 @@
+<div class="multi-select hide" data-filter-type="text">
+  <div class="available" data-url="<%= multi_select_available_url %>">
+    <div class="multi-select-title">
+      <h4><%= multi_select_available_title %></h4>
+    </div>
+
+    <div class="multi-select-actions">
+
+      <div class="multi-select-search input-prepend">
+        <span class="add-on left"><i class="icon-search"></i></span>
+        <%= text_field_tag "search", nil, placeholder: multi_select_search_placeholder, class: 'search-query' %>
+        <a class="close clear-search hide" href="#">&times;</a>
+      </div>
+
+      <%= link_to '#', class: 'btn btn-mini all-button' do %>
+        <%= multi_select_all_label %>
+        <i class="multi-select-icon"></i>
+      <% end %>
+    </div>
+
+    <ul>
+    </ul>
+
+    <script type="text/html">
+      {{^items}}
+        <li class="no-items-message"><%= multi_select_no_available_items_message %></li>
+      {{/items}}
+      {{#items}}
+        <li title="{{label}}" data-value="{{value}}">
+          <label class="inline">
+            {{truncated_label}}
+            <i class="multi-select-icon"></i>
+          </label>
+        </li>
+      {{/items}}
+    </script>
+  </div>
+
+  <div class="selected">
+    <div class="multi-select-title">
+      <h4><%= multi_select_selected_title %></h4>
+    </div>
+
+    <div class="multi-select-actions">
+      <%= link_to '#', class: 'btn btn-mini all-button' do %>
+        <%= multi_select_all_label %>
+        <i class="multi-select-icon"></i>
+      <% end %>
+    </div>
+
+    <ul>
+    </ul>
+
+    <script type="text/html">
+      {{^items}}
+        <li class="no-items-message"><%= multi_select_no_selected_items_message %></li>
+      {{/items}}
+      {{#items}}
+        <li title="{{label}}" data-value="{{value}}">
+          <label class="inline">
+            {{truncated_label}}
+            <i class="multi-select-icon"></i>
+          </label>
+        </li>
+      {{/items}}
+    </script>
+  </div>
+</div>
