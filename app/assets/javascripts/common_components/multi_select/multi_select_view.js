@@ -6,8 +6,8 @@ var MultiSelectView = Backbone.View.extend({
   events: {
     'click .available li': 'moveToSelected',
     'click .selected li': 'moveToAvailable',
-    'click .available .all-button': 'moveAllToSelected',
-    'click .selected .all-button': 'moveAllToAvailable'
+    'click .available .multi-select-all-button': 'moveAllToSelected',
+    'click .selected .multi-select-all-button': 'moveAllToAvailable'
   },
 
   initialize: function () {
