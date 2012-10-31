@@ -1,7 +1,7 @@
 <div class="multi-select">
   <div class="available" data-url="<%= multi_select_available_url %>">
     <div class="multi-select-title">
-      <h4><%= multi_select_available_title %></h4>
+      <h4><%=raw multi_select_available_title %></h4>
     </div>
 
     <div class="multi-select-actions">
@@ -13,7 +13,7 @@
       </div>
 
       <%= link_to '#', class: 'btn btn-mini multi-select-all-button' do %>
-        <%= multi_select_all_label %>
+        <%=raw multi_select_all_label %>
         <i class="multi-select-icon"></i>
       <% end %>
     </div>
@@ -23,7 +23,7 @@
 
     <script type="text/html">
       {{^items}}
-        <li class="no-items-message"><%= multi_select_no_available_items_message %></li>
+        <li class="no-items-message"><%=raw multi_select_no_available_items_message %></li>
       {{/items}}
       {{#items}}
         <li title="{{label}}" data-value="{{value}}">
@@ -38,14 +38,14 @@
 
   <div class="selected">
     <div class="multi-select-title">
-      <h4><%= multi_select_selected_title %></h4>
+      <h4><%=raw multi_select_selected_title %></h4>
     </div>
 
     <div class="multi-select-actions">
-      <%= multi_select_selected_actions_content %>
+      <%=raw multi_select_selected_actions_content %>
 
       <%= link_to '#', class: 'btn btn-mini multi-select-all-button' do %>
-        <%= multi_select_all_label %>
+        <%=raw multi_select_all_label %>
         <i class="multi-select-icon"></i>
       <% end %>
     </div>
@@ -55,7 +55,7 @@
 
     <script type="text/html">
       {{^items}}
-        <li class="no-items-message"><%= multi_select_no_selected_items_message %></li>
+        <li class="no-items-message"><%=raw multi_select_no_selected_items_message %></li>
       {{/items}}
       {{#items}}
         <li title="{{label}}" data-value="{{value}}">
