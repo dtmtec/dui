@@ -28,6 +28,7 @@
       if (previousTerm !== term) {
         this.field.data('search-term', term);
 
+        this.abort();
         this.timeoutId = setTimeout(_(this.load).bind(this), 300);
       }
     },
