@@ -27,7 +27,7 @@ var FeedbackView = Backbone.View.extend({
 
   close: function () {
     this.$el.slideUp()
-    this.cancelDelayedClose()
+    this._cancelDelayedClose()
     return false
   },
 
@@ -36,8 +36,8 @@ var FeedbackView = Backbone.View.extend({
   },
 
   _cancelDelayedClose: function () {
-    if (this.closeTimeoutId) {
-      clearTimeout(this.closeTimeoutId)
+    if (this._closeTimeoutId) {
+      clearTimeout(this._closeTimeoutId)
     }
   },
 
@@ -49,6 +49,6 @@ var FeedbackView = Backbone.View.extend({
   },
 
   _delayedClose: function () {
-    this.closeTimeoutId = _(this.close).delay(10000)
+    this._closeTimeoutId = _(this.close).delay(10000)
   }
 })
