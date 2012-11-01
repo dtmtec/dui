@@ -1,15 +1,24 @@
 <div class="feedback">
-<% if flash[:alert].present? %>
-  <div class="alert alert-error">
-    <%= flash[:alert] %>
-    <a class="close" data-dismiss="alert" href="#">&times;</a>
-  </div>
-<% end %>
+  <div class="feedback-content">
+  <% if flash[:alert].present? %>
+    <div class="alert alert-error">
+      <%= flash[:alert] %>
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+    </div>
+  <% end %>
 
-<% if flash[:notice].present? %>
-  <div class="alert alert-success">
-    <%= flash[:notice] %>
-    <a class="close" data-dismiss="alert" href="#">&times;</a>
+  <% if flash[:notice].present? %>
+    <div class="alert alert-success">
+      <%= flash[:notice] %>
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+    </div>
+  <% end %>
   </div>
-<% end %>
+
+  <script type="text/html">
+    <div class="alert {{message_type}}">
+      {{message}}
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+    </div>
+  </script>
 </div>

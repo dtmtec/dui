@@ -5,17 +5,23 @@ var FeedbackView = Backbone.View.extend({
 
   initialize: function () {
     this.$el.hide()
+    this.$template = this.$('script')
+    this.$content  = this.$('.feedback-content')
 
     _(this).bindAll()
   },
 
-  render: function () {
-    this.cancelDelayedClose()
-    this.show()
-    this.closeDelayed()
+  render: function (message, message_type) {
+    this._cancelDelayedClose()
+    this.show(message, message_type)
+    this._delayedClose()
   },
 
-  show: function () {
+  show: function (message, message_type) {
+    if (message) {
+      this._updateFeedback(message, message_type)
+    }
+
     this.$el.slideDown()
   },
 
@@ -29,13 +35,20 @@ var FeedbackView = Backbone.View.extend({
     _(this.render).delay(200)
   },
 
-  cancelDelayedClose: function () {
+  _cancelDelayedClose: function () {
     if (this.closeTimeoutId) {
       clearTimeout(this.closeTimeoutId)
     }
   },
 
-  closeDelayed: function () {
+  _updateFeedback: function (message, message_type) {
+    this.$content.html(this.$template.mustache({
+      message: message,
+      message_type: message_type
+    }))
+  },
+
+  _delayedClose: function () {
     this.closeTimeoutId = _(this.close).delay(10000)
   }
 })
