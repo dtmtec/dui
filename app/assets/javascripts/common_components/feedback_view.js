@@ -1,4 +1,6 @@
 var FeedbackView = Backbone.View.extend({
+  _queue: [],
+
   events: {
     'click': 'close'
   },
@@ -17,6 +19,10 @@ var FeedbackView = Backbone.View.extend({
     this._delayedClose()
   },
 
+  queue: function (message, message_type) {
+    this._queue.push({message: message, message_type: message_type})
+  },
+
   show: function (message, message_type) {
     if (message) {
       this._updateFeedback(message, message_type)
@@ -28,6 +34,13 @@ var FeedbackView = Backbone.View.extend({
   close: function () {
     this.$el.slideUp()
     this._cancelDelayedClose()
+
+    if (!_(queue).isEmpty()) {
+      var queuedMessage = queue.shift()
+      this.$el.hide()
+      this.render(queuedMessage.message, queuedMessage.message_type)
+    }
+
     return false
   },
 
