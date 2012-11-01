@@ -21,6 +21,9 @@ var FeedbackView = Backbone.View.extend({
 
   queue: function (message, message_type) {
     this._queue.push({message: message, message_type: message_type})
+
+    this._cancelDelayedClose()
+    this._delayedClose(2000) // reducing delayed close so that the queued message is displayed faster
   },
 
   show: function (message, message_type) {
@@ -35,8 +38,9 @@ var FeedbackView = Backbone.View.extend({
     this.$el.slideUp()
     this._cancelDelayedClose()
 
-    if (!_(queue).isEmpty()) {
-      var queuedMessage = queue.shift()
+    if (!_(this._queue).isEmpty()) {
+      var queuedMessage = this._queue.shift()
+
       this.$el.hide()
       this.render(queuedMessage.message, queuedMessage.message_type)
     }
@@ -61,7 +65,7 @@ var FeedbackView = Backbone.View.extend({
     }))
   },
 
-  _delayedClose: function () {
-    this._closeTimeoutId = _(this.close).delay(10000)
+  _delayedClose: function (delayFor) {
+    this._closeTimeoutId = _(this.close).delay(delayFor || 10000)
   }
 })
