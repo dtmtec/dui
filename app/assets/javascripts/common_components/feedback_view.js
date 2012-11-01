@@ -35,14 +35,8 @@ var FeedbackView = Backbone.View.extend({
   },
 
   close: function () {
-    this.$el.slideUp()
     this._cancelDelayedClose()
-
-    if (!_(this._queue).isEmpty()) {
-      var queuedMessage = this._queue.shift()
-
-      this.render(queuedMessage.message, queuedMessage.message_type)
-    }
+    this.$el.slideUp('slow', this._dequeue)
 
     return false
   },
@@ -66,5 +60,13 @@ var FeedbackView = Backbone.View.extend({
 
   _delayedClose: function (delayFor) {
     this._closeTimeoutId = _(this.close).delay(delayFor || 10000)
+  },
+
+  _dequeue: function () {
+    if (!_(this._queue).isEmpty()) {
+      var queuedMessage = this._queue.shift()
+
+      this.render(queuedMessage.message, queuedMessage.message_type)
+    }
   }
 })
