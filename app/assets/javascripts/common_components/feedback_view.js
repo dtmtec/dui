@@ -41,7 +41,6 @@ var FeedbackView = Backbone.View.extend({
     if (!_(this._queue).isEmpty()) {
       var queuedMessage = this._queue.shift()
 
-      this.$el.hide()
       this.render(queuedMessage.message, queuedMessage.message_type)
     }
 
