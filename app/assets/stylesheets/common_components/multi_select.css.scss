@@ -146,6 +146,8 @@
       float: none;
       width: auto;
       cursor: pointer;
+      white-space: nowrap;
+      overflow-x: hidden;
     }
   }
 }
