@@ -64,7 +64,7 @@ var MultiSelectView = Backbone.View.extend({
   },
 
   configureMovable: function () {
-    this.movable = new Movable({
+    this.movable = new Movable(_(this.options).extend({
       available: {
         get: this.getAvailable,
         set: this.setAvailable,
@@ -77,7 +77,7 @@ var MultiSelectView = Backbone.View.extend({
         container: this.$selectedContainer,
         render: this.renderedSelected
       }
-    });
+    }));
   },
 
   configureSearch: function () {
