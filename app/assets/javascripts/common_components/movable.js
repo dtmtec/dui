@@ -25,7 +25,7 @@
     },
 
     _move: function (element, from, to) {
-      var value         = element.data('value'),
+      var value         = element.data('value').toString(),
           fromValues    = _(from.get()).chain().pluck('value'),
           fromIndex     = fromValues.indexOf(value).value(),
           item          = from.get()[fromIndex],
