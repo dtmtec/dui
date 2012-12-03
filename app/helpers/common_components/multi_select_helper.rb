@@ -3,6 +3,7 @@ module CommonComponents
     def render_multi_select(options)
       render 'common_components/multi_select/multi_select', {
         multi_select_available_url: options[:available_url],
+        multi_select_additional_classes: options[:class] || '',
         multi_select_search_placeholder: i18n_for('search_placeholder', options[:scope]),
         multi_select_all_label: i18n_for('all', options[:scope]),
         multi_select_available_title: i18n_for('available.title', options[:scope]),

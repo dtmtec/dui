@@ -1,4 +1,4 @@
-<div class="multi-select">
+<div class="multi-select <%= multi_select_additional_classes %>">
   <div class="available" data-url="<%= multi_select_available_url %>">
     <div class="multi-select-title">
       <h4><%=raw multi_select_available_title %></h4>
@@ -18,8 +18,10 @@
       <% end %>
     </div>
 
-    <ul>
-    </ul>
+    <div class="multi-select-content">
+      <ul>
+      </ul>
+    </div>
 
     <script type="text/html">
       {{^items}}
@@ -50,8 +52,10 @@
       <% end %>
     </div>
 
-    <ul>
-    </ul>
+    <div class="multi-select-content">
+      <ul>
+      </ul>
+    </div>
 
     <script type="text/html">
       {{^items}}
