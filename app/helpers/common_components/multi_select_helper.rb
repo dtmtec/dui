@@ -8,6 +8,8 @@ module CommonComponents
         multi_select_all_label: i18n_for('all', options[:scope]),
         multi_select_available_title: i18n_for('available.title', options[:scope]),
         multi_select_selected_title: i18n_for('selected.title', options[:scope]),
+        multi_select_available_template: options[:available_template] || 'common_components/multi_select/multi_select_template',
+        multi_select_selected_template: options[:selected_template] || 'common_components/multi_select/multi_select_template',
         multi_select_no_available_items_message: i18n_for('available.no_items_message', options[:scope]),
         multi_select_no_selected_items_message: i18n_for('selected.no_items_message', options[:scope]),
         multi_select_selected_actions_content: i18n_for('selected.actions_content', options[:scope])

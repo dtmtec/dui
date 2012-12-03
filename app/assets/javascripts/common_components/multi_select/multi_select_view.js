@@ -3,11 +3,11 @@
 //= require common_components/multi_select/multi_select
 
 var MultiSelectView = Backbone.View.extend({
-  events: {
-    'click .available li': 'moveToSelected',
-    'click .selected li': 'moveToAvailable',
-    'click .available .multi-select-all-button': 'moveAllToSelected',
-    'click .selected .multi-select-all-button': 'moveAllToAvailable'
+  events: function() {
+    return _({}).extend(
+      this.eventsConfigurationForMove(),
+      this.eventsConfigurationForMoveAll()
+    )
   },
 
   initialize: function () {
@@ -22,7 +22,7 @@ var MultiSelectView = Backbone.View.extend({
   reset: function (params, selected) {
     this.params = params
     this.clearSearch()
-    this.model.reset(selected)
+    this.model.reset(_(selected).clone())
     this.model.fetchAvailable(params)
   },
 
@@ -109,7 +109,11 @@ var MultiSelectView = Backbone.View.extend({
   },
 
   moveToAvailable: function (event) {
-    this.movable.moveToAvailable($(event.currentTarget))
+    var element = $(event.currentTarget)
+
+    element = element.is('li') ? element : element.parents('li')
+
+    this.movable.moveToAvailable(element)
     this.clearSearch()
   },
 
@@ -146,5 +150,19 @@ var MultiSelectView = Backbone.View.extend({
 
   setSelected: function (items) {
     return this.model.set('selected', items)
+  },
+
+  eventsConfigurationForMove: function () {
+    return {
+      'click .available li': 'moveToSelected',
+      'click .selected li': 'moveToAvailable'
+    }
+  },
+
+  eventsConfigurationForMoveAll: function () {
+    return {
+      'click .available .multi-select-all-button': 'moveAllToSelected',
+      'click .selected .multi-select-all-button': 'moveAllToAvailable'
+    }
   }
 })

@@ -23,19 +23,7 @@
       </ul>
     </div>
 
-    <script type="text/html">
-      {{^items}}
-        <li class="no-items-message"><%=raw multi_select_no_available_items_message %></li>
-      {{/items}}
-      {{#items}}
-        <li title="{{label}}" data-value="{{value}}">
-          <label class="inline">
-            {{{truncated_label}}}
-            <i class="multi-select-icon"></i>
-          </label>
-        </li>
-      {{/items}}
-    </script>
+    <%= render multi_select_available_template, message: multi_select_no_selected_items_message %>
   </div>
 
   <div class="selected">
@@ -57,18 +45,6 @@
       </ul>
     </div>
 
-    <script type="text/html">
-      {{^items}}
-        <li class="no-items-message"><%=raw multi_select_no_selected_items_message %></li>
-      {{/items}}
-      {{#items}}
-        <li title="{{label}}" data-value="{{value}}">
-          <label class="inline">
-            {{{truncated_label}}}
-            <i class="multi-select-icon"></i>
-          </label>
-        </li>
-      {{/items}}
-    </script>
+    <%= render multi_select_selected_template, message: multi_select_no_selected_items_message %>
   </div>
 </div>
