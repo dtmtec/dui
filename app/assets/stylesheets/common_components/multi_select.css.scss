@@ -13,6 +13,17 @@
     opacity: 0.6;
   }
 
+  .multi-select-fade-out {
+    display: inline-block;
+    width: 40px;
+
+    top: 0;
+    bottom: 0;
+    right: 26px;
+    position: absolute;
+    background: transparent image-url('common_components/fade-out.png') repeat-y center;
+  }
+
   .multi-select-title {
     background-color: #f4f4f4;
     height: 28px;
@@ -151,6 +162,17 @@
       cursor: pointer;
       white-space: nowrap;
       overflow-x: hidden;
+
+      .multi-select-icon {
+        width: 26px;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        height: auto;
+        background-position: center 5px;
+        background-repeat: no-repeat;
+        background-color: #fff;
+      }
     }
   }
 }
