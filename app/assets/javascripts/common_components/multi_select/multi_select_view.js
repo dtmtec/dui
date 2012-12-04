@@ -105,7 +105,12 @@ var MultiSelectView = Backbone.View.extend({
   },
 
   moveToSelected: function (event) {
-    this.movable.moveToSelected($(event.currentTarget))
+    var element = $(event.currentTarget)
+
+    element = element.is('li') ? element : element.parents('li')
+
+    this.movable.moveToSelected(element)
+    this.trigger('move:selected', element)
   },
 
   moveToAvailable: function (event) {
@@ -115,16 +120,19 @@ var MultiSelectView = Backbone.View.extend({
 
     this.movable.moveToAvailable(element)
     this.clearSearch()
+    this.trigger('move:available', element)
   },
 
   moveAllToSelected: function (event) {
     this.movable.moveAllToSelected()
+    this.trigger('moveAll:selected')
     return false
   },
 
   moveAllToAvailable: function (event) {
     this.movable.moveAllToAvailable()
     this.clearSearch()
+    this.trigger('moveAll:available')
     return false
   },
 
