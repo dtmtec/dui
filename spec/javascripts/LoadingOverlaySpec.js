@@ -75,4 +75,31 @@ describe("LoadingOverlay", function() {
       })
     });
   });
+
+  describe("when the window is resized", function() {
+    beforeEach(function() {
+      // jQuery can't calculate position if element is hidden
+      overlayElement.show()
+    });
+
+    it("configures the width of the overlay element to be equal to the element width", function() {
+      $(window).trigger('resize')
+      expect(overlayElement.width()).toEqual(element.width())
+    });
+
+    it("configures the height of the overlay element to be equal to the element height", function() {
+      $(window).trigger('resize')
+      expect(overlayElement.height()).toEqual(element.height())
+    });
+
+    it("configures the top of the overlay element to be equal to the element top", function() {
+      $(window).trigger('resize')
+      expect(overlayElement.position().top).toEqual(element.position().top)
+    });
+
+    it("configures the left of the overlay element to be equal to the element left", function() {
+      $(window).trigger('resize')
+      expect(overlayElement.position().left).toEqual(element.position().left)
+    });
+  });
 });
