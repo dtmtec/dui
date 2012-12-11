@@ -10,4 +10,6 @@ load 'rails/tasks/engine.rake'
 
 Bundler::GemHelper.install_tasks
 
+task :jasmine => 'app:jasmine'
+
 task :default => 'app:jasmine:ci'

@@ -10,20 +10,31 @@ var FeedbackView = Backbone.View.extend({
     this.$template = this.$('script')
     this.$content  = this.$('.feedback-content')
 
+    _(this.options).defaults({
+      animationDuration: 500,
+      delay: 10000,
+      queueDelay: 2000
+    })
+
     _(this).bindAll()
   },
 
   render: function (message, message_type) {
-    this._cancelDelayedClose()
-    this.show(message, message_type)
-    this._delayedClose()
+    if (this._isBeingDisplayed()) {
+      this.queue(message, message_type)
+    } else {
+      this._cancelDelayedClose()
+      this.show(message, message_type)
+      this._delayedClose()
+    }
   },
 
   queue: function (message, message_type) {
     this._queue.push({message: message, message_type: message_type})
 
     this._cancelDelayedClose()
-    this._delayedClose(2000) // reducing delayed close so that the queued message is displayed faster
+    // reducing delayed close so that the queued message is displayed faster
+    this._delayedClose(this.options.queueDelay)
   },
 
   show: function (message, message_type) {
@@ -31,18 +42,24 @@ var FeedbackView = Backbone.View.extend({
       this._updateFeedback(message, message_type)
     }
 
-    this.$el.slideDown()
+    this._displayed = true
+    this.$el.slideDown(this.options.animationDuration)
   },
 
   close: function () {
     this._cancelDelayedClose()
-    this.$el.slideUp('slow', this._dequeue)
+    this._displayed = false
+    this.$el.slideUp(this.options.animationDuration, this._dequeue)
 
     return false
   },
 
   delayedRender: function () {
     _(this.render).delay(200)
+  },
+
+  _isBeingDisplayed: function () {
+    return this._displayed
   },
 
   _cancelDelayedClose: function () {
@@ -59,7 +76,7 @@ var FeedbackView = Backbone.View.extend({
   },
 
   _delayedClose: function (delayFor) {
-    this._closeTimeoutId = _(this.close).delay(delayFor || 10000)
+    this._closeTimeoutId = _(this.close).delay(delayFor || this.options.delay)
   },
 
   _dequeue: function () {

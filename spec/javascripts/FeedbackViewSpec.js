@@ -3,7 +3,12 @@ describe("FeedbackView", function() {
 
   beforeEach(function() {
     loadFixtures('feedback_view.html')
-    view = new FeedbackView({el: $('.feedback')})
+    view = new FeedbackView({
+      el: $('.feedback'),
+      delay: 100,
+      queueDelay: 50,
+      animationDuration: 100
+    })
   });
 
   it("hides the feedback element", function() {
@@ -14,6 +19,16 @@ describe("FeedbackView", function() {
     it("displays the feedback message", function() {
       view.render()
       expect($('.feedback')).toBeVisible()
+    });
+
+    it("hides the feedback message after the delay period", function() {
+      runs(function () {
+        view.render()
+      })
+
+      waitsFor(function () {
+        return $('.feedback').is(':hidden')
+      }, "the feedback element to be hidden", 500)
     });
 
     describe("with a message", function() {
@@ -29,6 +44,26 @@ describe("FeedbackView", function() {
 
           expect($('.feedback .feedback-content .alert')).toHaveClass('alert-success')
         });
+      });
+    });
+
+    describe("when rendering another message before the last one is displayed", function() {
+      var message = "some normal message", queuedMessage = "some queued message"
+
+      it("queues the message to be displayed after the queueDelay period", function() {
+        runs(function () {
+          view.render(message, 'message')
+        })
+
+        waitsFor(function () {
+          return $('.feedback-content').text().match(message)
+        }, "the message to be: '" + message + "' of message type", 400)
+
+        runs(function () {
+          view.render(queuedMessage, 'queued-message')
+          expect($('.feedback-content').text()).not.toMatch(queuedMessage) // should not change message immediately
+          expect(view._queue).not.toBeEmpty()
+        })
       });
     });
   });
