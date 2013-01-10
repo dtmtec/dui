@@ -2,11 +2,14 @@
 
 // Feedback message container, displayed when any error or success message are to be displayed
 .feedback {
-  text-align: center;
   height: 0;
 
   .feedback-content {
-    display: inline-block;
+    margin: 0 auto;
+
+    &.feedback-inline-block {
+      display: inline-block;
+    }
   }
 
   .alert {
