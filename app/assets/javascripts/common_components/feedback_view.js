@@ -2,16 +2,15 @@ var FeedbackView = Backbone.View.extend({
   _queue: [],
 
   events: {
-    'click': 'close'
+    'click .feedback-content': 'close'
   },
 
   initialize: function () {
-    this.$el.hide()
     this.$template = this.$('script')
-    this.$content  = this.$('.feedback-content')
+    this.$content  = this.$('.feedback-content').hide()
 
     _(this.options).defaults({
-      animationDuration: 500,
+      animationDuration: 200,
       delay: 10000,
       queueDelay: 2000
     })
@@ -19,8 +18,8 @@ var FeedbackView = Backbone.View.extend({
     _(this).bindAll()
   },
 
-  render: function (message, message_type) {
-    if (this._isBeingDisplayed()) {
+  render: function (message, message_type, now) {
+    if (!now && this._isBeingDisplayed()) {
       this.queue(message, message_type)
     } else {
       this._cancelDelayedClose()
@@ -43,13 +42,13 @@ var FeedbackView = Backbone.View.extend({
     }
 
     this._displayed = true
-    this.$el.slideDown(this.options.animationDuration)
+    this.$content.slideDown(this.options.animationDuration)
   },
 
   close: function () {
     this._cancelDelayedClose()
     this._displayed = false
-    this.$el.slideUp(this.options.animationDuration, this._dequeue)
+    this.$content.slideUp(this.options.animationDuration, this._dequeue)
 
     return false
   },

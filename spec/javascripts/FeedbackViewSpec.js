@@ -12,13 +12,13 @@ describe("FeedbackView", function() {
   });
 
   it("hides the feedback element", function() {
-    expect($('.feedback')).toBeHidden()
+    expect($('.feedback-content')).toBeHidden()
   });
 
   describe("when rendering", function() {
     it("displays the feedback message", function() {
       view.render()
-      expect($('.feedback')).toBeVisible()
+      expect($('.feedback-content')).toBeVisible()
     });
 
     it("hides the feedback message after the delay period", function() {
@@ -27,7 +27,7 @@ describe("FeedbackView", function() {
       })
 
       waitsFor(function () {
-        return $('.feedback').is(':hidden')
+        return $('.feedback-content').is(':hidden')
       }, "the feedback element to be hidden", 500)
     });
 
