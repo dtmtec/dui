@@ -3,8 +3,9 @@
       _ = window._,
       useEffects   = (navigator.appName !== 'Microsoft Internet Explorer')
 
-  function LoadingOverlay(element) {
+  function LoadingOverlay(element, options) {
     this.$element = $(element)
+    this.options = _(options).isObject() ? options : {}
     this.$overlayElement = $('<div class="loading-overlay"><div class="loading"></div></div>').hide()
     this.$element.parent().append(this.$overlayElement)
 
@@ -24,6 +25,24 @@
     },
 
     resize: function () {
+      if (this.options.fixed) {
+        this._resizeToBeFixed()
+      } else {
+        this._resizeToFitContainer()
+      }
+    },
+
+    _resizeToBeFixed: function () {
+      var $window = $(window)
+
+      this.$overlayElement.width($window.width())
+                          .height($window.height())
+                          .css('top', 0)
+                          .css('left', 0)
+                          .addClass('fixed-overlay')
+    },
+
+    _resizeToFitContainer: function () {
       var position = this.$element.position()
 
       this.$overlayElement.width(this.$element.width())
@@ -35,12 +54,12 @@
 
   window.LoadingOverlay = LoadingOverlay
 
-  $.fn.loadingOverlay = function (method) {
+  $.fn.loadingOverlay = function (method_or_options) {
     return $(this).each(function () {
-      var loadingOverlay = $(this).data('loading-overlay') || new LoadingOverlay(this)
+      var loadingOverlay = $(this).data('loading-overlay') || new LoadingOverlay(this, method_or_options)
 
-      if (method === 'show' || method === 'hide') {
-        loadingOverlay[method].call(loadingOverlay)
+      if (method_or_options === 'show' || method_or_options === 'hide') {
+        loadingOverlay[method_or_options].call(loadingOverlay)
       }
 
       $(this).data('loading-overlay', loadingOverlay)

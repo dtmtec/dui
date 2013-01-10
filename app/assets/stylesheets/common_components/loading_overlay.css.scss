@@ -6,6 +6,10 @@
   left: 0;
   z-index: 100;
 
+  &.fixed-overlay {
+    position: fixed;
+  }
+
   .loading {
     background: transparent image-url('common_components/ajax-loader-medium.gif') no-repeat center;
     width: 100%;
