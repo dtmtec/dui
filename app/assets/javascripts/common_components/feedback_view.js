@@ -7,7 +7,7 @@ var FeedbackView = Backbone.View.extend({
 
   initialize: function () {
     this.$template = this.$('script')
-    this.$content  = this.$('.feedback-content').hide()
+    this.$content  = this.$('.feedback-content')
 
     _(this.options).defaults({
       animationDuration: 400,
