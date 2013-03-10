@@ -11,10 +11,6 @@ describe("FeedbackView", function() {
     })
   });
 
-  it("hides the feedback element", function() {
-    expect($('.feedback-content')).toBeHidden()
-  });
-
   describe("when rendering", function() {
     it("displays the feedback message", function() {
       view.render()
