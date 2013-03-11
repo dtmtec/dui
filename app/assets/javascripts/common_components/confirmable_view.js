@@ -4,8 +4,11 @@ var ConfirmableView = Backbone.View.extend({
   },
 
   initialize: function () {
-    _(this).bindAll('confirmed', 'error')
+    _(this).bindAll('confirmed', 'error', 'hideModal')
 
+    this.feedbackView = this.options.feedbackView
+
+    this.messages = this.$el.data('confirmable-messages')
     this.labels = this.$el.data('confirmable-labels')
 
     this.modal = this.options.modal || new ConfirmableModalView()
@@ -28,18 +31,33 @@ var ConfirmableView = Backbone.View.extend({
       url: this.$current.attr('href'),
       type: this.$current.data('method') || 'DELETE',
       success: this.confirmed,
-      error: this.error
+      error: this.error,
+      complete: this.hideModal
     })
 
     this.$current.trigger('confirmable:confirm')
   },
 
   confirmed: function (data) {
+    this.renderFeedback('notice', 'alert-success')
+    this.trigger('confirmable:confirmed', data)
     this.$current.trigger('confirmable:confirmed', data)
   },
 
   error: function (jqXHR) {
+    this.renderFeedback('alert', 'alert-error')
+    this.trigger('confirmable:error', jqXHR)
     this.$current.trigger('confirmable:error', jqXHR)
+  },
+
+  hideModal: function () {
+    this.modal.hide()
+  },
+
+  renderFeedback: function (message, message_type) {
+    if (this.feedbackView) {
+      this.feedbackView.render(this.messages[message], message_type, true)
+    }
   }
 })
 
@@ -87,6 +105,10 @@ var ConfirmableModalView = Backbone.View.extend({
     return this
   },
 
+  hide: function () {
+    this.$el.modal('hide')
+  },
+
   renderContent: function (labels) {
     return this.options.content || $.mustache(this.template, _(labels || {}).defaults(this.defaultLabels))
   },
@@ -100,6 +122,7 @@ var ConfirmableModalView = Backbone.View.extend({
   },
 
   confirm: function () {
+    $.rails.disableElement(this.$('[data-confirmable-confirm]'))
     this.trigger('confirmable:confirm')
     return false
   }

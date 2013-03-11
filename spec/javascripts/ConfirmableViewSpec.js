@@ -119,6 +119,52 @@ describe("ConfirmableView", function() {
               expect(confirmed.some).toBe(data.some)
             })
           });
+
+          it("triggers a confirmable:confirmed event", function() {
+            view = new ConfirmableView({ el: container })
+
+            var confirmed = false
+            view.on('confirmable:confirmed', function (data) { confirmed = data })
+
+            link.click()
+
+            waitsFor(function () {
+              return $('#confirmable-modal').is(':visible')
+            }, 500)
+
+            runs(function () {
+              $('#confirmable-modal').find('[data-confirmable-confirm]').click()
+
+              var data = { some: 'data' }
+
+              request = mostRecentAjaxRequest();
+              request.response({status: 200, responseText: JSON.stringify(data)})
+
+              expect(confirmed.some).toBe(data.some)
+            })
+          });
+
+          it("renders a feedback message", function() {
+            var feedbackView = new FeedbackView({el: $('.feedback')})
+            view = new ConfirmableView({ el: container, feedbackView: feedbackView })
+            view.messages = { notice: 'some notice message' }
+            spyOn(feedbackView, 'render')
+
+            link.click()
+
+            waitsFor(function () {
+              return $('#confirmable-modal').is(':visible')
+            }, 500)
+
+            runs(function () {
+              $('#confirmable-modal').find('[data-confirmable-confirm]').click()
+
+              request = mostRecentAjaxRequest();
+              request.response({status: 200, responseText: ''})
+
+              expect(feedbackView.render).toHaveBeenCalledWith(view.messages.notice, 'alert-success', true)
+            })
+          });
         });
 
         describe("with an error", function() {
@@ -143,6 +189,52 @@ describe("ConfirmableView", function() {
               request.response({status: 500, responseText: JSON.stringify(data)})
 
               expect(error.some).toBe(data.some)
+            })
+          });
+
+          it("triggers a confirmable:error event", function() {
+            view = new ConfirmableView({ el: container })
+
+            var error = false
+            view.on('confirmable:error', function (jqXHR) { error = $.parseJSON(jqXHR.responseText) })
+
+            link.click()
+
+            waitsFor(function () {
+              return $('#confirmable-modal').is(':visible')
+            }, 500)
+
+            runs(function () {
+              $('#confirmable-modal').find('[data-confirmable-confirm]').click()
+
+              var data = { some: 'data' }
+
+              request = mostRecentAjaxRequest();
+              request.response({status: 500, responseText: JSON.stringify(data)})
+
+              expect(error.some).toBe(data.some)
+            })
+          });
+
+          it("renders a feedback message", function() {
+            var feedbackView = new FeedbackView({el: $('.feedback')})
+            view = new ConfirmableView({ el: container, feedbackView: feedbackView })
+            view.messages = { alert: 'some notice message' }
+            spyOn(feedbackView, 'render')
+
+            link.click()
+
+            waitsFor(function () {
+              return $('#confirmable-modal').is(':visible')
+            }, 500)
+
+            runs(function () {
+              $('#confirmable-modal').find('[data-confirmable-confirm]').click()
+
+              request = mostRecentAjaxRequest();
+              request.response({status: 500, responseText: ''})
+
+              expect(feedbackView.render).toHaveBeenCalledWith(view.messages.alert, 'alert-error', true)
             })
           });
         });
