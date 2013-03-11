@@ -65,47 +65,77 @@ describe("ConfirmableView", function() {
         })
       });
 
-      it("triggers a confirmable:confirmed event on the link", function() {
-        var confirmed = false
-        link.on('confirmable:confirmed', function (event, data) { confirmed = data })
+      describe("with a different method on the link", function() {
+        it("sends a ajax request with the given method on the link", function() {
+          link = $('a#confirmable-post')
+          view = new ConfirmableView({ el: link })
 
-        link.click()
+          link.click()
 
-        waitsFor(function () {
-          return $('#confirmable-modal').is(':visible')
-        }, 500)
+          waitsFor(function () {
+            return $('#confirmable-modal').is(':visible')
+          }, 500)
 
-        runs(function () {
-          $('#confirmable-modal').find('[data-confirmable-confirm]').click()
+          runs(function () {
+            $('#confirmable-modal').find('[data-confirmable-confirm]').click()
 
-          var data = { some: 'data' }
+            request = mostRecentAjaxRequest();
+            request.response({status: 200, responseText: ''})
 
-          request = mostRecentAjaxRequest();
-          request.response({status: 200, responseText: JSON.stringify(data)})
-
-          expect(confirmed.some).toBe(data.some)
-        })
+            expect(request.url).toBe(link.attr('href'))
+            expect(request.method).toBe('POST')
+          })
+        });
       });
 
-      it("sends a ajax request with the given method on the link", function() {
-        link = $('a#confirmable-post')
-        view = new ConfirmableView({ el: link })
+      describe("after the ajax call returns", function() {
+        describe("successfully", function() {
+          it("triggers a confirmable:confirmed event on the link", function() {
+            var confirmed = false
+            link.on('confirmable:confirmed', function (event, data) { confirmed = data })
 
-        link.click()
+            link.click()
 
-        waitsFor(function () {
-          return $('#confirmable-modal').is(':visible')
-        }, 500)
+            waitsFor(function () {
+              return $('#confirmable-modal').is(':visible')
+            }, 500)
 
-        runs(function () {
-          $('#confirmable-modal').find('[data-confirmable-confirm]').click()
+            runs(function () {
+              $('#confirmable-modal').find('[data-confirmable-confirm]').click()
 
-          request = mostRecentAjaxRequest();
-          request.response({status: 200, responseText: ''})
+              var data = { some: 'data' }
 
-          expect(request.url).toBe(link.attr('href'))
-          expect(request.method).toBe('POST')
-        })
+              request = mostRecentAjaxRequest();
+              request.response({status: 200, responseText: JSON.stringify(data)})
+
+              expect(confirmed.some).toBe(data.some)
+            })
+          });
+        });
+
+        describe("with an error", function() {
+          it("does triggers a confirmable:error event on the link", function() {
+            var error = false
+            link.on('confirmable:error', function (event, jqXHR) { error = $.parseJSON(jqXHR.responseText) })
+
+            link.click()
+
+            waitsFor(function () {
+              return $('#confirmable-modal').is(':visible')
+            }, 500)
+
+            runs(function () {
+              $('#confirmable-modal').find('[data-confirmable-confirm]').click()
+
+              var data = { some: 'data' }
+
+              request = mostRecentAjaxRequest();
+              request.response({status: 500, responseText: JSON.stringify(data)})
+
+              expect(error.some).toBe(data.some)
+            })
+          });
+        });
       });
     });
 
