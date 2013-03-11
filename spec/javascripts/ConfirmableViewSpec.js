@@ -1,11 +1,11 @@
 describe("ConfirmableView", function() {
-  var view, link
+  var view, container, link
 
   beforeEach(function() {
     loadFixtures('confirmable_view.html')
 
-    link = $('a#confirmable')
-    view = new ConfirmableView({ el: link })
+    container = $('#confirmable')
+    link = container.find('a')
   });
 
   afterEach(function () {
@@ -14,6 +14,7 @@ describe("ConfirmableView", function() {
 
   describe("when it is clicked", function() {
     it("renders a modal", function() {
+      view = new ConfirmableView({ el: container })
       spyOn(view.modal, "render")
 
       link.click()
@@ -29,6 +30,8 @@ describe("ConfirmableView", function() {
       });
 
       it("triggers a confirmable:confirm event on the link", function() {
+        view = new ConfirmableView({ el: container })
+
         var confirmed = false
         link.on('confirmable:confirm', function () {
           confirmed = true
@@ -48,6 +51,8 @@ describe("ConfirmableView", function() {
       });
 
       it("sends an ajax DELETE request with the link href as URL", function() {
+        view = new ConfirmableView({ el: container })
+
         link.click()
 
         waitsFor(function () {
@@ -67,8 +72,9 @@ describe("ConfirmableView", function() {
 
       describe("with a different method on the link", function() {
         it("sends a ajax request with the given method on the link", function() {
-          link = $('a#confirmable-post')
-          view = new ConfirmableView({ el: link })
+          container = $('#confirmable-post')
+          link = container.find('a')
+          view = new ConfirmableView({ el: container })
 
           link.click()
 
@@ -91,6 +97,8 @@ describe("ConfirmableView", function() {
       describe("after the ajax call returns", function() {
         describe("successfully", function() {
           it("triggers a confirmable:confirmed event on the link", function() {
+            view = new ConfirmableView({ el: container })
+
             var confirmed = false
             link.on('confirmable:confirmed', function (event, data) { confirmed = data })
 
@@ -115,6 +123,8 @@ describe("ConfirmableView", function() {
 
         describe("with an error", function() {
           it("does triggers a confirmable:error event on the link", function() {
+            view = new ConfirmableView({ el: container })
+
             var error = false
             link.on('confirmable:error', function (event, jqXHR) { error = $.parseJSON(jqXHR.responseText) })
 
@@ -143,10 +153,11 @@ describe("ConfirmableView", function() {
       var labels
 
       beforeEach(function() {
-        link = $('a#confirmable-custom-labels')
-        view = new ConfirmableView({ el: link })
+        container = $('#confirmable-custom-labels')
+        link = container.find('a')
+        view = new ConfirmableView({ el: container })
 
-        labels = link.data('confirmable-labels')
+        labels = container.data('confirmable-labels')
       });
 
       it("renders modal with default title, body and button labels", function() {
@@ -158,12 +169,31 @@ describe("ConfirmableView", function() {
       });
     });
 
+    describe("with multiple links", function() {
+      beforeEach(function() {
+        container = $('#confirmable-multiple')
+        view = new ConfirmableView({ el: container })
+      });
+
+      it("displays modals for each [data-confirmable]", function() {
+        spyOn(view.modal, "render")
+        container.find('a[data-confirmable]:first').click()
+        expect(view.modal.render).toHaveBeenCalled()
+      });
+
+      it("does not display modals for non [data-confirmable]", function() {
+        spyOn(view.modal, "render")
+        container.find('a:not([data-confirmable])').click()
+        expect(view.modal.render).not.toHaveBeenCalled()
+      });
+    });
+
     describe("and a modal was given", function() {
       var modal
 
       beforeEach(function() {
         modal = new ConfirmableModalView()
-        view = new ConfirmableView({ el: link, modal: modal })
+        view = new ConfirmableView({ el: container, modal: modal })
       });
 
       it("renders the given modal", function() {

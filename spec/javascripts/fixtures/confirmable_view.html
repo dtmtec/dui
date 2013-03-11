@@ -1,11 +1,31 @@
-<a href="/post/1" id="confirmable" data-confirmable="true">
-  Remove
-</a>
+<div id="confirmable">
+  <a href="/post/1" data-confirmable="true">
+    Remove
+  </a>
+</div>
 
-<a href="/post/1" id="confirmable-post" data-confirmable="true" data-method="post">
-  Remove
-</a>
+<div id="confirmable-post">
+  <a href="/post/1" data-confirmable="true" data-method="post">
+    Remove
+  </a>
+</div>
 
-<a href="/post/1" id="confirmable-custom-labels" data-confirmable="true" data-method="delete" data-confirmable-labels='{"title": "Custom Title", "body": "<p>Custom Description</p>", "cancel": "Custom Cancel", "confirm": "Custom Confirm"}'>
-  Remove
-</a>
+<div id="confirmable-multiple">
+  <a href="/post/1" data-confirmable="true">
+    Remove
+  </a>
+
+  <a href="/post/2" data-confirmable="true">
+    Remove
+  </a>
+
+  <a href="/post/3">
+    Remove
+  </a>
+</div>
+
+<div id="confirmable-custom-labels" data-confirmable-labels='{"title": "Custom Title", "body": "<p>Custom Description</p>", "cancel": "Custom Cancel", "confirm": "Custom Confirm"}'>
+  <a href="/post/1" data-confirmable="true" data-method="delete">
+    Remove
+  </a>
+</div>

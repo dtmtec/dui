@@ -1,6 +1,6 @@
 var ConfirmableView = Backbone.View.extend({
   events: {
-    'click': 'open'
+    'click [data-confirmable]': 'open'
   },
 
   initialize: function () {
@@ -12,7 +12,8 @@ var ConfirmableView = Backbone.View.extend({
     this.modal.on('confirmable:confirm', this.confirm, this)
   },
 
-  open: function () {
+  open: function (event) {
+    this.$current = $(event.currentTarget)
     this.render()
     return false
   },
@@ -24,21 +25,21 @@ var ConfirmableView = Backbone.View.extend({
 
   confirm: function () {
     $.ajax({
-      url: this.$el.attr('href'),
-      type: this.$el.data('method') || 'DELETE',
+      url: this.$current.attr('href'),
+      type: this.$current.data('method') || 'DELETE',
       success: this.confirmed,
       error: this.error
     })
 
-    this.$el.trigger('confirmable:confirm')
+    this.$current.trigger('confirmable:confirm')
   },
 
   confirmed: function (data) {
-    this.$el.trigger('confirmable:confirmed', data)
+    this.$current.trigger('confirmable:confirmed', data)
   },
 
   error: function (jqXHR) {
-    this.$el.trigger('confirmable:error', jqXHR)
+    this.$current.trigger('confirmable:error', jqXHR)
   }
 })
 
@@ -57,7 +58,7 @@ var ConfirmableModalView = Backbone.View.extend({
     '<div class="modal-body">{{{body}}}</div>',
     '<div class="modal-footer">',
       '<a href="#" class="btn" data-dismiss="modal">{{cancel}}</a>',
-      '<a href="#" class="btn btn-danger" data-confirmable-confirm="true" data-disable-with="{{disabled_with}}">{{confirm}}</a>',
+      '<a href="#" class="btn btn-danger" data-confirmable-confirm="true" data-disable-with="{{disable_with}}">{{confirm}}</a>',
     '</div>'
   ].join('\n'),
 
@@ -66,7 +67,7 @@ var ConfirmableModalView = Backbone.View.extend({
     body: '<p>Are you sure you want to perform this action?</p>',
     cancel: 'Cancel',
     confirm: 'Yes',
-    disabled_with: 'Confirming...'
+    disable_with: 'Confirming...'
   },
 
   initialize: function () {
