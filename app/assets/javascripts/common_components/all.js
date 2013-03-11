@@ -11,6 +11,7 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require common_components/feedback_view
+//= require common_components/confirmable_view
 //= require common_components/loading_overlay
 //= require common_components/movable
 //= require common_components/searchable_field
