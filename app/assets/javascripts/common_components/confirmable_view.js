@@ -30,6 +30,7 @@ var ConfirmableView = Backbone.View.extend({
     $.ajax({
       url: this.$current.attr('href'),
       type: this.$current.data('method') || 'DELETE',
+      dataType: this.$current.data('data-type'),
       success: this.confirmed,
       error: this.error,
       complete: this.hideModal
