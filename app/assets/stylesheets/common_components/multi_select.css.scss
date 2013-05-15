@@ -13,17 +13,6 @@
     opacity: 0.6;
   }
 
-  .multi-select-fade-out {
-    display: inline-block;
-    width: 40px;
-
-    top: 0;
-    bottom: 0;
-    right: 26px;
-    position: absolute;
-    background: transparent image-url('common_components/fade-out.png') repeat-y center;
-  }
-
   .multi-select-title {
     background-color: #f4f4f4;
     height: 28px;
@@ -144,11 +133,17 @@
       .multi-select-icon { opacity: 1; }
     }
 
-    &.no-items-message:hover {
-      background-color: inherit;
-      cursor: inherit;
+    &.no-items-message {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow-x: hidden;
 
-      label { color: inherit; }
+      &:hover {
+        background-color: inherit;
+        cursor: inherit;
+
+        label { color: inherit; }
+      }
     }
 
     &:last-child { border-bottom-width: 0; }
@@ -160,6 +155,7 @@
       float: none;
       width: auto;
       cursor: pointer;
+      text-overflow: ellipsis;
       white-space: nowrap;
       overflow-x: hidden;
       display: block;
@@ -170,9 +166,7 @@
         top: 0;
         bottom: 0;
         height: auto;
-        background-position: center 5px;
-        background-repeat: no-repeat;
-        background-color: #fff;
+        background: transparent none no-repeat center 5px;
       }
     }
   }
