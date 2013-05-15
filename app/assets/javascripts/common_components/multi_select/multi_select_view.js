@@ -3,6 +3,9 @@
 //= require common_components/multi_select/multi_select
 
 var MultiSelectView = Backbone.View.extend({
+  itemTagName: 'li',
+  containerTagName: 'ul',
+
   events: function() {
     return _({}).extend(
       this.eventsConfigurationForMove(),
@@ -47,8 +50,8 @@ var MultiSelectView = Backbone.View.extend({
   },
 
   configureElements: function () {
-    this.$availableContainer = this.$('.available ul')
-    this.$selectedContainer  = this.$('.selected ul')
+    this.$availableContainer = this.$('.available ' + this.containerTagName)
+    this.$selectedContainer  = this.$('.selected ' + this.containerTagName)
 
     this.$availableTemplate = this.$('.available script')
     this.$selectedTemplate  = this.$('.selected script')
@@ -107,7 +110,7 @@ var MultiSelectView = Backbone.View.extend({
   moveToSelected: function (event) {
     var element = $(event.currentTarget)
 
-    element = element.is('li') ? element : element.parents('li')
+    element = element.is(this.itemTagName) ? element : element.parents(this.itemTagName)
 
     this.movable.moveToSelected(element)
     this.trigger('move:selected', element)
@@ -116,7 +119,7 @@ var MultiSelectView = Backbone.View.extend({
   moveToAvailable: function (event) {
     var element = $(event.currentTarget)
 
-    element = element.is('li') ? element : element.parents('li')
+    element = element.is(this.itemTagName) ? element : element.parents(this.itemTagName)
 
     this.movable.moveToAvailable(element)
     this.clearSearch()
@@ -161,10 +164,14 @@ var MultiSelectView = Backbone.View.extend({
   },
 
   eventsConfigurationForMove: function () {
-    return {
-      'click .available li': 'moveToSelected',
-      'click .selected li': 'moveToAvailable'
-    }
+    var availableSelector = 'click .available ' + this.itemTagName,
+        selectedSelector  = 'click .selected '  + this.itemTagName,
+        events            = {}
+
+    events[availableSelector] = 'moveToSelected'
+    events[selectedSelector]  = 'moveToAvailable'
+
+    return events
   },
 
   eventsConfigurationForMoveAll: function () {
