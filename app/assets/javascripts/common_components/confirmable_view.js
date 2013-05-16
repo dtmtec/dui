@@ -64,7 +64,8 @@ var ConfirmableView = Backbone.View.extend({
 
 var ConfirmableModalView = Backbone.View.extend({
   events: {
-    'click [data-confirmable-confirm]': 'confirm'
+    'click [data-confirmable-confirm]': 'confirm',
+    'click [data-dismiss=modal]': 'dismiss'
   },
 
   el: $('<div id="confirmable-modal" class="modal fade hide"></div>'),
@@ -128,5 +129,9 @@ var ConfirmableModalView = Backbone.View.extend({
     $.rails.disableElement(this.$('[data-confirmable-confirm]'))
     this.trigger('confirmable:confirm')
     return false
+  },
+
+  dismiss: function () {
+    this.trigger('confirmable:dismiss')
   }
 })

@@ -76,6 +76,27 @@ describe("ConfirmableModalView", function() {
       });
     });
 
+    describe("and it is not confirmed", function() {
+      it("triggers a confirmable:dismiss event", function() {
+        var dismissed = false
+        view.on('confirmable:dismiss', function () {
+          dismissed = true
+        })
+
+        view.render()
+
+        waitsFor(function () {
+          return $('#confirmable-modal').is(':visible')
+        }, 500)
+
+        runs(function () {
+          $('#confirmable-modal').find('[data-dismiss=modal]').click()
+
+          expect(dismissed).toBeTruthy()
+        })
+      });
+    });
+
     describe("with custom labels", function() {
       var labels = {
         title: "Custom Title",
