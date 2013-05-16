@@ -125,5 +125,21 @@ describe("ConfirmableModalView", function() {
         expect(view.$el.html()).toEqual(content)
       });
     });
+
+    describe("when it is rendered", function() {
+      it("delegates events", function() {
+        spyOn(view, "delegateEvents");
+        view.render()
+        expect(view.delegateEvents).toHaveBeenCalled()
+      });
+    });
+
+    describe("when it is hidden", function() {
+      it("undelegates events", function() {
+        spyOn(view, "undelegateEvents");
+        view.hide()
+        expect(view.undelegateEvents).toHaveBeenCalled()
+      });
+    });
   });
 });

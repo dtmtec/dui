@@ -102,11 +102,13 @@ var ConfirmableModalView = Backbone.View.extend({
 
     this.$el.html(this.renderContent(labels))
     this.$el.modal('show')
+    this.delegateEvents()
 
     return this
   },
 
   hide: function () {
+    this.undelegateEvents()
     this.$el.modal('hide')
   },
 
