@@ -46,6 +46,7 @@ var MultiSelectView = Backbone.View.extend({
   render: function () {
     this.renderAvailable()
     this.renderSelected()
+    this.trigger('render')
     return this
   },
 
