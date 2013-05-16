@@ -2,17 +2,20 @@ module CommonComponents
   module MultiSelectHelper
     def render_multi_select(options)
       render 'common_components/multi_select/multi_select', {
-        multi_select_available_url: options[:available_url],
-        multi_select_additional_classes: options[:class] || '',
-        multi_select_search_placeholder: i18n_for('search_placeholder', options[:scope]),
-        multi_select_all_label: i18n_for('all', options[:scope]),
-        multi_select_available_title: i18n_for('available.title', options[:scope]),
-        multi_select_selected_title: i18n_for('selected.title', options[:scope]),
-        multi_select_available_template: options[:available_template] || 'common_components/multi_select/multi_select_template',
-        multi_select_selected_template: options[:selected_template] || 'common_components/multi_select/multi_select_template',
-        multi_select_no_available_items_message: i18n_for('available.no_items_message', options[:scope]),
-        multi_select_no_selected_items_message: i18n_for('selected.no_items_message', options[:scope]),
-        multi_select_selected_actions_content: i18n_for('selected.actions_content', options[:scope])
+        available_url: options[:available_url],
+        additional_classes: options[:class] || '',
+        search_placeholder: i18n_for('search_placeholder', options[:scope]),
+        all_label: i18n_for('all', options[:scope]),
+        available_title: i18n_for('available.title', options[:scope]),
+        selected_title: i18n_for('selected.title', options[:scope]),
+        available_template: options[:available_template] || 'common_components/multi_select/multi_select_template',
+        selected_template: options[:selected_template] || 'common_components/multi_select/multi_select_template',
+        content_template: options[:content_template] || 'common_components/multi_select/content',
+        no_available_items_message: i18n_for('available.no_items_message', options[:scope]),
+        no_selected_items_message: i18n_for('selected.no_items_message', options[:scope]),
+        available_actions_content: options[:available_actions_content] || i18n_for('available.actions_content', options[:scope]),
+        selected_actions_content: options[:selected_actions_content] || i18n_for('selected.actions_content', options[:scope]),
+        data: options[:data] || {}
       }
     end
 

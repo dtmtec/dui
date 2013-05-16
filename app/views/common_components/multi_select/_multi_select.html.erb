@@ -1,50 +1,32 @@
-<div class="multi-select <%= multi_select_additional_classes %>">
-  <div class="available" data-url="<%= multi_select_available_url %>">
-    <div class="multi-select-title">
-      <h4><%=raw multi_select_available_title %></h4>
-    </div>
+<%= content_tag :div, class: "multi-select #{additional_classes}", data: data do %>
+  <div class="available" data-url="<%= available_url %>">
+    <%= render 'common_components/multi_select/title', title: available_title %>
 
     <div class="multi-select-actions">
-
-      <div class="multi-select-search input-prepend">
-        <span class="add-on"><i class="icon-search"></i></span>
-        <%= text_field_tag "search", nil, placeholder: multi_select_search_placeholder %>
-        <a class="close clear-search hide" href="#">&times;</a>
-      </div>
-
-      <%= link_to '#', class: 'btn btn-mini multi-select-all-button' do %>
-        <%=raw multi_select_all_label %>
-        <i class="multi-select-icon"></i>
-      <% end %>
+      <%= render 'common_components/multi_select/search', search_placeholder: search_placeholder %>
+      <%= raw available_actions_content %>
+      <%= render 'common_components/multi_select/all_button', all_label: all_label %>
     </div>
 
     <div class="multi-select-content">
-      <ul>
-      </ul>
+      <%= render content_template %>
     </div>
 
-    <%= render multi_select_available_template, message: multi_select_no_available_items_message %>
+    <%= render available_template, message: no_available_items_message %>
   </div>
 
   <div class="selected">
-    <div class="multi-select-title">
-      <h4><%=raw multi_select_selected_title %></h4>
-    </div>
+    <%= render 'common_components/multi_select/title', title: selected_title %>
 
     <div class="multi-select-actions">
-      <%=raw multi_select_selected_actions_content %>
-
-      <%= link_to '#', class: 'btn btn-mini multi-select-all-button' do %>
-        <%=raw multi_select_all_label %>
-        <i class="multi-select-icon"></i>
-      <% end %>
+      <%= raw selected_actions_content %>
+      <%= render 'common_components/multi_select/all_button', all_label: all_label %>
     </div>
 
     <div class="multi-select-content">
-      <ul>
-      </ul>
+      <%= render content_template %>
     </div>
 
-    <%= render multi_select_selected_template, message: multi_select_no_selected_items_message %>
+    <%= render selected_template, message: no_selected_items_message %>
   </div>
-</div>
+<% end %>
