@@ -74,6 +74,26 @@ describe("ConfirmableModalView", function() {
           expect(confirmed).toBeTruthy()
         })
       });
+
+      it("does not triggers a confirmable:dismiss event after hiding it", function() {
+        var dismissed = false
+        view.on('confirmable:dismiss', function () {
+          dismissed = true
+        })
+
+        view.render()
+
+        waitsFor(function () {
+          return $('#confirmable-modal').is(':visible')
+        }, 500)
+
+        runs(function () {
+          $('#confirmable-modal').find('[data-confirmable-confirm]').click()
+          $('#confirmable-modal').modal('hide')
+
+          expect(dismissed).toBeFalsy()
+        })
+      });
     });
 
     describe("and it is not confirmed", function() {
@@ -94,6 +114,27 @@ describe("ConfirmableModalView", function() {
 
           expect(dismissed).toBeTruthy()
         })
+      });
+
+      describe("because one clicked on the backdrop", function() {
+        it("triggers a confirmable:dismiss event", function() {
+          var dismissed = false
+          view.on('confirmable:dismiss', function () {
+            dismissed = true
+          })
+
+          view.render()
+
+          waitsFor(function () {
+            return $('#confirmable-modal').is(':visible')
+          }, 500)
+
+          runs(function () {
+            $('.modal-backdrop').click()
+
+            expect(dismissed).toBeTruthy()
+          })
+        });
       });
     });
 
