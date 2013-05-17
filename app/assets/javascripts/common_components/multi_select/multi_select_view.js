@@ -85,7 +85,7 @@ var MultiSelectView = Backbone.View.extend({
   },
 
   configureSearch: function () {
-    this.$searchField = $('input[name=search]');
+    this.$searchField = this.$('input[name=search]');
 
     this.$searchField.searchableField()
       .on('searchable.search', this.search)
