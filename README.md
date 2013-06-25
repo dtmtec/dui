@@ -42,7 +42,7 @@ DTM UI does not depend on any backbone or bootstrap gem, so that you can include
 
 ![Feedback View](https://raw.github.com/dtmtec/dui/master/doc/images/feedback_view.png)
 
-FeedbackView is a Backbone.js view component that displays a flash message for a user. It uses (Twitter Bootstrap alert)[http://twitter.github.io/bootstrap/components.html#alerts] style with a slide effect, displayed right above the top menu bar. It is best fit to be used on fixed top bars, so that the message is always displayed for the user, even when it has scrolled through the page.
+FeedbackView is a Backbone.js view component that displays a flash message for a user. It uses [Twitter Bootstrap alert](http://twitter.github.io/bootstrap/components.html#alerts) style with a slide effect, displayed right above the top menu bar. It is best fit to be used on fixed top bars, so that the message is always displayed for the user, even when it has scrolled through the page.
 
 It can handle multiple messages by queueing them up, then showing each of them for a small period.
 
