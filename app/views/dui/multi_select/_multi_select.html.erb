@@ -1,11 +1,11 @@
 <%= content_tag :div, class: "multi-select #{additional_classes}", data: data do %>
   <div class="available" data-url="<%= available_url %>">
-    <%= render 'common_components/multi_select/title', title: available_title %>
+    <%= render 'dui/multi_select/title', title: available_title %>
 
     <div class="multi-select-actions">
-      <%= render 'common_components/multi_select/search', search_placeholder: search_placeholder %>
+      <%= render 'dui/multi_select/search', search_placeholder: search_placeholder %>
       <%= raw available_actions_content %>
-      <%= render 'common_components/multi_select/all_button', all_label: all_label %>
+      <%= render 'dui/multi_select/all_button', all_label: all_label %>
     </div>
 
     <div class="multi-select-content">
@@ -16,11 +16,11 @@
   </div>
 
   <div class="selected">
-    <%= render 'common_components/multi_select/title', title: selected_title %>
+    <%= render 'dui/multi_select/title', title: selected_title %>
 
     <div class="multi-select-actions">
       <%= raw selected_actions_content %>
-      <%= render 'common_components/multi_select/all_button', all_label: all_label %>
+      <%= render 'dui/multi_select/all_button', all_label: all_label %>
     </div>
 
     <div class="multi-select-content">

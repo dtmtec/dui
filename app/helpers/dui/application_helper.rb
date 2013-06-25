@@ -1,4 +1,4 @@
-module CommonComponents
+module DUI
   module ApplicationHelper
   end
 end

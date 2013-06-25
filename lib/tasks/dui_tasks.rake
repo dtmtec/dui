@@ -1,4 +1,4 @@
 # desc "Explaining what the task does"
-# task :common_components do
+# task :dui do
 #   # Task goes here
 # end

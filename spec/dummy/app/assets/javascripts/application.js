@@ -16,5 +16,5 @@
 //= require underscore
 //= require backbone
 //= require jquery.mustache
-//= require common_components/all
+//= require dui/all
 //= require_tree .

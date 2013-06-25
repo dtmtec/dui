@@ -1,6 +1,6 @@
-//= require common_components/movable
-//= require common_components/searchable_field
-//= require common_components/multi_select/multi_select
+//= require dui/movable
+//= require dui/searchable_field
+//= require dui/multi_select/multi_select
 
 var MultiSelectView = Backbone.View.extend({
   itemTagName: 'li',

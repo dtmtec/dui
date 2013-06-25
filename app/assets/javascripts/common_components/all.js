@@ -10,13 +10,13 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require common_components/feedback_view
-//= require common_components/confirmable_view
-//= require common_components/listing_view
-//= require common_components/loading_overlay
-//= require common_components/movable
-//= require common_components/searchable_field
-//= require common_components/multi_select/multi_select_view
+//= require dui/feedback_view
+//= require dui/confirmable_view
+//= require dui/listing_view
+//= require dui/loading_overlay
+//= require dui/movable
+//= require dui/searchable_field
+//= require dui/multi_select/multi_select_view
 
 $(function () {
   window.feedbackView = new FeedbackView({ el: $('.feedback') })

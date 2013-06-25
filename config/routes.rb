@@ -1,2 +1,2 @@
-CommonComponents::Engine.routes.draw do
+DUI::Engine.routes.draw do
 end
