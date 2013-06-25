@@ -33,8 +33,8 @@ gem 'dui', git: 'https://github.com/dtmtec/dui.git'
 
 DTM UI does not depend on any backbone or bootstrap gem, so that you can include them the way you like, but if you want you may use these gems to include them:
 
-(rails-backbone)[https://github.com/codebrew/backbone-rails]
-(bootstrap-sass)[https://github.com/thomas-mcdonald/bootstrap-sass]
+* [rails-backbone](https://github.com/codebrew/backbone-rails)
+* [bootstrap-sass](https://github.com/thomas-mcdonald/bootstrap-sass)
 
 ## Components
 
