@@ -6,7 +6,7 @@ require "dui/version"
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "dui"
-  s.version     = DUI::VERSION
+  s.version     = Dui::VERSION
   s.authors     = ["Vicente Mundim", "Luis Vasconcellos"]
   s.email       = ["vicente.mundim@dtmtec.com.br", "luis.vasconcellos@dtmtec.com.br"]
   s.homepage    = "http://dtmtec.com.br"

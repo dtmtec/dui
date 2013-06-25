@@ -1,2 +1,2 @@
-DUI::Engine.routes.draw do
+Dui::Engine.routes.draw do
 end

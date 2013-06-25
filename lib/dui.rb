@@ -1,4 +1,4 @@
 require "dui/engine"
 
-module DUI
+module Dui
 end

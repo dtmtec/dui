@@ -1,4 +1,4 @@
-module DUI
+module Dui
   module ApplicationHelper
   end
 end

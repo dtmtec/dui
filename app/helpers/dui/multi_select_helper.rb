@@ -1,4 +1,4 @@
-module DUI
+module Dui
   module MultiSelectHelper
     def render_multi_select(options)
       render 'dui/multi_select/multi_select', {
