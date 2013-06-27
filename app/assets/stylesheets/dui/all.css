@@ -11,5 +11,6 @@
  *= require dui/feedback
  *= require dui/multi_select
  *= require dui/loading_overlay
+ *= require dui/uploader
  *= require_self
  */

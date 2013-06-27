@@ -16,6 +16,7 @@
 //= require dui/loading_overlay
 //= require dui/movable
 //= require dui/searchable_field
+//= require dui/uploader/uploader_view
 //= require dui/multi_select/multi_select_view
 
 $(function () {

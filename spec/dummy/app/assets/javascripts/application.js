@@ -11,10 +11,13 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
+//= require jquery-ui
 //= require jquery_ujs
 //= require bootstrap
 //= require underscore
 //= require backbone
 //= require jquery.mustache
+//= require jquery.fileupload
+//= require jquery.iframe-transport
 //= require dui/all
 //= require_tree .
