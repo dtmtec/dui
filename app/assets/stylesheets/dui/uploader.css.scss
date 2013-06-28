@@ -1,5 +1,109 @@
 
+@import "compass/css3/images";
+@import "compass/css3/border-radius";
+@import "compass/css3/text-shadow";
+@import "compass/css3/transition";
+@import "compass/css3/box-sizing";
+
+$buttonWidth: 100px;
+$uploaderHeight: 44px;
+
 .uploader {
+  position: relative;
+  overflow: hidden;
+
+  .uploader-button-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $buttonWidth;
+    height: $uploaderHeight;
+    z-index: 2;
+
+    .btn {
+      width: 100%;
+      height: 100%;
+
+      @include border-radius(4px 0 0 4px);
+    }
+  }
+
+  .uploader-progress {
+    margin-left: $buttonWidth;
+    height: $uploaderHeight;
+
+    .progress {
+      margin: 0;
+      height: $uploaderHeight;
+
+      @include border-radius(0 4px 4px 0);
+
+      @include background(linear-gradient(#e0e0e0, #eaeaea))
+    }
+  }
+
+  .uploader-details {
+    position: absolute;
+    top: 0;
+    left: $buttonWidth;
+    width: 100%;
+    padding: 6px $buttonWidth + 25px 6px 15px;
+
+    font-size: 13px;
+    line-height: 14px;
+    color: #fff;
+    @include text-shadow(rgba(0, 0, 0, 0.8) 1px 1px 2px);
+    @include box-sizing(border-box);
+
+    .uploader-filename {
+      display: block;
+      height: 18px;
+
+      color: #fff;
+    }
+
+    .uploader-text-progress, .uploader-error {
+      font-size: 12px;
+      position: absolute;
+    }
+
+    .uploader-remove-file {
+      position: absolute;
+      right: $buttonWidth + 6px;
+      top: 50%;
+    }
+
+    .uploader-text-progress, .uploader-error, .uploader-remove-file {
+      @include transition(visibility 0.2s ease-out, opacity 0.2s ease-out);
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+
+  &.uploader-started, &.uploader-done, &.uploader-finished {
+    .uploader-text-progress, .uploader-remove-file {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  &.uploader-failed {
+    .progress .bar {
+      background-color: #dd514c;
+      background-repeat: repeat-x;
+      @include background(linear-gradient(to bottom, #ee5f5b, #c43c35));
+    }
+
+    .uploader-error {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  [data-uploader-after]:after {
+    content: ' ' attr(data-uploader-after);
+  }
+
   input[type=file] {
     display: none;
   }
