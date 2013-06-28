@@ -56,7 +56,9 @@ var Uploader = Backbone.Model.extend({
   },
 
   onDone: function () {
-    !_(this.pusherApiKey).isUndefined() ? this.waitForPusher() : this.startPollingStatus()
+    if (this.get('done')) {
+      !_(this.pusherApiKey).isUndefined() ? this.waitForPusher() : this.startPollingStatus()
+    }
   },
 
   onUploadCompleted: function () {

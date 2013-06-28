@@ -1,6 +1,7 @@
 Dummy::Application.routes.draw do
   get 'examples' => 'examples#index'
-  post 'upload' => 'examples#upload', as: :upload
+
+  mount Dui::Engine, at: "dui"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
