@@ -2,6 +2,15 @@
 
 <%= render_uploader url: dui.uploader_url, status_url: dui.uploader_status_url, iframe_redirect_url: dui.uploader_iframe_redirect_url, input: hidden_field_tag(:filename) %>
 
+<% if ENV['EXTERNAL_UPLOADER_PATH'] %>
+
+<hr>
+<h3>External uploader</h3>
+
+<%= render_uploader url: "#{ENV['EXTERNAL_UPLOADER_PATH']}/upload", status_url: "#{ENV['EXTERNAL_UPLOADER_PATH']}/status", iframe_redirect_url: dui.uploader_iframe_redirect_url, input: hidden_field_tag(:filename) %>
+
+<% end %>
+
 <% if existing_file = Dir[Rails.root.join('public/system/uploads/**/*')].first %>
 <hr>
 <h3>Existing file</h3>

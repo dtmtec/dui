@@ -94,6 +94,26 @@ describe("Uploader", function() {
 
       expect(otherUploader.pusher()).not.toBe(uploader.pusher())
     })
+
+    describe("when the pusherApiKey is not defined", function() {
+      it("cannot use pusher", function() {
+        expect(uploader.canUsePusher()).toBeFalsy()
+      })
+    })
+
+    describe("when the pusherApiKey is an empty string", function() {
+      it("cannot use pusher", function() {
+        uploader.pusherApiKey = ''
+        expect(uploader.canUsePusher()).toBeFalsy()
+      })
+    })
+
+    describe("when the pusherApiKey is defined", function() {
+      it("can use pusher", function() {
+        uploader.pusherApiKey = '123'
+        expect(uploader.canUsePusher()).toBeTruthy()
+      })
+    })
   })
 
   describe("when it is done", function() {

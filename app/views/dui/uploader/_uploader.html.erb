@@ -4,7 +4,9 @@
   uploader_iframe_redirect_url: iframe_redirect_url,
   uploader_params: uploader_params.to_json,
   uploader_file: file.to_json,
-  uploader_messages: messages
+  uploader_messages: messages,
+  uploader_pusher_api_key: pusher_api_key,
+  uploader_pusher_channel: pusher_channel
 }) do %>
   <div class="uploader-button-container">
     <input type="file" name="file">

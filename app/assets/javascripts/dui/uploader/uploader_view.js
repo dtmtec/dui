@@ -23,8 +23,8 @@ var UploaderView = Backbone.View.extend({
     var model = new Uploader
 
     model.url           = this.$el.data('uploader-status-url')
-    model.pusherChannel = this.$el.data('uploader-pusher-api-key')
-    model.pusherApiKey  = this.$el.data('uploader-pusher-channel')
+    model.pusherApiKey  = this.$el.data('uploader-pusher-api-key')
+    model.pusherChannel = this.$el.data('uploader-pusher-channel')
 
     this.model = model
   },
@@ -67,6 +67,7 @@ var UploaderView = Backbone.View.extend({
       url: this.$el.data('uploader-url'),
       redirect: this.$el.data('uploader-iframe-redirect-url'),
       formData: this.$el.data('uploader-params'),
+      dataType: 'json',
       dropZone: null,
       start: this.uploadStart,
       add: this.uploadAdd,

@@ -20,6 +20,10 @@ var Uploader = Backbone.Model.extend({
     return percentage * size
   },
 
+  canUsePusher: function () {
+    return !_(this.pusherApiKey).isUndefined() && !_(this.pusherApiKey).isEmpty()
+  },
+
   waitForPusher: function () {
     var pusher = this.pusher()
 
@@ -48,7 +52,7 @@ var Uploader = Backbone.Model.extend({
   },
 
   onStartedAt: function () {
-    if (this.pusherApiKey) {
+    if (this.canUsePusher()) {
       // we connect to pusher right when it starts uploading, so that it is
       // connected when it finishes.
       this.pusher()
@@ -57,7 +61,7 @@ var Uploader = Backbone.Model.extend({
 
   onDone: function () {
     if (this.get('done')) {
-      !_(this.pusherApiKey).isUndefined() ? this.waitForPusher() : this.startPollingStatus()
+      this.canUsePusher() ? this.waitForPusher() : this.startPollingStatus()
     }
   },
 
