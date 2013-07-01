@@ -1,6 +1,7 @@
 $(function () {
-  window.uploader = new Uploader
-  window.uploaderView = new UploaderView({
-    el: $('.uploader')
+  $('.uploader').each(function () {
+    window.uploaderView = new UploaderView({
+      el: this
+    })
   })
 })

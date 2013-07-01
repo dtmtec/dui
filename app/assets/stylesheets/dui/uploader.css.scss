@@ -7,6 +7,26 @@
 
 $buttonWidth: 100px;
 $uploaderHeight: 44px;
+$detailsPaddingLeft: 15px;
+$detailsPaddingRight: 30px;
+
+@mixin text-overflow-ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@mixin fade-out {
+  @include transition(visibility 0.2s ease-out, opacity 0.2s ease-out);
+  visibility: hidden;
+  opacity: 0;
+}
+
+@mixin fade-in {
+  @include transition(visibility 0.2s ease-out, opacity 0.2s ease-out);
+  visibility: visible;
+  opacity: 1;
+}
 
 .uploader {
   position: relative;
@@ -45,59 +65,128 @@ $uploaderHeight: 44px;
   .uploader-details {
     position: absolute;
     top: 0;
+    bottom: 0;
     left: $buttonWidth;
-    width: 100%;
-    padding: 6px $buttonWidth + 25px 6px 15px;
+    right: 0;
+    padding: 6px $detailsPaddingRight 6px $detailsPaddingLeft;
 
-    font-size: 13px;
-    line-height: 14px;
+    font-size: 14px;
+    line-height: 15px;
     color: #fff;
     @include text-shadow(rgba(0, 0, 0, 0.8) 1px 1px 2px);
     @include box-sizing(border-box);
 
     .uploader-filename {
-      display: block;
+      display: none;
       height: 18px;
 
       color: #fff;
+
+      @include text-overflow-ellipsis;
+
+      &:hover {
+        text-decoration: none;
+        cursor: default;
+      }
     }
 
-    .uploader-text-progress, .uploader-error {
-      font-size: 12px;
+    .uploader-text-progress, .uploader-message {
+      font-size: 11px;
       position: absolute;
+      left: $detailsPaddingLeft;
+      right: $detailsPaddingRight;
+
+      @include text-overflow-ellipsis;
     }
 
     .uploader-remove-file {
       position: absolute;
-      right: $buttonWidth + 6px;
+      right: 8px;
       top: 50%;
+      margin-top: -7px;
     }
 
-    .uploader-text-progress, .uploader-error, .uploader-remove-file {
-      @include transition(visibility 0.2s ease-out, opacity 0.2s ease-out);
-      visibility: hidden;
-      opacity: 0;
+    .uploader-text-progress, .uploader-remove-file {
+      @include fade-out;
+    }
+
+    .uploader-message {
+      visibility: visible;
+      opacity: 1;
+      color: #777;
+      font-size: 14px;
+      top: 50%;
+      margin-top: -7px;
+      @include text-shadow(#fff 0px 1px 0);
+      @include fade-in;
     }
   }
 
-  &.uploader-started, &.uploader-done, &.uploader-finished {
+  &.uploader-existing, &.uploader-started, &.uploader-done, &.uploader-finished, &.uploader-failed {
+    .uploader-filename {
+      display: block;
+    }
+
+    .bar {
+      display: block;
+    }
+  }
+
+  &.uploader-started, &.uploader-done, &.uploader-finished, &.uploader-existing {
     .uploader-text-progress, .uploader-remove-file {
-      visibility: visible;
-      opacity: 1;
+      @include fade-in;
+    }
+
+    .uploader-message {
+      @include fade-out;
+    }
+
+    .bar {
+      @include transition(width 0.6s ease);
+    }
+  }
+
+  &.uploader-finished, &.uploader-existing {
+    .bar {
+      background-color: #5eb95e;
+      @include background(linear-gradient(to bottom, #62c462, #57a957));
+    }
+
+    .uploader-filename:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .uploader-percentual, .uploader-loaded-size {
+      display: none;
+    }
+  }
+
+  &.uploader-existing {
+    .bar {
+      width: 100%;
     }
   }
 
   &.uploader-failed {
-    .progress .bar {
+    .bar {
       background-color: #dd514c;
-      background-repeat: repeat-x;
       @include background(linear-gradient(to bottom, #ee5f5b, #c43c35));
     }
 
-    .uploader-error {
+    .uploader-message {
       visibility: visible;
       opacity: 1;
+      top: auto;
+      font-size: 11px;
+      color: inherit;
+      margin-top: inherit;
+      @include text-shadow(inherit);
     }
+  }
+
+  .progress-striped .bar {
+    background-size: $uploaderHeight $uploaderHeight;
   }
 
   [data-uploader-after]:after {

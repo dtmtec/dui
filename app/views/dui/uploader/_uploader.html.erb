@@ -1,9 +1,10 @@
-<%= content_tag(:div, nil, class: 'uploader', data: {
+<%= content_tag(:div, nil, class: "uploader #{'uploader-existing' if file.present?}", data: {
   uploader_url: url,
   uploader_status_url: status_url,
   uploader_iframe_redirect_url: iframe_redirect_url,
   uploader_params: uploader_params.to_json,
-  uploader_error_message: error_message
+  uploader_file: file.to_json,
+  uploader_messages: messages
 }) do %>
   <div class="uploader-button-container">
     <input type="file" name="file">
@@ -12,13 +13,13 @@
   </div>
 
   <div class="uploader-progress">
-    <div class="progress">
+    <div class="progress progress-striped active">
       <div class="bar"></div>
     </div>
   </div>
 
   <div class="uploader-details">
-    <a href="" class="uploader-filename"></a>
+    <a href="" class="uploader-filename" target="_blank"></a>
 
     <div class="uploader-text-progress">
       <span class="uploader-percentual" data-uploader-after="<%= percentage_separator %>"></span>
@@ -26,7 +27,7 @@
       <span class="uploader-total-size"></span>
     </div>
 
-    <div class="uploader-error"></div>
+    <div class="uploader-message"></div>
 
     <a href="" class="uploader-remove-file"><i class="icon-remove"></i></a>
   </div>

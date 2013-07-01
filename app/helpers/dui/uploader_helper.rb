@@ -6,11 +6,12 @@ module Dui
         status_url: options[:status_url],
         iframe_redirect_url: options[:iframe_redirect_url],
         uploader_params: options[:uploader_params] || {},
-        error_message: i18n_for('error', options[:scope]),
+        messages: i18n_for('messages', options[:scope]),
         upload_label: i18n_for('label', options[:scope]),
         percentage_separator: i18n_for('percentage_separator', options[:scope]),
         loaded_to_total_size: i18n_for('loaded_to_total_size', options[:scope]),
-        input: options[:input]
+        input: options[:input],
+        file: options[:file] || {}
       }
     end
 

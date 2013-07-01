@@ -1,1 +1,11 @@
+<h3>Empty file</h3>
+
 <%= render_uploader url: dui.uploader_url, status_url: dui.uploader_status_url, iframe_redirect_url: dui.uploader_iframe_redirect_url, input: hidden_field_tag(:filename) %>
+
+<% if existing_file = Dir[Rails.root.join('public/system/uploads/**/*')].first %>
+<hr>
+<h3>Existing file</h3>
+
+<%= render_uploader url: dui.uploader_url, status_url: dui.uploader_status_url, iframe_redirect_url: dui.uploader_iframe_redirect_url, input: hidden_field_tag(:filename), file: { filename: File.basename(existing_file), url: "#{root_url}system/uploads/#{File.basename(existing_file)}", size: File.size(existing_file) } %>
+
+<% end %>

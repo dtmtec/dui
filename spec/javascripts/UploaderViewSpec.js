@@ -1,5 +1,5 @@
 describe("UploaderView", function() {
-  var uploader, uploader_view, data, widget, url, options,
+  var uploader, uploader_view, data, widget, url, options, messages,
       $button, $progress, $uploaderElement, $fileInputElement, $filenameInputElement,
       $detailsElement, barWidth, progressWidth, $bar
 
@@ -14,12 +14,16 @@ describe("UploaderView", function() {
     $progress = $('.uploader-progress', $uploaderElement)
     $bar = $progress.find('.bar')
 
+    messages = $uploaderElement.data('uploader-messages')
+  })
+
+  function createView() {
     uploader_view = new UploaderView({
       el: $uploaderElement
     })
 
     widget = $fileInputElement.data('fileupload')
-  })
+  }
 
   function triggerProgressAllEvent(loaded, total) {
     var event = $.Event('progress', {
@@ -32,6 +36,7 @@ describe("UploaderView", function() {
   }
 
   it("initializes a fileupload widget on the input file element", function() {
+    createView()
     expect($fileInputElement.data('fileupload')).toBeDefined()
   })
 
@@ -41,13 +46,42 @@ describe("UploaderView", function() {
       clicked = true
     })
 
+    createView()
+
     $button.click()
     expect(clicked).toBeTruthy()
   })
 
+  describe("initial state", function() {
+    beforeEach(createView)
+
+    it("displays the initial message", function() {
+      expect($detailsElement.find('.uploader-message')).toHaveText(messages.initial)
+    })
+
+    it("does not diplays the link to the file", function() {
+      expect($detailsElement.find('.uploader-filename')).not.toBeVisible()
+    })
+
+    it("does not display the textual progress of the upload", function() {
+      expect($detailsElement.find('.uploader-percentual')).not.toBeVisible()
+    })
+
+    it("does not display the loaded size of file", function() {
+      expect($detailsElement.find('.uploader-loaded-size')).not.toBeVisible()
+    })
+
+    it("does not display the total size of file", function() {
+      expect($detailsElement.find('.uploader-total-size')).not.toBeVisible()
+    })
+  })
+
+
   describe("default options for fileupload widget", function() {
-    it("does not replace file input", function() {
-      expect($fileInputElement.fileupload('option', 'replaceFileInput')).toBeFalsy()
+    beforeEach(createView)
+
+    it("replaces file input", function() {
+      expect($fileInputElement.fileupload('option', 'replaceFileInput')).toBeTruthy()
     })
 
     it("does not allow a drop zone", function() {
@@ -56,6 +90,8 @@ describe("UploaderView", function() {
   })
 
   describe("data attributes", function() {
+    beforeEach(createView)
+
     describe("data-uploader-url", function() {
       it("sets the URL to post the file on the fileupload widget", function() {
         expect($fileInputElement.fileupload('option', 'url')).toEqual($uploaderElement.data('uploader-url'))
@@ -81,6 +117,8 @@ describe("UploaderView", function() {
         files: [{ name: 'some-file.pdf', size: 123456789 }]
       }
 
+      createView()
+
       $fileInputElement.fileupload('add', data)
     })
 
@@ -89,6 +127,7 @@ describe("UploaderView", function() {
       expect($uploaderElement).not.toHaveClass('uploader-failed')
       expect($uploaderElement).not.toHaveClass('uploader-done')
       expect($uploaderElement).not.toHaveClass('uploader-finished')
+      expect($uploaderElement).not.toHaveClass('uploader-existing')
     })
 
     it("displays a link to the file with its filename", function() {
@@ -134,17 +173,17 @@ describe("UploaderView", function() {
 
     describe("and the upload is done", function() {
       beforeEach(function() {
+        url = 'http://google.com'
         triggerProgressAllEvent(100, 100)
-        widget._trigger('done', null, {})
+        widget._trigger('done', null, { result: [{ url: url }] })
       })
 
       it("marks the uploader as done", function() {
-        widget._trigger('done', null, {})
-
         expect($uploaderElement).not.toHaveClass('uploader-started')
         expect($uploaderElement).not.toHaveClass('uploader-failed')
         expect($uploaderElement).toHaveClass('uploader-done')
         expect($uploaderElement).not.toHaveClass('uploader-finished')
+        expect($uploaderElement).not.toHaveClass('uploader-existing')
       })
 
       it("displays a textual progress of the upload, now at 100%", function() {
@@ -159,20 +198,40 @@ describe("UploaderView", function() {
         expect($detailsElement.find('.uploader-total-size')).toHaveText('117.74mb')
       })
 
-      describe("and the upload is finished in uploader server", function() {
-        beforeEach(function() {
-          uploader_view.model.set({ finished: true })
-        })
+      it("saves the returned URL on the model", function() {
+        expect(uploader_view.model.get('url')).toEqual(url)
+      })
 
+      describe("and the upload is finished in uploader server", function() {
         it("marks the uploader as finished", function() {
+          uploader_view.model.set({ finished: true })
           expect($uploaderElement).not.toHaveClass('uploader-started')
           expect($uploaderElement).not.toHaveClass('uploader-failed')
           expect($uploaderElement).not.toHaveClass('uploader-done')
           expect($uploaderElement).toHaveClass('uploader-finished')
+          expect($uploaderElement).not.toHaveClass('uploader-existing')
         })
 
         it("sets the filename as value of the hidden field inside the widget", function() {
+          uploader_view.model.set({ finished: true })
           expect($filenameInputElement).toHaveValue(uploader_view.model.get('filename'))
+        })
+
+        it("triggers a uploader:finished event, with the model", function() {
+          var calledWith
+
+          uploader_view.on('uploader:finished', function (model) {
+            calledWith = model
+          })
+
+          uploader_view.model.set({ finished: true })
+
+          expect(calledWith).toEqual(uploader_view.model)
+        })
+
+        it("sets the url of the file on the widget", function() {
+          uploader_view.model.set({ finished: true })
+          expect($detailsElement.find('.uploader-filename').attr('href')).toEqual(url)
         })
       })
     })
@@ -196,12 +255,111 @@ describe("UploaderView", function() {
         expect($uploaderElement).toHaveClass('uploader-failed')
         expect($uploaderElement).not.toHaveClass('uploader-done')
         expect($uploaderElement).not.toHaveClass('uploader-finished')
+        expect($uploaderElement).not.toHaveClass('uploader-existing')
       })
 
-      it("displays the error message, defined in data-uploader-error-message", function() {
+      it("displays the error message, defined in data-uploader-messages", function() {
         widget._trigger('fail', null, {})
-        expect($detailsElement.find('.uploader-error')).toHaveText($uploaderElement.data('uploader-error-message'))
+        expect($detailsElement.find('.uploader-message')).toHaveText(messages.error)
       })
+    })
+  })
+
+  describe("and a different file is selected after an upload has been started", function() {
+    beforeEach(function() {
+      createView()
+
+      uploader_view.model.set({
+        started_at: undefined,
+        url: 'http://some-url',
+        total: 123,
+        loaded: 23,
+        error: 'some error',
+        done: true,
+        finished: true
+      })
+
+      data = {
+        files: [{ name: 'some-other-file.pdf', size: 2345 }]
+      }
+
+      $fileInputElement.fileupload('add', data)
+    })
+
+    it("defines a started_at, and clears all other values of the model", function() {
+      expect(uploader_view.model.get('started_at')).toBeDefined()
+      expect(uploader_view.model.get('url')).toEqual('')
+      expect(uploader_view.model.get('total')).toEqual(0)
+      expect(uploader_view.model.get('loaded')).toEqual(0)
+      expect(uploader_view.model.get('error')).toBeUndefined()
+      expect(uploader_view.model.get('done')).toBeFalsy()
+      expect(uploader_view.model.get('finished')).toBeFalsy()
+    })
+
+    it("starts uploading it", function() {
+      expect($uploaderElement).toHaveClass('uploader-started')
+      expect($uploaderElement).not.toHaveClass('uploader-failed')
+      expect($uploaderElement).not.toHaveClass('uploader-done')
+      expect($uploaderElement).not.toHaveClass('uploader-finished')
+      expect($uploaderElement).not.toHaveClass('uploader-existing')
+    })
+
+    it("displays a link to the file with its filename", function() {
+      expect($detailsElement.find('.uploader-filename')).toHaveText('some-other-file.pdf')
+    })
+
+    it("displays a textual progress of the upload, now at 0%", function() {
+      expect($detailsElement.find('.uploader-percentual')).toHaveText('0%')
+    })
+
+    it("displays the loaded size of file, now at 0 bytes", function() {
+      expect($detailsElement.find('.uploader-loaded-size')).toHaveText('0 bytes')
+    })
+
+    it("displays the total size of the file, in human readable format", function() {
+      expect($detailsElement.find('.uploader-total-size')).toHaveText('2.29kb')
+    })
+  })
+
+  describe("when a data-uploader-file with filename, url and size is given", function() {
+    beforeEach(function() {
+      $uploaderElement.data({
+        'uploader-file': {
+          filename: 'some-given-file.pdf',
+          url: 'http://someserver.com/some-given-file.pdf',
+          size: 987654321
+        }
+      })
+
+      createView()
+    })
+
+    it("displays the existing file data", function() {
+      expect($uploaderElement).not.toHaveClass('uploader-started')
+      expect($uploaderElement).not.toHaveClass('uploader-failed')
+      expect($uploaderElement).not.toHaveClass('uploader-done')
+      expect($uploaderElement).not.toHaveClass('uploader-finished')
+      expect($uploaderElement).toHaveClass('uploader-existing')
+    })
+
+    it("displays a link to the file with its filename", function() {
+      expect($detailsElement.find('.uploader-filename')).toHaveText('some-given-file.pdf')
+    })
+
+    it("sets the link to download file with the file url", function() {
+      expect($detailsElement.find('.uploader-filename').attr('href')).toEqual('http://someserver.com/some-given-file.pdf')
+    })
+
+    it("does not display the textual progress of the upload", function() {
+      expect($detailsElement.find('.uploader-percentual')).not.toBeVisible()
+    })
+
+    it("does not display the loaded size of file", function() {
+      expect($detailsElement.find('.uploader-loaded-size')).not.toBeVisible()
+    })
+
+    it("displays the total size of the file, in human readable format", function() {
+      expect($detailsElement.find('.uploader-total-size')).toHaveText('941.9mb')
     })
   })
 })

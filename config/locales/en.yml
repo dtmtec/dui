@@ -1,6 +1,9 @@
 en:
   uploader:
     label: upload
-    error: Error while uploading file. Try again.
     percentage_separator: "-"
     loaded_to_total_size: "of"
+    messages:
+      initial: Select a file to upload.
+      error: Error while uploading file. Try again.
+
