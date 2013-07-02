@@ -127,6 +127,10 @@ $detailsPaddingRight: 30px;
       @include fade-out;
     }
 
+    .uploader-percentual, .uploader-loaded-size, .uploader-total-size {
+      display: none;
+    }
+
     .uploader-message {
       visibility: visible;
       opacity: 1;
@@ -174,8 +178,8 @@ $detailsPaddingRight: 30px;
       cursor: pointer;
     }
 
-    .uploader-percentual, .uploader-loaded-size {
-      display: none;
+    .uploader-total-size {
+      display: inline;
     }
   }
 
@@ -190,6 +194,10 @@ $detailsPaddingRight: 30px;
 
     .dui-icon-remove {
       background-position: -18px 0;
+    }
+
+    .uploader-percentual, .uploader-loaded-size, .uploader-total-size {
+      display: inline;
     }
   }
 

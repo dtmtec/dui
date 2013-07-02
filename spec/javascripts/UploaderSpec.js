@@ -156,6 +156,7 @@ describe("Uploader", function() {
 
       describe("and a upload-completed message comes from pusher", function() {
         beforeEach(function() {
+          uploader.set('filename', 'some-file.pdf')
           Pusher.instances[0].connection.state = 'connected'
           markAsDone()
           Pusher.dispatch(uploader.pusherChannel, 'upload-completed', { name: 'some-file.pdf' })
@@ -316,6 +317,76 @@ describe("Uploader", function() {
           })
         })
       })
+    })
+  })
+
+  describe("abort", function() {
+    it("resets the model", function() {
+      spyOn(uploader, 'reset')
+      uploader.abort()
+      expect(uploader.reset).toHaveBeenCalled()
+    })
+
+    it("clears the poll interval", function() {
+      uploader._pollIntervalId = '123'
+      uploader.abort()
+      expect(uploader._pollIntervalId).toBeUndefined()
+    })
+
+    it("unbinds from channel", function() {
+      spyOn(uploader, '_unbindFromChannel')
+      uploader.abort()
+      expect(uploader._unbindFromChannel).toHaveBeenCalled()
+    })
+  })
+
+  describe("reset", function() {
+    beforeEach(function() {
+      uploader.reset()
+    })
+
+    it("triggers a reset event on the model", function() {
+      var called = false
+      uploader.on('reset', function () { called = true })
+
+      uploader.reset()
+      expect(called).toBeTruthy()
+    })
+
+    it("sets started_at to undefined", function() {
+      expect(uploader.get('started_at')).toBeUndefined()
+    })
+
+    it("sets filename to undefined", function() {
+      expect(uploader.get('filename')).toBeUndefined()
+    })
+
+    it("sets size to undefined", function() {
+      expect(uploader.get('size')).toBeUndefined()
+    })
+
+    it("sets url to ''", function() {
+      expect(uploader.get('url')).toEqual('')
+    })
+
+    it("sets loaded to 0", function() {
+      expect(uploader.get('loaded')).toEqual(0)
+    })
+
+    it("sets total to 0", function() {
+      expect(uploader.get('total')).toEqual(0)
+    })
+
+    it("sets error to undefined", function() {
+      expect(uploader.get('error')).toBeUndefined()
+    })
+
+    it("sets done to false", function() {
+      expect(uploader.get('done')).toBeFalsy()
+    })
+
+    it("sets finished to false", function() {
+      expect(uploader.get('finished')).toBeFalsy()
     })
   })
 })

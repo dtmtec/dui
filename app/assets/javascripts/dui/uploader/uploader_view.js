@@ -3,7 +3,8 @@
 var UploaderView = Backbone.View.extend({
   events: {
     'click [data-uploader-button]': 'selectFile',
-    'click .uploader-filename': 'download'
+    'click .uploader-filename': 'download',
+    'click .uploader-remove-file': 'removeOrAbort'
   },
 
   availableStatus: ['existing', 'started', 'failed', 'done', 'finished'],
@@ -38,6 +39,7 @@ var UploaderView = Backbone.View.extend({
     this.listenTo(this.model, 'change:error',      this.error, this)
     this.listenTo(this.model, 'change:done',       this.done, this)
     this.listenTo(this.model, 'change:finished',   this.finished, this)
+    this.listenTo(this.model, 'reset',             this.reset, this)
   },
 
   configureUI: function () {
@@ -65,7 +67,7 @@ var UploaderView = Backbone.View.extend({
       this.model.set(fileAttributes)
       this._updateStatusClass('existing')
     } else {
-      this._updateDetail('message', this.messages.initial)
+      this.reset()
     }
   },
 
@@ -91,7 +93,10 @@ var UploaderView = Backbone.View.extend({
   },
 
   filenameChanged: function () {
-    this._updateDetail('filename', this.model.get('filename'))
+    var filename = this.model.get('filename') || ''
+
+    this._updateDetail('filename', filename)
+    this.$input.val(filename)
   },
 
   sizeChanged: function () {
@@ -105,7 +110,14 @@ var UploaderView = Backbone.View.extend({
   },
 
   started: function () {
-    this._updateStatusClass('started')
+    if (this.model.get('started_at')) {
+      this._updateStatusClass('started')
+    }
+  },
+
+  reset: function () {
+    this._updateDetail('message', this.messages.initial)
+    this._updateStatusClass()
   },
 
   uploadAdd: function (e, data) {
@@ -118,7 +130,7 @@ var UploaderView = Backbone.View.extend({
       })
     }
 
-    data.submit()
+    this.currentUpload = data.submit()
   },
 
   updateProgress: function () {
@@ -153,7 +165,6 @@ var UploaderView = Backbone.View.extend({
 
   finished: function () {
     if (this.model.get('finished')) {
-      this.$input.val(this.model.get('filename'))
       this._updateStatusClass('finished')
       this.trigger('uploader:finished', this.model)
     }
@@ -176,7 +187,11 @@ var UploaderView = Backbone.View.extend({
   },
 
   uploadFail: function (e, options) {
-    this.model.set({ error: options })
+    if (options.errorThrown == 'abort') {
+      this.model.unset('error')
+    } else {
+      this.model.set({ error: options })
+    }
   },
 
   uploadDone: function (e, data) {
@@ -197,10 +212,30 @@ var UploaderView = Backbone.View.extend({
     return this.model.get('finished') == true
   },
 
-  _updateStatusClass: function (status) {
-    var removeStatus = _(this.availableStatus).map(function (s) { return 'uploader-' + s })
+  removeOrAbort: function (event) {
+    var $element = $(event.currentTarget)
 
-    this.$el.removeClass(removeStatus.join(' ')).addClass('uploader-' + status)
+    $element.tooltip('hide')
+
+    if (this.model.isUploading()) {
+      this.currentUpload && this.currentUpload.abort()
+      this.model.abort()
+    } else {
+      this._reset()
+    }
+
+    return false
+  },
+
+  _reset: function () {
+    this.model.reset()
+  },
+
+  _updateStatusClass: function (status) {
+    var removeStatus = _(this.availableStatus).map(function (s) { return 'uploader-' + s }),
+        addClass     = status ? 'uploader-' + status : undefined
+
+    this.$el.removeClass(removeStatus.join(' ')).addClass(addClass)
   },
 
   _updateDetail: function (name, value) {

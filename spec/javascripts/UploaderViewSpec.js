@@ -64,18 +64,6 @@ describe("UploaderView", function() {
     it("does not diplays the link to the file", function() {
       expect($detailsElement.find('.uploader-filename')).not.toBeVisible()
     })
-
-    it("does not display the textual progress of the upload", function() {
-      expect($detailsElement.find('.uploader-percentual')).not.toBeVisible()
-    })
-
-    it("does not display the loaded size of file", function() {
-      expect($detailsElement.find('.uploader-loaded-size')).not.toBeVisible()
-    })
-
-    it("does not display the total size of file", function() {
-      expect($detailsElement.find('.uploader-total-size')).not.toBeVisible()
-    })
   })
 
   describe("default options for fileupload widget", function() {
@@ -199,10 +187,10 @@ describe("UploaderView", function() {
       })
 
       it("changes the width of the progress bar", function() {
-        progressWidth = $progress.css('width').replace('px', '')
-        barWidth = $bar.css('width').replace('px', '')
+        progressWidth = parseInt($progress.css('width').replace('px', ''), 10)
+        barWidth = parseInt($bar.css('width').replace('px', ''), 10)
 
-        expect((barWidth / progressWidth) * 100).toEqual(10)
+        expect(Math.round((barWidth / progressWidth) * 100)).toEqual(10)
       })
 
       it("displays a textual progress of the upload, now at 10%", function() {
@@ -215,6 +203,35 @@ describe("UploaderView", function() {
 
       it("displays the total size of the file, in human readable format", function() {
         expect($detailsElement.find('.uploader-total-size')).toHaveText('117.74mb')
+      })
+    })
+
+    describe("and the abort button is clicked", function() {
+      beforeEach(function() {
+        spyOn(uploader_view.model, 'abort').andCallThrough()
+        spyOn(uploader_view.currentUpload, 'abort').andCallThrough()
+        $uploaderElement.find('.uploader-remove-file').click()
+      })
+
+      it("aborts the upload", function() {
+        expect(uploader_view.currentUpload.abort).toHaveBeenCalled()
+        expect(uploader_view.model.abort).toHaveBeenCalled()
+      })
+
+      it("displays the initial message", function() {
+        expect($detailsElement.find('.uploader-message')).toHaveText(messages.initial)
+      })
+
+      it("does not diplays the link to the file", function() {
+        expect($detailsElement.find('.uploader-filename')).not.toBeVisible()
+      })
+
+      it("resets the uploader widget status", function() {
+        expect($uploaderElement).not.toHaveClass('uploader-started')
+        expect($uploaderElement).not.toHaveClass('uploader-failed')
+        expect($uploaderElement).not.toHaveClass('uploader-done')
+        expect($uploaderElement).not.toHaveClass('uploader-finished')
+        expect($uploaderElement).not.toHaveClass('uploader-existing')
       })
     })
 
@@ -249,6 +266,35 @@ describe("UploaderView", function() {
         expect(uploader_view.model.get('url')).toEqual(url)
       })
 
+      describe("and the abort button is clicked", function() {
+        beforeEach(function() {
+          spyOn(uploader_view.model, 'abort').andCallThrough()
+          spyOn(uploader_view.currentUpload, 'abort').andCallThrough()
+          $uploaderElement.find('.uploader-remove-file').click()
+        })
+
+        it("aborts the upload", function() {
+          expect(uploader_view.currentUpload.abort).toHaveBeenCalled()
+          expect(uploader_view.model.abort).toHaveBeenCalled()
+        })
+
+        it("displays the initial message", function() {
+          expect($detailsElement.find('.uploader-message')).toHaveText(messages.initial)
+        })
+
+        it("does not diplays the link to the file", function() {
+          expect($detailsElement.find('.uploader-filename')).not.toBeVisible()
+        })
+
+        it("resets the uploader widget status", function() {
+          expect($uploaderElement).not.toHaveClass('uploader-started')
+          expect($uploaderElement).not.toHaveClass('uploader-failed')
+          expect($uploaderElement).not.toHaveClass('uploader-done')
+          expect($uploaderElement).not.toHaveClass('uploader-finished')
+          expect($uploaderElement).not.toHaveClass('uploader-existing')
+        })
+      })
+
       describe("and the upload is finished in uploader server", function() {
         it("marks the uploader as finished", function() {
           uploader_view.model.set({ finished: true })
@@ -279,6 +325,41 @@ describe("UploaderView", function() {
         it("sets the url of the file on the widget", function() {
           uploader_view.model.set({ finished: true })
           expect($detailsElement.find('.uploader-filename').attr('href')).toEqual(url)
+        })
+
+        describe("and the remove button is clicked", function() {
+          beforeEach(function() {
+            spyOn(uploader_view.model, 'abort').andCallThrough()
+            spyOn(uploader_view.currentUpload, 'abort').andCallThrough()
+
+            uploader_view.model.set({ finished: true })
+            $uploaderElement.find('.uploader-remove-file').click()
+          })
+
+          it("does not aborts the upload", function() {
+            expect(uploader_view.currentUpload.abort).not.toHaveBeenCalled()
+            expect(uploader_view.model.abort).not.toHaveBeenCalled()
+          })
+
+          it("clears the hidden field", function() {
+            expect($filenameInputElement).toHaveValue('')
+          })
+
+          it("displays the initial message", function() {
+            expect($detailsElement.find('.uploader-message')).toHaveText(messages.initial)
+          })
+
+          it("does not diplays the link to the file", function() {
+            expect($detailsElement.find('.uploader-filename')).not.toBeVisible()
+          })
+
+          it("resets the uploader widget status", function() {
+            expect($uploaderElement).not.toHaveClass('uploader-started')
+            expect($uploaderElement).not.toHaveClass('uploader-failed')
+            expect($uploaderElement).not.toHaveClass('uploader-done')
+            expect($uploaderElement).not.toHaveClass('uploader-finished')
+            expect($uploaderElement).not.toHaveClass('uploader-existing')
+          })
         })
       })
     })
@@ -397,6 +478,10 @@ describe("UploaderView", function() {
       expect($detailsElement.find('.uploader-filename').attr('href')).toEqual('http://someserver.com/some-given-file.pdf')
     })
 
+    it("sets the filename as value of the hidden field inside the widget", function() {
+      expect($filenameInputElement).toHaveValue(uploader_view.model.get('filename'))
+    })
+
     it("does not display the textual progress of the upload", function() {
       expect($detailsElement.find('.uploader-percentual')).not.toBeVisible()
     })
@@ -407,6 +492,32 @@ describe("UploaderView", function() {
 
     it("displays the total size of the file, in human readable format", function() {
       expect($detailsElement.find('.uploader-total-size')).toHaveText('941.9mb')
+    })
+
+    describe("and the remove button is clicked", function() {
+      beforeEach(function() {
+        $uploaderElement.find('.uploader-remove-file').click()
+      })
+
+      it("clears the hidden field", function() {
+        expect($filenameInputElement).toHaveValue('')
+      })
+
+      it("displays the initial message", function() {
+        expect($detailsElement.find('.uploader-message')).toHaveText(messages.initial)
+      })
+
+      it("does not diplays the link to the file", function() {
+        expect($detailsElement.find('.uploader-filename')).not.toBeVisible()
+      })
+
+      it("resets the uploader widget status", function() {
+        expect($uploaderElement).not.toHaveClass('uploader-started')
+        expect($uploaderElement).not.toHaveClass('uploader-failed')
+        expect($uploaderElement).not.toHaveClass('uploader-done')
+        expect($uploaderElement).not.toHaveClass('uploader-finished')
+        expect($uploaderElement).not.toHaveClass('uploader-existing')
+      })
     })
   })
 })

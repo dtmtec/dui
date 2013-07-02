@@ -6,6 +6,31 @@ var Uploader = Backbone.Model.extend({
     this.on('change:done', this.onDone)
   },
 
+  abort: function () {
+    clearInterval(this._pollIntervalId)
+    delete this._pollIntervalId
+
+    this._unbindFromChannel()
+
+    this.reset()
+  },
+
+  reset: function () {
+    this.set({
+      started_at: undefined,
+      filename: undefined,
+      size: undefined,
+      url: '',
+      loaded: 0,
+      total: 0,
+      error: undefined,
+      done: false,
+      finished: false
+    })
+
+    this.trigger('reset')
+  },
+
   percentualProgress: function () {
     var total  = this.get('total') || 0,
         loaded = this.get('loaded') || 0
@@ -21,7 +46,7 @@ var Uploader = Backbone.Model.extend({
   },
 
   isUploading: function () {
-    return this.has('started_at') && !this.get('finished')
+    return this.get('started_at') && !this.get('finished')
   },
 
   canUsePusher: function () {
@@ -62,7 +87,9 @@ var Uploader = Backbone.Model.extend({
   },
 
   onUploadCompleted: function () {
-    this.set({ finished: true })
+    if (this.get('filename')) {
+      this.set({ finished: true })
+    }
   },
 
   onUploadFailed: function (data) {
@@ -95,11 +122,17 @@ var Uploader = Backbone.Model.extend({
   _initializeChannel: function () {
     this.channel = this._getChannel()
 
-    this.channel.unbind('upload-completed', this.onUploadCompleted)
-    this.channel.unbind('upload-failed', this.onUploadFailed)
+    this._unbindFromChannel()
 
     this.channel.bind('upload-completed', this.onUploadCompleted)
     this.channel.bind('upload-failed', this.onUploadFailed)
+  },
+
+  _unbindFromChannel: function () {
+    if (this.channel) {
+      this.channel.unbind('upload-completed', this.onUploadCompleted)
+      this.channel.unbind('upload-failed', this.onUploadFailed)
+    }
   },
 
   _getChannel: function () {
