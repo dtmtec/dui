@@ -76,7 +76,6 @@ describe("UploaderView", function() {
     })
   })
 
-
   describe("default options for fileupload widget", function() {
     beforeEach(createView)
 
@@ -105,8 +104,44 @@ describe("UploaderView", function() {
     })
 
     describe("data-uploader-params", function() {
-      it("sends these params when uploading file with fileupload widget", function() {
-        expect($fileInputElement.fileupload('option', 'formData')).toEqual($uploaderElement.data('uploader-params'))
+      it("sends these params when uploading file with fileupload widget, together with the pusherChannel", function() {
+        var params = _($uploaderElement.data('uploader-params')).extend({
+          channel: uploader_view.model.pusherChannel
+        })
+
+        expect($fileInputElement.fileupload('option', 'formData')).toEqual(params)
+      })
+    })
+
+    describe("data-status-url", function() {
+      it("sets the model url to its value", function() {
+        expect(uploader_view.model.url).toEqual($uploaderElement.data('uploader-status-url'))
+      })
+    })
+
+    describe("data-uploader-pusher-api-key", function() {
+      it("sets model pusherApiKey with its value", function() {
+        expect(uploader_view.model.pusherApiKey).toEqual($uploaderElement.data('uploader-pusher-api-key'))
+      })
+    })
+
+    describe("data-uploader-pusher-channel", function() {
+      it("sets model pusherChannel with its value", function() {
+        expect(uploader_view.model.pusherChannel).toEqual($uploaderElement.data('uploader-pusher-channel'))
+      })
+
+      describe("when it has no value", function() {
+        beforeEach(function() {
+          $uploaderElement.removeAttr('data-uploader-pusher-channel')
+                          .removeData('uploader-pusher-channel')
+
+          spyOn(Math, "random").andReturn(0.123456789)
+          createView()
+        })
+
+        it("generates one with a value of uploader-<6-digit-random-number>", function() {
+          expect(uploader_view.model.pusherChannel).toEqual('uploader-123456')
+        })
       })
     })
   })

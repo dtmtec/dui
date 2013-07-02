@@ -7,7 +7,7 @@ module Dui
         iframe_redirect_url: options[:iframe_redirect_url],
         uploader_params: uploader_params(options),
         pusher_api_key: options[:pusher_api_key] || Dui.uploader_pusher_api_key,
-        pusher_channel: options[:pusher_channel] || Dui.uploader_pusher_channel,
+        pusher_channel: channel_for(options),
         messages: i18n_for('messages', options[:scope]),
         upload_label: i18n_for('label', options[:scope]),
         percentage_separator: i18n_for('percentage_separator', options[:scope]),
@@ -42,6 +42,10 @@ module Dui
         options = { default: I18n.t(i18n_key_for(key), default: '') }
 
         I18n.t(i18n_key_for(key, scope), options)
+      end
+
+      def channel_for(options)
+        options[:pusher_channel] || "#{Dui.uploader_pusher_channel}-#{rand(100000..999999)}"
       end
   end
 end

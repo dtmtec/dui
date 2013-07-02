@@ -24,7 +24,7 @@ var UploaderView = Backbone.View.extend({
 
     model.url           = this.$el.data('uploader-status-url')
     model.pusherApiKey  = this.$el.data('uploader-pusher-api-key')
-    model.pusherChannel = this.$el.data('uploader-pusher-channel')
+    model.pusherChannel = this.$el.data('uploader-pusher-channel') || this._generatePusherChannel()
 
     this.model = model
   },
@@ -63,17 +63,23 @@ var UploaderView = Backbone.View.extend({
   },
 
   configureFileUpload: function () {
+    var url       = this.$el.data('uploader-url'),
+        redirect  = this.$el.data('uploader-iframe-redirect-url')
+        params    = _(this.$el.data('uploader-params') || {}).extend({
+          channel: this.model.pusherChannel
+        })
+
     this.$('input:file').fileupload({
-      url: this.$el.data('uploader-url'),
-      redirect: this.$el.data('uploader-iframe-redirect-url'),
-      formData: this.$el.data('uploader-params'),
-      dataType: 'json',
-      dropZone: null,
-      start: this.uploadStart,
-      add: this.uploadAdd,
+      url:         url,
+      redirect:    redirect,
+      formData:    params,
+      dataType:    'json',
+      dropZone:    null,
+      start:       this.uploadStart,
+      add:         this.uploadAdd,
       progressall: this.uploadProgressAll,
-      fail: this.uploadFail,
-      done: this.uploadDone
+      fail:        this.uploadFail,
+      done:        this.uploadDone
     })
   },
 
@@ -200,5 +206,9 @@ var UploaderView = Backbone.View.extend({
         sizeInBytes = (size / Math.pow(1024, power)).toFixed(2) * 1
 
     return sizeInBytes + '' + this.bytesUnits[power]
+  },
+
+  _generatePusherChannel: function () {
+    return 'uploader-' + Math.floor(Math.random() * 1000000)
   }
 })
