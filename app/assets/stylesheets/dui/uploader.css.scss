@@ -4,6 +4,8 @@
 @import "compass/css3/text-shadow";
 @import "compass/css3/transition";
 @import "compass/css3/box-sizing";
+@import "compass/css3/box-shadow";
+@import "compass/css3/opacity";
 
 $buttonWidth: 100px;
 $uploaderHeight: 44px;
@@ -159,6 +161,16 @@ $detailsPaddingRight: 30px;
 
     .uploader-percentual, .uploader-loaded-size {
       display: none;
+    }
+  }
+
+  &.uploader-started, &.uploader-done {
+    .uploader-button-container .btn {
+      cursor: default;
+      background-image: none;
+      background-color: #e6e6e6;
+      @include opacity(0.65);
+      @include box-shadow(none);
     }
   }
 

@@ -22,6 +22,8 @@ describe("UploaderView", function() {
       el: $uploaderElement
     })
 
+    spyOn(uploader_view.model, 'startPollingStatus')
+
     widget = $fileInputElement.data('fileupload')
   }
 
@@ -155,6 +157,16 @@ describe("UploaderView", function() {
       createView()
 
       $fileInputElement.fileupload('add', data)
+    })
+
+    it("disables the upload button", function() {
+      var clicked = false
+      $fileInputElement.on('click', function () {
+        clicked = true // this should not be called
+      })
+
+      $button.click()
+      expect(clicked).toBeFalsy()
     })
 
     it("starts uploading it", function() {

@@ -179,7 +179,10 @@ var UploaderView = Backbone.View.extend({
   },
 
   selectFile: function () {
-    this.$('input:file').click()
+    if (!this.model.isUploading()) {
+      this.$('input:file').click()
+    }
+
     return false
   },
 

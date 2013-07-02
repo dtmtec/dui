@@ -1,6 +1,11 @@
 describe("Uploader", function() {
   beforeEach(function() {
+    jasmine.Ajax.useMock()
     uploader = new Uploader
+  })
+
+  it("should not be uploading", function() {
+    expect(uploader.isUploading()).toBeFalsy()
   })
 
   describe("percentualProgress", function() {
@@ -116,10 +121,26 @@ describe("Uploader", function() {
     })
   })
 
+  describe("when it has started", function() {
+    beforeEach(function() {
+      uploader.set({ started_at: new Date })
+    })
+
+    it("should be uploading", function() {
+      expect(uploader.isUploading()).toBeTruthy()
+    })
+  })
+
   describe("when it is done", function() {
     function markAsDone() {
-      uploader.set({ started_at: new Date, done: true })
+      uploader.set({ started_at: new Date, url: 'http://uploader/some-file.pdf', done: true })
     }
+
+    it("should be uploading", function() {
+      spyOn(uploader, "startPollingStatus")
+      markAsDone()
+      expect(uploader.isUploading()).toBeTruthy()
+    })
 
     describe("and pusherApiKey is set", function() {
       beforeEach(function() {
@@ -143,6 +164,10 @@ describe("Uploader", function() {
         it("sets finished to true", function() {
           expect(uploader.get('finished')).toBeTruthy()
         })
+
+        it("should not be uploading", function() {
+          expect(uploader.isUploading()).toBeFalsy()
+        })
       })
 
       describe("and a upload-failed message comes from pusher", function() {
@@ -156,6 +181,14 @@ describe("Uploader", function() {
 
         it("sets error to the value that came from pusher", function() {
           expect(uploader.get('error')).toEqual(error)
+        })
+
+        it("should not be uploading", function() {
+          expect(uploader.isUploading()).toBeFalsy()
+        })
+
+        it("should clear the url", function() {
+          expect(uploader.get('url')).toEqual('')
         })
       })
 
@@ -187,10 +220,6 @@ describe("Uploader", function() {
     })
 
     describe("and pusherApiKey is not set", function() {
-      beforeEach(function() {
-        jasmine.Ajax.useMock()
-      })
-
       afterEach(function() {
         if (uploader._pollIntervalId) {
           clearInterval(uploader._pollIntervalId)
@@ -210,6 +239,7 @@ describe("Uploader", function() {
       })
 
       it("calls pollStatus after an interval", function() {
+        uploader.url = 'http://uploder/upload'
         jasmine.Clock.useMock()
         markAsDone()
 
