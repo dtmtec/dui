@@ -1,0 +1,24 @@
+$iconSize: 18px;
+
+[class^="dui-icon-"], [class*=" dui-icon-"] {
+  display: inline-block;
+  width: $iconSize;
+  height: $iconSize;
+  line-height: $iconSize;
+  vertical-align: text-top;
+  margin-top: 1px;
+
+  background: transparent image-url('dui/icons-18x18.png') no-repeat 0 0;
+}
+
+.dui-icon-upload {
+  background-position: 0 0;
+}
+
+.dui-icon-remove {
+  background-position: -36px 0;
+}
+
+.dui-icon-abort {
+  background-position: -18px 0;
+}
