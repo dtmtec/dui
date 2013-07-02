@@ -107,9 +107,20 @@ $detailsPaddingRight: 30px;
 
     .uploader-remove-file {
       position: absolute;
-      right: 8px;
+      right: 0px;
       top: 50%;
-      margin-top: -7px;
+      margin-top: -9px;
+      text-align: center;
+      width: 30px;
+
+      .dui-icon-remove {
+        @include opacity(0.6);
+        @include transition(opacity 0.3s ease);
+      }
+
+      &:hover .dui-icon-remove {
+        @include opacity(1);
+      }
     }
 
     .uploader-text-progress, .uploader-remove-file {

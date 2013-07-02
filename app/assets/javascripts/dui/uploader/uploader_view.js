@@ -45,8 +45,15 @@ var UploaderView = Backbone.View.extend({
     this.$progress        = this.$('.uploader-progress')
     this.$details         = this.$('.uploader-details')
     this.$detailsTemplate = this.$('[data-template-name=uploader-details]')
+    this.$removeButton    = this.$('.uploader-remove-file')
 
     this.messages         = this.$el.data('uploader-messages') || {}
+
+    this.$removeButton.tooltip({
+      placement: 'left',
+      title: this._removeButtonTooltipTitle,
+      delay: 200
+    })
   },
 
   configureInitialState: function () {
@@ -213,5 +220,9 @@ var UploaderView = Backbone.View.extend({
 
   _generatePusherChannel: function () {
     return 'uploader-' + Math.floor(Math.random() * 1000000)
+  },
+
+  _removeButtonTooltipTitle: function () {
+    return this.model.isUploading() ? this.messages.abort : this.messages.remove
   }
 })
