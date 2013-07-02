@@ -1,7 +1,9 @@
 $(function () {
+  window.uploaderViews = []
+
   $('.uploader').each(function () {
-    window.uploaderView = new UploaderView({
+    window.uploaderViews.push(new UploaderView({
       el: this
-    })
+    }))
   })
 })

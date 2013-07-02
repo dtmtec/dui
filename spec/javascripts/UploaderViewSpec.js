@@ -109,6 +109,12 @@ describe("UploaderView", function() {
       })
     })
 
+    describe("data-status-data-type", function() {
+      it("sets the model dataType to its value", function() {
+        expect(uploader_view.model.dataType).toEqual($uploaderElement.data('uploader-status-data-type'))
+      })
+    })
+
     describe("data-uploader-pusher-api-key", function() {
       it("sets model pusherApiKey with its value", function() {
         expect(uploader_view.model.pusherApiKey).toEqual($uploaderElement.data('uploader-pusher-api-key'))
@@ -239,7 +245,7 @@ describe("UploaderView", function() {
       beforeEach(function() {
         url = 'http://google.com'
         triggerProgressAllEvent(100, 100)
-        widget._trigger('done', null, { result: [{ url: url }] })
+        widget._trigger('done', null, { result: [{ url: url, size: 123456789 }] })
       })
 
       it("marks the uploader as done", function() {

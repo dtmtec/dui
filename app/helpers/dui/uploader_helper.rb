@@ -4,7 +4,8 @@ module Dui
       render 'dui/uploader/uploader', {
         url: options[:url],
         status_url: options[:status_url],
-        iframe_redirect_url: options[:iframe_redirect_url],
+        status_data_type: options[:status_data_type],
+        iframe_redirect_url: iframe_redirect_url_for(options),
         uploader_params: uploader_params(options),
         pusher_api_key: options[:pusher_api_key] || Dui.uploader_pusher_api_key,
         pusher_channel: channel_for(options),
@@ -46,6 +47,11 @@ module Dui
 
       def channel_for(options)
         options[:pusher_channel] || "#{Dui.uploader_pusher_channel}-#{rand(100000..999999)}"
+      end
+
+      def iframe_redirect_url_for(options)
+        url = options[:iframe_redirect_url]
+        url.ends_with?('?%s') ? url : "#{url}?%s"
       end
   end
 end

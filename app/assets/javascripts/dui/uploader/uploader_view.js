@@ -24,6 +24,7 @@ var UploaderView = Backbone.View.extend({
     var model = new Uploader
 
     model.url           = this.$el.data('uploader-status-url')
+    model.dataType      = this.$el.data('uploader-status-data-type')
     model.pusherApiKey  = this.$el.data('uploader-pusher-api-key')
     model.pusherChannel = this.$el.data('uploader-pusher-channel') || this._generatePusherChannel()
 
@@ -56,6 +57,8 @@ var UploaderView = Backbone.View.extend({
       title: this._removeButtonTooltipTitle,
       delay: 200
     })
+
+    this.$details.toggleClass('no-textual-progress', !$.support.xhrFileUpload)
   },
 
   configureInitialState: function () {
@@ -100,9 +103,12 @@ var UploaderView = Backbone.View.extend({
   },
 
   sizeChanged: function () {
-    var totalSize = this._toHumanFileSize(this.model.get('size'))
-    this._updateDetail('total-size', totalSize)
-    this.$details.find('.uploader-text-progress').attr('title', totalSize)
+    var size      = this.model.get('size'),
+        humanSize = this._toHumanFileSize(size)
+
+    this._updateDetail('total-size', humanSize)
+    this.$details.toggleClass('no-size', _(size).isUndefined())
+                 .find('.uploader-text-progress').attr('title', humanSize)
   },
 
   urlChanged: function () {
@@ -136,15 +142,20 @@ var UploaderView = Backbone.View.extend({
   updateProgress: function () {
     var percentualProgress = this._toHumanPercentage(this.model.percentualProgress()),
         loadedBytes        = this._toHumanFileSize(this.model.loadedBytes()),
-        totalSize          = this._toHumanFileSize(this.model.get('size')),
+        size               = this.model.get('size'),
+        totalSize          = this._toHumanFileSize(size),
         title              = percentualProgress + " - " + loadedBytes + " - " + totalSize
 
     this.$progress.find('.bar').css('width', percentualProgress)
 
-    this._updateDetail('loaded-size', loadedBytes)
-    this._updateDetail('percentual',  percentualProgress)
+    if (size) {
+      this._updateDetail('loaded-size', loadedBytes)
+      this._updateDetail('percentual',  percentualProgress)
 
-    this.$details.find('.uploader-text-progress').attr('title', title)
+      this.$details.removeClass('no-size').find('.uploader-text-progress').attr('title', title)
+    } else {
+      this.$details.addClass('no-size')
+    }
   },
 
   error: function () {
@@ -158,7 +169,7 @@ var UploaderView = Backbone.View.extend({
   },
 
   done: function () {
-    if (this.model.get('done')) {
+    if (this.model.isDone()) {
       this._updateStatusClass('done')
     }
   },
@@ -177,8 +188,8 @@ var UploaderView = Backbone.View.extend({
       loaded: 0,
       total: 0,
       error: undefined,
-      done: false,
-      finished: false
+      done: undefined,
+      finished: undefined
     })
   },
 
@@ -190,14 +201,15 @@ var UploaderView = Backbone.View.extend({
     if (options.errorThrown == 'abort') {
       this.model.unset('error')
     } else {
-      this.model.set({ error: options })
+      this.model.set({ error: options, started_at: undefined })
     }
   },
 
   uploadDone: function (e, data) {
-    var url = data.result[0].url
+    var url  = data.result[0].url,
+        size = data.result[0].size
 
-    this.model.set({ url: url, done: true })
+    this.model.set({ url: url, size: size, done: true })
   },
 
   selectFile: function () {
@@ -209,7 +221,7 @@ var UploaderView = Backbone.View.extend({
   },
 
   download: function () {
-    return this.model.get('finished') == true
+    return !this.model.isUploading()
   },
 
   removeOrAbort: function (event) {

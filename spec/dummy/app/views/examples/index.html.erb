@@ -5,13 +5,13 @@
 
 <h3>Empty file</h3>
 
-<%= render_uploader url: "#{ENV['EXTERNAL_UPLOADER_PATH']}/upload", status_url: "#{ENV['EXTERNAL_UPLOADER_PATH']}/status", iframe_redirect_url: dui.uploader_iframe_redirect_url, uploader_params: { bucket: 'cloud-uploader' }, input: hidden_field_tag(:filename) %>
+<%= render_uploader url: "#{ENV['EXTERNAL_UPLOADER_PATH']}/upload", status_url: "#{ENV['EXTERNAL_UPLOADER_PATH']}/status", status_data_type: 'jsonp', iframe_redirect_url: dui.uploader_iframe_redirect_url, uploader_params: { bucket: 'cloud-uploader' }, input: hidden_field_tag(:filename) %>
 
 <% if existing_file = Dir[Rails.root.join('public/system/uploads/**/*')].first %>
 
 <h3>Existing file</h3>
 
-<%= render_uploader url: "#{ENV['EXTERNAL_UPLOADER_PATH']}/upload", status_url: "#{ENV['EXTERNAL_UPLOADER_PATH']}/status", iframe_redirect_url: dui.uploader_iframe_redirect_url, uploader_params: { bucket: 'cloud-uploader' }, input: hidden_field_tag(:filename), file: { filename: File.basename(existing_file), url: "#{root_url}system/uploads/#{File.basename(existing_file)}", size: File.size(existing_file) } %>
+<%= render_uploader url: "#{ENV['EXTERNAL_UPLOADER_PATH']}/upload", status_url: "#{ENV['EXTERNAL_UPLOADER_PATH']}/status", status_data_type: 'jsonp', iframe_redirect_url: dui.uploader_iframe_redirect_url, uploader_params: { bucket: 'cloud-uploader' }, input: hidden_field_tag(:filename), file: { filename: File.basename(existing_file), url: "#{root_url}system/uploads/#{File.basename(existing_file)}", size: File.size(existing_file) } %>
 
 <% end %>
 

@@ -1,6 +1,7 @@
 <%= content_tag(:div, nil, class: "uploader #{'uploader-existing' if file.present?}", data: {
   uploader_url: url,
   uploader_status_url: status_url,
+  uploader_status_data_type: status_data_type,
   uploader_iframe_redirect_url: iframe_redirect_url,
   uploader_params: uploader_params.to_json,
   uploader_file: file.to_json,
@@ -9,8 +10,8 @@
   uploader_pusher_channel: pusher_channel
 }) do %>
   <div class="uploader-button-container">
-    <input type="file" name="file">
     <%= input %>
+    <input type="file" name="file">
     <button class="btn" data-uploader-button="true"><i class="dui-icon-upload"></i> <%= upload_label %></button>
   </div>
 

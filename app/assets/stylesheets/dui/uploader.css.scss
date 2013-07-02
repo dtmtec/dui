@@ -45,6 +45,16 @@ $detailsPaddingRight: 30px;
     width: $buttonWidth;
     height: $uploaderHeight;
     z-index: 2;
+    overflow: hidden;
+
+    input[type=file]:hover + .btn {
+      background-color: #e6e6e6;
+      background-position: 0 -15px;
+      color: #333333;
+      text-decoration: none;
+
+      @include transition(background-position 0.1s linear 0s);
+    }
 
     .btn {
       width: 100%;
@@ -82,15 +92,34 @@ $detailsPaddingRight: 30px;
     @include text-shadow(rgba(0, 0, 0, 0.8) 1px 1px 2px);
     @include box-sizing(border-box);
 
+    &.no-size {
+      color: #333;
+
+      .uploader-filename {
+        color: #333
+      }
+
+      .uploader-percentual, .uploader-loaded-size, .uploader-total-size {
+        display: none;
+      }
+    }
+
+    &.no-textual-progress {
+      .uploader-percentual, .uploader-loaded-size {
+        display: none;
+      }
+    }
+
     .uploader-filename {
       display: none;
       height: 18px;
 
       color: #fff;
+      outline: none;
 
       @include text-overflow-ellipsis;
 
-      &:hover {
+      &:hover, &:focus {
         text-decoration: none;
         cursor: default;
       }
@@ -170,6 +199,8 @@ $detailsPaddingRight: 30px;
   &.uploader-finished, &.uploader-existing {
     .bar {
       background-color: #5eb95e;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff62c462', endColorstr='#ff57a957', GradientType=0);
+      background: -webkit-linear-gradient(top, #62c462, #57a957);
       @include background(linear-gradient(to bottom, #62c462, #57a957));
     }
 
@@ -184,12 +215,18 @@ $detailsPaddingRight: 30px;
   }
 
   &.uploader-started, &.uploader-done {
-    .uploader-button-container .btn {
-      cursor: default;
-      background-image: none;
-      background-color: #e6e6e6;
-      @include opacity(0.65);
-      @include box-shadow(none);
+    .uploader-button-container {
+      input[type=file] {
+        display: none;
+      }
+
+      .btn {
+        cursor: default;
+        background-image: none;
+        background-color: #e6e6e6;
+        @include opacity(0.65);
+        @include box-shadow(none);
+      }
     }
 
     .dui-icon-remove {
@@ -211,6 +248,8 @@ $detailsPaddingRight: 30px;
     .bar {
       width: 100%;
       background-color: #dd514c;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffc43c35', GradientType=0);
+      background: -webkit-linear-gradient(top, #ee5f5b, #c43c35);
       @include background(linear-gradient(to bottom, #ee5f5b, #c43c35));
     }
 
@@ -234,6 +273,16 @@ $detailsPaddingRight: 30px;
   }
 
   input[type=file] {
-    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    height: $uploaderHeight;
+    direction: ltr;
+    cursor: pointer;
+
+    @include opacity(0);
+
+    -moz-transform: translate(-300px, 0px) scale(4);
   }
 }

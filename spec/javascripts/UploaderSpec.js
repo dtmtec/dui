@@ -264,10 +264,28 @@ describe("Uploader", function() {
 
           expect($.ajax).toHaveBeenCalledWith({
             url: uploader.url,
+            dataType: 'json',
             data: {
               file: uploader.get('filename')
             },
             success: uploader.onStatus
+          })
+        })
+
+        describe("when the dataType is given", function() {
+          it("polls for the status, passing the filename", function() {
+            spyOn($, 'ajax')
+            uploader.dataType = 'jsonp'
+            uploader.pollStatus()
+
+            expect($.ajax).toHaveBeenCalledWith({
+              url: uploader.url,
+              dataType: 'jsonp',
+              data: {
+                file: uploader.get('filename')
+              },
+              success: uploader.onStatus
+            })
           })
         })
 

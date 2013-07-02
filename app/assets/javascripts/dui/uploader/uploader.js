@@ -49,6 +49,10 @@ var Uploader = Backbone.Model.extend({
     return this.get('started_at') && !this.get('finished')
   },
 
+  isDone: function () {
+    return this.get('done') && !this.get('error') && !this.get('finished')
+  },
+
   canUsePusher: function () {
     return !_(this.pusherApiKey).isUndefined() && !_(this.pusherApiKey).isEmpty()
   },
@@ -67,6 +71,7 @@ var Uploader = Backbone.Model.extend({
   pollStatus: function () {
     $.ajax({
       url: _(this).result('url'),
+      dataType: this.dataType || 'json',
       data: {
         file: this.get('filename')
       },
