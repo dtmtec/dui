@@ -118,7 +118,7 @@ describe("Uploader", function() {
 
   describe("when it is done", function() {
     function markAsDone() {
-      uploader.set({ done: true })
+      uploader.set({ started_at: new Date, done: true })
     }
 
     describe("and pusherApiKey is set", function() {

@@ -25,13 +25,7 @@ var Uploader = Backbone.Model.extend({
   },
 
   waitForPusher: function () {
-    var pusher = this.pusher()
-
-    if (pusher.connection.state == 'connected') {
-      this.channel = this.channel || this.pusher().subscribe(this.pusherChannel || 'uploader')
-      this.channel.bind('upload-completed', this.onUploadCompleted)
-      this.channel.bind('upload-failed', this.onUploadFailed)
-    } else {
+    if (!this.isPusherConnected()) {
       this.startPollingStatus()
     }
   },
@@ -52,10 +46,8 @@ var Uploader = Backbone.Model.extend({
   },
 
   onStartedAt: function () {
-    if (this.canUsePusher()) {
-      // we connect to pusher right when it starts uploading, so that it is
-      // connected when it finishes.
-      this.pusher()
+    if (this.canUsePusher() && this.isPusherConnected()) {
+      this._initializeChannel()
     }
   },
 
@@ -67,16 +59,10 @@ var Uploader = Backbone.Model.extend({
 
   onUploadCompleted: function () {
     this.set({ finished: true })
-
-    this.channel.unbind('upload-completed', this.onUploadCompleted)
-    this.channel.unbind('upload-failed', this.onUploadFailed)
   },
 
   onUploadFailed: function (data) {
-    this.set({ error: data })
-
-    this.channel.unbind('upload-completed', this.onUploadCompleted)
-    this.channel.unbind('upload-failed', this.onUploadFailed)
+    this.set({ error: data, url: '' })
   },
 
   onStatus: function (data, status, jqXHR) {
@@ -92,9 +78,32 @@ var Uploader = Backbone.Model.extend({
 
     if (!pusherInstance) {
       Uploader.pusherInstances[this.pusherApiKey] = pusherInstance = new Pusher(this.pusherApiKey)
+      pusherInstance.connection.bind('connected', this._initializeChannel)
     }
 
     return pusherInstance
+  },
+
+  isPusherConnected: function () {
+    return this.pusher().connection.state == 'connected'
+  },
+
+  _initializeChannel: function () {
+    this.channel = this._getChannel()
+
+    this.channel.unbind('upload-completed', this.onUploadCompleted)
+    this.channel.unbind('upload-failed', this.onUploadFailed)
+
+    this.channel.bind('upload-completed', this.onUploadCompleted)
+    this.channel.bind('upload-failed', this.onUploadFailed)
+  },
+
+  _getChannel: function () {
+    var pusher      = this.pusher(),
+        channelName = this.pusherChannel,
+        channel     = pusher.channel(channelName) || pusher.subscribe(channelName)
+
+    return channel
   }
 }, {
   pusherInstances: []
