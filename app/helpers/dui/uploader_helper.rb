@@ -1,18 +1,20 @@
 module Dui
   module UploaderHelper
+    include Dui::ApplicationHelper
+
     def render_uploader(options)
       render 'dui/uploader/uploader', {
         url: uploader_url_for(options[:url], '/upload', :uploader_url),
-        iframe_redirect_url: iframe_redirect_url_for(options),
+        iframe_redirect_url: uploader_iframe_redirect_url_for(options),
         status_url: uploader_url_for(options[:status_url], '/status', :uploader_status_url),
         status_data_type: options[:status_data_type].presence || 'json',
         uploader_params: uploader_params(options),
         pusher_api_key: options[:pusher_api_key] || Dui.uploader_pusher_api_key,
-        pusher_channel: channel_for(options),
-        messages: i18n_for('messages', options[:scope]),
-        upload_label: i18n_for('label', options[:scope]),
-        percentage_separator: i18n_for('percentage_separator', options[:scope]),
-        loaded_to_total_size: i18n_for('loaded_to_total_size', options[:scope]),
+        pusher_channel: uploader_channel_for(options),
+        messages: scoped_t('messages', options[:scope], :uploader),
+        upload_label: scoped_t('label', options[:scope], :uploader),
+        percentage_separator: scoped_t('percentage_separator', options[:scope], :uploader),
+        loaded_to_total_size: scoped_t('loaded_to_total_size', options[:scope], :uploader),
         input: options[:input],
         file: options[:file] || {}
       }
@@ -34,22 +36,11 @@ module Dui
     end
 
     private
-      def i18n_key_for(key, scope=nil)
-        scope = scope ? ".#{scope}" : ''
-        "uploader#{scope}.#{key}"
-      end
-
-      def i18n_for(key, scope=nil)
-        options = { default: I18n.t(i18n_key_for(key), default: '') }
-
-        I18n.t(i18n_key_for(key, scope), options)
-      end
-
-      def channel_for(options)
+      def uploader_channel_for(options)
         options[:pusher_channel] || "#{Dui.uploader_pusher_channel}-#{rand(100000..999999)}"
       end
 
-      def iframe_redirect_url_for(options)
+      def uploader_iframe_redirect_url_for(options)
         url = uploader_url_for(options[:iframe_redirect_url], nil, :uploader_iframe_redirect_url)
         url.ends_with?('?%s') ? url : "#{url}?%s"
       end
