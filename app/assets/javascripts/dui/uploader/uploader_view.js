@@ -1,3 +1,5 @@
+//= require jquery.fileupload
+//= require jquery.iframe-transport
 //= require dui/uploader/uploader
 
 var UploaderView = Backbone.View.extend({
