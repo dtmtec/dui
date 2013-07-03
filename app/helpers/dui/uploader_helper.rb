@@ -2,10 +2,10 @@ module Dui
   module UploaderHelper
     def render_uploader(options)
       render 'dui/uploader/uploader', {
-        url: options[:url],
-        status_url: options[:status_url],
-        status_data_type: options[:status_data_type],
+        url: uploader_url_for(options[:url], '/upload', :uploader_url),
         iframe_redirect_url: iframe_redirect_url_for(options),
+        status_url: uploader_url_for(options[:status_url], '/status', :uploader_status_url),
+        status_data_type: options[:status_data_type].presence || 'json',
         uploader_params: uploader_params(options),
         pusher_api_key: options[:pusher_api_key] || Dui.uploader_pusher_api_key,
         pusher_channel: channel_for(options),
@@ -50,8 +50,15 @@ module Dui
       end
 
       def iframe_redirect_url_for(options)
-        url = options[:iframe_redirect_url]
+        url = uploader_url_for(options[:iframe_redirect_url], nil, :uploader_iframe_redirect_url)
         url.ends_with?('?%s') ? url : "#{url}?%s"
+      end
+
+      def uploader_url_for(url, suffix, default_url)
+        uploader_url = suffix.present? && Dui.uploader_server_host ? "#{Dui.uploader_server_host}#{suffix}" : nil
+        default_url = dui.respond_to?(default_url) ? dui.send(default_url) : ''
+
+        url.presence || uploader_url || default_url
       end
   end
 end

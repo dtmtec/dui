@@ -1,6 +1,9 @@
 require "dui/engine"
 
 module Dui
+  mattr_accessor :uploader_server_host
+  @@uploader_server_host = ENV['UPLOADER_SERVER_HOST']
+
   mattr_accessor :uploader_server_secret
   @@uploader_server_secret = ENV['UPLOADER_SERVER_SECRET'] || ''
 
