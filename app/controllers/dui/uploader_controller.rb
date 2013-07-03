@@ -10,7 +10,7 @@ module Dui
         type: params[:file].content_type,
         size: params[:file].size,
         url:  "system/uploads/#{params[:file].original_filename}"
-      }]
+      }], root: false
     end
 
     def status

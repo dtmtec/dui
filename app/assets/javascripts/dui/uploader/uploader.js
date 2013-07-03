@@ -46,19 +46,19 @@ var Uploader = Backbone.Model.extend({
   },
 
   isUploading: function () {
-    return this.get('started_at') && !this.isFinished() && !this.get('error')
+    return Boolean(this.get('started_at') && !this.isFinished() && !this.get('error'))
   },
 
   isDone: function () {
-    return this.get('done') && !this.isFinished() && !this.get('error')
+    return Boolean(this.get('done') && !this.isFinished() && !this.get('error'))
   },
 
   isFinished: function () {
-    return this.get('finished') && !this.get('error')
+    return Boolean(this.get('finished') && !this.get('error'))
   },
 
   hasFile: function () {
-    return this.get('filename') && this.get('url') && this.get('size')
+    return Boolean(!this.isUploading() && this.get('filename') && this.get('url') && this.get('size'))
   },
 
   canUsePusher: function () {

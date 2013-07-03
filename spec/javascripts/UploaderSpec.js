@@ -157,7 +157,13 @@ describe("Uploader", function() {
 
   describe("when it is done", function() {
     function markAsDone() {
-      uploader.set({ started_at: new Date, url: 'http://uploader/some-file.pdf', size: 123, done: true })
+      uploader.set({
+        started_at: new Date,
+        filename: 'some-file.pdf',
+        url: 'http://uploader/some-file.pdf',
+        size: 123,
+        done: true
+      })
     }
 
     it("should be uploading", function() {
@@ -198,7 +204,6 @@ describe("Uploader", function() {
 
       describe("and a upload-completed message comes from pusher", function() {
         beforeEach(function() {
-          uploader.set({ filename: 'some-file.pdf' })
           Pusher.instances[0].connection.state = 'connected'
           markAsDone()
           Pusher.dispatch(uploader.pusherChannel, 'upload-completed', { name: 'some-file.pdf' })
