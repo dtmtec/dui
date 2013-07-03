@@ -8,6 +8,14 @@ describe("Uploader", function() {
     expect(uploader.isUploading()).toBeFalsy()
   })
 
+  it("should not be done", function() {
+    expect(uploader.isDone()).toBeFalsy()
+  })
+
+  it("should not be finished", function() {
+    expect(uploader.isFinished()).toBeFalsy()
+  })
+
   describe("percentualProgress", function() {
     describe("when total is undefined", function() {
       it("returns 0", function() {
@@ -129,6 +137,14 @@ describe("Uploader", function() {
     it("should be uploading", function() {
       expect(uploader.isUploading()).toBeTruthy()
     })
+
+    it("should not be done", function() {
+      expect(uploader.isDone()).toBeFalsy()
+    })
+
+    it("should not be finished", function() {
+      expect(uploader.isFinished()).toBeFalsy()
+    })
   })
 
   describe("when it is done", function() {
@@ -140,6 +156,18 @@ describe("Uploader", function() {
       spyOn(uploader, "startPollingStatus")
       markAsDone()
       expect(uploader.isUploading()).toBeTruthy()
+    })
+
+    it("should be done", function() {
+      spyOn(uploader, "startPollingStatus")
+      markAsDone()
+      expect(uploader.isDone()).toBeTruthy()
+    })
+
+    it("should not be finished", function() {
+      spyOn(uploader, "startPollingStatus")
+      markAsDone()
+      expect(uploader.isFinished()).toBeFalsy()
     })
 
     describe("and pusherApiKey is set", function() {
@@ -169,12 +197,21 @@ describe("Uploader", function() {
         it("should not be uploading", function() {
           expect(uploader.isUploading()).toBeFalsy()
         })
+
+        it("should not be done", function() {
+          expect(uploader.isDone()).toBeFalsy()
+        })
+
+        it("should be finished", function() {
+          expect(uploader.isFinished()).toBeTruthy()
+        })
       })
 
       describe("and a upload-failed message comes from pusher", function() {
         var error = { message: 'some error' }
 
         beforeEach(function() {
+          uploader.pusher()
           Pusher.instances[0].connection.state = 'connected'
           markAsDone()
           Pusher.dispatch(uploader.pusherChannel, 'upload-failed', error)
@@ -186,6 +223,14 @@ describe("Uploader", function() {
 
         it("should not be uploading", function() {
           expect(uploader.isUploading()).toBeFalsy()
+        })
+
+        it("should not be done", function() {
+          expect(uploader.isDone()).toBeFalsy()
+        })
+
+        it("should not be finished", function() {
+          expect(uploader.isFinished()).toBeFalsy()
         })
 
         it("should clear the url", function() {
@@ -255,7 +300,7 @@ describe("Uploader", function() {
           jasmine.Ajax.useMock()
 
           uploader.url = 'http://some-url'
-          uploader.set('filename', 'some-file.pdf')
+          uploader.set({ filename: 'some-file.pdf', done: true })
         })
 
         it("polls for the status, passing the filename", function() {
@@ -315,22 +360,31 @@ describe("Uploader", function() {
         describe("and it has finished uploading", function() {
           var data = { finished_uploading: true }
 
-          it("sets finished to true", function() {
-            uploader.pollStatus()
-
-            request = mostRecentAjaxRequest();
-            request.response({status: 200, responseText: JSON.stringify(data)})
-
-            expect(uploader.get('finished')).toBeTruthy()
-          })
-
-          it("does not continue polling", function() {
+          beforeEach(function () {
             uploader._pollIntervalId = '123'
             uploader.pollStatus()
 
             request = mostRecentAjaxRequest();
             request.response({status: 200, responseText: JSON.stringify(data)})
+          })
 
+          it("sets finished to true", function() {
+            expect(uploader.get('finished')).toBeTruthy()
+          })
+
+          it("should not be uploading", function() {
+            expect(uploader.isUploading()).toBeFalsy()
+          })
+
+          it("should not be done", function() {
+            expect(uploader.isDone()).toBeFalsy()
+          })
+
+          it("should be finished", function() {
+            expect(uploader.isFinished()).toBeTruthy()
+          })
+
+          it("does not continue polling", function() {
             expect(uploader._pollIntervalId).toBeUndefined()
           })
         })
