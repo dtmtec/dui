@@ -120,6 +120,7 @@ var UploaderView = Backbone.View.extend({
   started: function () {
     if (this.model.get('started_at')) {
       this._updateStatusClass('started')
+      this.trigger('uploader:started', this.model)
     }
   },
 
