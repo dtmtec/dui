@@ -1,0 +1,13 @@
+@import "compass/css3/transition";
+
+.toggler-slide {
+  display: block;
+  overflow: hidden;
+  height: 100px; // this should be changed on a per-use case
+
+  @include transition(height 0.2s ease-out);
+
+  &.toggler-hide {
+    height: 0;
+  }
+}

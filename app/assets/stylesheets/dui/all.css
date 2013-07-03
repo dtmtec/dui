@@ -13,5 +13,6 @@
  *= require dui/multi_select
  *= require dui/loading_overlay
  *= require dui/uploader
+ *= require dui/toggler
  *= require_self
  */

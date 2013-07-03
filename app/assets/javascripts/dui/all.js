@@ -18,8 +18,11 @@
 //= require dui/searchable_field
 //= require dui/uploader/uploader_view
 //= require dui/multi_select/multi_select_view
+//= require dui/toggler
 
 $(function () {
   window.feedbackView = new FeedbackView({ el: $('.feedback') })
   window.feedbackView.delayedRender()
+
+  $('[data-toggler]').toggler()
 })
