@@ -265,7 +265,11 @@ $detailsPaddingRight: 30px;
   }
 
   .progress-striped .bar {
+    margin: 0;
+    height: 100%;
     background-size: $uploaderHeight $uploaderHeight;
+
+    @include border-radius(0);
   }
 
   [data-uploader-after]:after {
