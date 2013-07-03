@@ -126,6 +126,7 @@ var UploaderView = Backbone.View.extend({
   reset: function () {
     this._updateDetail('message', this.messages.initial)
     this._updateStatusClass()
+    this.trigger('uploader:reset', this.model)
   },
 
   uploadAdd: function (e, data) {

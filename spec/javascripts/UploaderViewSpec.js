@@ -526,4 +526,16 @@ describe("UploaderView", function() {
       })
     })
   })
+
+  describe("when it is reset", function() {
+    it("triggers a uploader:reset event", function() {
+      var calledWith
+      uploader_view.on('uploader:reset', function (model) {
+        calledWith = model
+      })
+
+      uploader_view.reset()
+      expect(calledWith).toEqual(uploader_view.model)
+    })
+  })
 })
