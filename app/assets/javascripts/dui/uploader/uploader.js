@@ -57,6 +57,10 @@ var Uploader = Backbone.Model.extend({
     return this.get('finished') && !this.get('error')
   },
 
+  hasFile: function () {
+    return this.get('filename') && this.get('url') && this.get('size')
+  },
+
   canUsePusher: function () {
     return !_(this.pusherApiKey).isUndefined() && !_(this.pusherApiKey).isEmpty()
   },

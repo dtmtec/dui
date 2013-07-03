@@ -16,6 +16,10 @@ describe("Uploader", function() {
     expect(uploader.isFinished()).toBeFalsy()
   })
 
+  it("should not have file", function() {
+    expect(uploader.hasFile()).toBeFalsy()
+  })
+
   describe("percentualProgress", function() {
     describe("when total is undefined", function() {
       it("returns 0", function() {
@@ -145,11 +149,15 @@ describe("Uploader", function() {
     it("should not be finished", function() {
       expect(uploader.isFinished()).toBeFalsy()
     })
+
+    it("should not have file", function() {
+      expect(uploader.hasFile()).toBeFalsy()
+    })
   })
 
   describe("when it is done", function() {
     function markAsDone() {
-      uploader.set({ started_at: new Date, url: 'http://uploader/some-file.pdf', done: true })
+      uploader.set({ started_at: new Date, url: 'http://uploader/some-file.pdf', size: 123, done: true })
     }
 
     it("should be uploading", function() {
@@ -170,6 +178,12 @@ describe("Uploader", function() {
       expect(uploader.isFinished()).toBeFalsy()
     })
 
+    it("should not have file", function() {
+      spyOn(uploader, "startPollingStatus")
+      markAsDone()
+      expect(uploader.hasFile()).toBeFalsy()
+    })
+
     describe("and pusherApiKey is set", function() {
       beforeEach(function() {
         uploader.pusherApiKey  = '123'
@@ -184,7 +198,7 @@ describe("Uploader", function() {
 
       describe("and a upload-completed message comes from pusher", function() {
         beforeEach(function() {
-          uploader.set('filename', 'some-file.pdf')
+          uploader.set({ filename: 'some-file.pdf' })
           Pusher.instances[0].connection.state = 'connected'
           markAsDone()
           Pusher.dispatch(uploader.pusherChannel, 'upload-completed', { name: 'some-file.pdf' })
@@ -204,6 +218,10 @@ describe("Uploader", function() {
 
         it("should be finished", function() {
           expect(uploader.isFinished()).toBeTruthy()
+        })
+
+        it("should have file", function() {
+          expect(uploader.hasFile()).toBeTruthy()
         })
       })
 
@@ -231,6 +249,10 @@ describe("Uploader", function() {
 
         it("should not be finished", function() {
           expect(uploader.isFinished()).toBeFalsy()
+        })
+
+        it("should not have file", function() {
+          expect(uploader.hasFile()).toBeFalsy()
         })
 
         it("should clear the url", function() {
@@ -361,6 +383,7 @@ describe("Uploader", function() {
           var data = { finished_uploading: true }
 
           beforeEach(function () {
+            uploader.set({ filename: 'some-file.pdf', url: 'http://uploader/path', size: 123 })
             uploader._pollIntervalId = '123'
             uploader.pollStatus()
 
@@ -384,11 +407,22 @@ describe("Uploader", function() {
             expect(uploader.isFinished()).toBeTruthy()
           })
 
+          it("should have file", function() {
+            expect(uploader.hasFile()).toBeTruthy()
+          })
+
           it("does not continue polling", function() {
             expect(uploader._pollIntervalId).toBeUndefined()
           })
         })
       })
+    })
+  })
+
+  describe("when it has filename, url and size", function () {
+    it("should have file", function() {
+      uploader.set({ filename: 'foo.png', url: 'http://somedomain.com/foo.png', size: 123 })
+      expect(uploader.hasFile()).toBeTruthy()
     })
   })
 
