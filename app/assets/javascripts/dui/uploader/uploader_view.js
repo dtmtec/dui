@@ -10,7 +10,7 @@ var UploaderView = Backbone.View.extend({
   },
 
   availableStatus: ['existing', 'started', 'failed', 'done', 'finished'],
-  bytesUnits: [' bytes', 'kb', 'mb', 'gb', 'tb'],
+  bytesUnits: ['bytes', 'kb', 'mb', 'gb', 'tb'],
 
   initialize: function () {
     _(this).bindAll()
@@ -271,7 +271,7 @@ var UploaderView = Backbone.View.extend({
     var power       = size > 0 ? Math.floor(Math.log(size) / Math.log(1024)) : 0,
         sizeInBytes = (size / Math.pow(1024, power)).toFixed(2) * 1
 
-    return sizeInBytes + '' + this.bytesUnits[power]
+    return sizeInBytes + ' ' + this.bytesUnits[power]
   },
 
   _generatePusherChannel: function () {
