@@ -42,7 +42,7 @@ var UploaderView = Backbone.View.extend({
     this.listenTo(this.model, 'change:error',      this.error, this)
     this.listenTo(this.model, 'change:done',       this.done, this)
     this.listenTo(this.model, 'change:finished',   this.finished, this)
-    this.listenTo(this.model, 'reset',             this.reset, this)
+    this.listenTo(this.model, 'uploader:reset',    this.reset, this)
   },
 
   configureUI: function () {

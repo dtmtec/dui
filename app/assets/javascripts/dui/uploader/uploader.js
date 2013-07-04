@@ -4,6 +4,7 @@ var Uploader = Backbone.Model.extend({
 
     this.on('change:started_at', this.onStartedAt)
     this.on('change:done', this.onDone)
+    this.on('change:finished', this.onFinished)
   },
 
   abort: function () {
@@ -28,7 +29,7 @@ var Uploader = Backbone.Model.extend({
       finished: false
     })
 
-    this.trigger('reset')
+    this.trigger('uploader:reset')
   },
 
   percentualProgress: function () {
@@ -88,6 +89,10 @@ var Uploader = Backbone.Model.extend({
   },
 
   onStartedAt: function () {
+    if (this.get('started_at')) {
+      this.trigger('uploader:started')
+    }
+
     if (this.canUsePusher() && this.isPusherConnected()) {
       this._initializeChannel()
     }
@@ -95,7 +100,14 @@ var Uploader = Backbone.Model.extend({
 
   onDone: function () {
     if (this.get('done')) {
+      this.trigger('uploader:done')
       this.canUsePusher() ? this.waitForPusher() : this.startPollingStatus()
+    }
+  },
+
+  onFinished: function () {
+    if (this.get('finished')) {
+      this.trigger('uploader:finished')
     }
   },
 
