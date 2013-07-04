@@ -54,13 +54,15 @@ var UploaderView = Backbone.View.extend({
 
     this.messages         = this.$el.data('uploader-messages') || {}
 
+    this.canShowProgress  = $.support.xhrFileUpload
+
     this.$removeButton.tooltip({
       placement: 'left',
       title: this._removeButtonTooltipTitle,
       delay: 200
     })
 
-    this.$details.toggleClass('no-textual-progress', !$.support.xhrFileUpload)
+    this.$details.toggleClass('no-textual-progress', !this.canShowProgress)
   },
 
   configureInitialState: function () {
@@ -109,8 +111,7 @@ var UploaderView = Backbone.View.extend({
         humanSize = this._toHumanFileSize(size)
 
     this._updateDetail('total-size', humanSize)
-    this.$details.toggleClass('no-size', _(size).isUndefined())
-                 .find('.uploader-text-progress').attr('title', humanSize)
+    this.$details.find('.uploader-text-progress').attr('title', humanSize)
   },
 
   urlChanged: function () {
@@ -120,6 +121,11 @@ var UploaderView = Backbone.View.extend({
   started: function () {
     if (this.model.get('started_at')) {
       this._updateStatusClass('started')
+
+      if (!this.canShowProgress) {
+        this._updateDetail('message', this.messages.uploading)
+      }
+
       this.trigger('uploader:started', this.model)
     }
   },
@@ -152,15 +158,10 @@ var UploaderView = Backbone.View.extend({
 
     this.$progress.find('.bar').css('width', percentualProgress)
 
-    if (size) {
-      this._updateDetail('loaded-size', loadedBytes)
-      this._updateDetail('percentual',  percentualProgress)
+    this._updateDetail('loaded-size', loadedBytes)
+    this._updateDetail('percentual',  percentualProgress)
 
-      this.$details.removeClass('no-size').find('.uploader-text-progress').attr('title', title)
-    } else {
-      this.$details.addClass('no-size')
-      this._updateDetail('message', this.messages.uploading)
-    }
+    this.$details.find('.uploader-text-progress').attr('title', title)
   },
 
   error: function () {
