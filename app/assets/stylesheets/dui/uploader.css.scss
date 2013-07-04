@@ -74,7 +74,9 @@ $detailsPaddingRight: 30px;
 
       @include border-radius(0 4px 4px 0);
 
-      @include background(linear-gradient(#e0e0e0, #eaeaea))
+      background-color: #c5c5c5;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFc0c0c0', endColorstr='#FFcacaca', GradientType=0);
+      @include background(linear-gradient(#c0c0c0, #cacaca))
     }
   }
 
@@ -93,12 +95,6 @@ $detailsPaddingRight: 30px;
     @include box-sizing(border-box);
 
     &.no-size {
-      color: #333;
-
-      .uploader-filename {
-        color: #333
-      }
-
       .uploader-percentual, .uploader-loaded-size, .uploader-total-size {
         display: none;
       }
@@ -163,11 +159,9 @@ $detailsPaddingRight: 30px;
     .uploader-message {
       visibility: visible;
       opacity: 1;
-      color: #777;
       font-size: 14px;
       top: 50%;
       margin-top: -7px;
-      @include text-shadow(#fff 0px 1px 0);
       @include fade-in;
     }
   }
@@ -236,6 +230,15 @@ $detailsPaddingRight: 30px;
     .uploader-percentual, .uploader-loaded-size, .uploader-total-size {
       display: inline;
     }
+
+    .no-size {
+      .uploader-message {
+        @include fade-in;
+        top: auto;
+        font-size: 11px;
+        margin-top: inherit;
+      }
+    }
   }
 
   &.uploader-existing {
@@ -254,13 +257,10 @@ $detailsPaddingRight: 30px;
     }
 
     .uploader-message {
-      visibility: visible;
-      opacity: 1;
+      @include fade-in;
       top: auto;
       font-size: 11px;
-      color: inherit;
       margin-top: inherit;
-      @include text-shadow(inherit);
     }
   }
 

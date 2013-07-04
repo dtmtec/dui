@@ -6,6 +6,7 @@ en:
     messages:
       initial: Select a file to upload.
       error: Error while uploading file. Try again.
+      uploading: "Uploading file, please wait..."
       abort: Cancel upload
       remove: Remove file
 

@@ -134,7 +134,11 @@ describe("Uploader", function() {
   })
 
   describe("when it has started", function() {
+    var called
+
     beforeEach(function() {
+      called = false
+      uploader.on('uploader:started', function () { called = true })
       uploader.set({ started_at: new Date })
     })
 
@@ -153,9 +157,15 @@ describe("Uploader", function() {
     it("should not have file", function() {
       expect(uploader.hasFile()).toBeFalsy()
     })
+
+    it("triggers a uploader:started event on the model", function() {
+      expect(called).toBeTruthy()
+    })
   })
 
   describe("when it is done", function() {
+    var called
+
     function markAsDone() {
       uploader.set({
         started_at: new Date,
@@ -165,6 +175,10 @@ describe("Uploader", function() {
         done: true
       })
     }
+
+    beforeEach(function() {
+      called = false
+    })
 
     it("should be uploading", function() {
       spyOn(uploader, "startPollingStatus")
@@ -190,6 +204,14 @@ describe("Uploader", function() {
       expect(uploader.hasFile()).toBeFalsy()
     })
 
+    it("triggers a uploader:done event on the model", function() {
+      uploader.on('uploader:done', function () { called = true })
+
+      spyOn(uploader, "startPollingStatus")
+      markAsDone()
+      expect(called).toBeTruthy()
+    })
+
     describe("and pusherApiKey is set", function() {
       beforeEach(function() {
         uploader.pusherApiKey  = '123'
@@ -204,6 +226,7 @@ describe("Uploader", function() {
 
       describe("and a upload-completed message comes from pusher", function() {
         beforeEach(function() {
+          uploader.on('uploader:finished', function () { called = true })
           Pusher.instances[0].connection.state = 'connected'
           markAsDone()
           Pusher.dispatch(uploader.pusherChannel, 'upload-completed', { name: 'some-file.pdf' })
@@ -227,6 +250,10 @@ describe("Uploader", function() {
 
         it("should have file", function() {
           expect(uploader.hasFile()).toBeTruthy()
+        })
+
+        it("triggers a uploader:finished event on the model", function() {
+          expect(called).toBeTruthy()
         })
       })
 
@@ -263,6 +290,10 @@ describe("Uploader", function() {
         it("should clear the url", function() {
           expect(uploader.get('url')).toEqual('')
         })
+
+        it("does not triggers a uploader:finished event", function() {
+          expect(called).toBeFalsy();
+        });
       })
 
       describe("and it cannot connect to pusher channel", function() {
@@ -456,9 +487,9 @@ describe("Uploader", function() {
       uploader.reset()
     })
 
-    it("triggers a reset event on the model", function() {
+    it("triggers a uploader:reset event on the model", function() {
       var called = false
-      uploader.on('reset', function () { called = true })
+      uploader.on('uploader:reset', function () { called = true })
 
       uploader.reset()
       expect(called).toBeTruthy()

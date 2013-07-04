@@ -159,6 +159,7 @@ var UploaderView = Backbone.View.extend({
       this.$details.removeClass('no-size').find('.uploader-text-progress').attr('title', title)
     } else {
       this.$details.addClass('no-size')
+      this._updateDetail('message', this.messages.uploading)
     }
   },
 
