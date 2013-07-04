@@ -245,7 +245,7 @@ describe("UploaderView", function() {
       beforeEach(function() {
         url = 'http://google.com'
         triggerProgressAllEvent(100, 100)
-        widget._trigger('done', null, { result: [{ url: url, size: 123456789 }] })
+        widget._trigger('done', null, { result: [{ name: 'different-filename.pdf', url: url, size: 123456789 }] })
       })
 
       it("marks the uploader as done", function() {
@@ -266,6 +266,10 @@ describe("UploaderView", function() {
 
       it("displays the total size of the file, in human readable format", function() {
         expect($detailsElement.find('.uploader-total-size')).toHaveText('117.74mb')
+      })
+
+      it("updates the filename", function() {
+        expect($detailsElement.find('.uploader-filename')).toHaveText('different-filename.pdf')
       })
 
       it("saves the returned URL on the model", function() {

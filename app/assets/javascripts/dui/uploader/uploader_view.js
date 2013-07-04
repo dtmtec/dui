@@ -211,10 +211,12 @@ var UploaderView = Backbone.View.extend({
   },
 
   uploadDone: function (e, data) {
-    var url  = data.result[0].url,
-        size = data.result[0].size
+    var file     = data.result[0],
+        filename = file.name,
+        url      = file.url,
+        size     = file.size
 
-    this.model.set({ url: url, size: size, done: true })
+    this.model.set({ filename: filename, url: url, size: size, done: true })
   },
 
   selectFile: function () {
