@@ -22,12 +22,12 @@
   </div>
 
   <div class="uploader-details">
-    <a href="" class="uploader-filename" target="_blank"></a>
+    <a href="<%= file[:url] %>" class="uploader-filename" target="_blank"><%= file[:filename] %></a>
 
     <div class="uploader-text-progress">
       <span class="uploader-percentual" data-uploader-after="<%= percentage_separator %>"></span>
       <span class="uploader-loaded-size" data-uploader-after="<%= loaded_to_total_size %>"></span>
-      <span class="uploader-total-size"></span>
+      <span class="uploader-total-size"><%= number_to_human_size(file[:size], separator: '.').downcase if file.present? %></span>
     </div>
 
     <div class="uploader-message"></div>
