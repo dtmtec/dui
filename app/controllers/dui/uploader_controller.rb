@@ -14,7 +14,13 @@ module Dui
     end
 
     def status
-      render json: { finished_uploading: true }
+      result = { finished_uploading: true }
+
+      if params[:callback]
+        render text: "#{params[:callback]}(#{result.to_json})"
+      else
+        render json: { finished_uploading: true }
+      end
     end
 
     def result
