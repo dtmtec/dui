@@ -167,6 +167,7 @@ var UploaderView = Backbone.View.extend({
 
     if (currentError) {
       this._updateDetail('message', this.messages.error)
+      this.$progress.find('.bar').css('width', '')
       this._updateStatusClass('failed')
       this.trigger('error', this.model.get('error'))
     }
