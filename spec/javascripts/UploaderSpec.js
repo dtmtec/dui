@@ -91,6 +91,55 @@ describe("Uploader", function() {
     })
   })
 
+  describe("elapsedTime", function() {
+    describe("when started_at is not defined", function() {
+      it("returns 0", function() {
+        expect(uploader.elapsedTime()).toEqual(0)
+      })
+    })
+
+    describe("when started_at is defined", function() {
+      beforeEach(function() {
+        var now = new Date(),
+            started_at = new Date(now.getFullYear(), now.getMonth(), now.getDate(),  now.getHours(), now.getMinutes() - 1, 0)
+
+
+        uploader.set({ started_at: started_at })
+      })
+
+      it("returns the difference to now", function() {
+        expect(uploader.elapsedTime()).toBeGreaterThan(0)
+      })
+    })
+  })
+
+  describe("meanUploadRate", function() {
+    var elapsedTime, loadedBytes
+
+    beforeEach(function() {
+      elapsedTime = 123.456
+      loadedBytes = 987654321
+    })
+
+    it("returns the division of loaded bytes per elapsedTime", function() {
+      spyOn(uploader, 'elapsedTime').andReturn(elapsedTime)
+      spyOn(uploader, 'loadedBytes').andReturn(loadedBytes)
+      expect(uploader.meanUploadRate()).toEqual(loadedBytes/elapsedTime)
+    })
+
+    describe("when elapsed time is zero", function() {
+      beforeEach(function() {
+        elapsedTime = 0
+      })
+
+      it("returns 0", function() {
+        spyOn(uploader, 'elapsedTime').andReturn(elapsedTime)
+        spyOn(uploader, 'loadedBytes').andReturn(loadedBytes)
+        expect(uploader.meanUploadRate()).toEqual(0)
+      })
+    })
+  })
+
   describe("pusher", function() {
     it("does not create new instances of Pusher on other instances with the same API key", function() {
       var otherUploader = new Uploader

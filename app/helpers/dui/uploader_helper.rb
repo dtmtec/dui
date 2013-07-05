@@ -15,6 +15,8 @@ module Dui
         upload_label: scoped_t('label', options[:scope], :uploader),
         percentage_separator: scoped_t('percentage_separator', options[:scope], :uploader),
         loaded_to_total_size: scoped_t('loaded_to_total_size', options[:scope], :uploader),
+        before_rate: scoped_t('before_rate', options[:scope], :uploader),
+        after_rate: scoped_t('after_rate', options[:scope], :uploader),
         input: options[:input],
         file: options[:file] || {}
       }

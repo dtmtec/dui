@@ -46,6 +46,19 @@ var Uploader = Backbone.Model.extend({
     return percentage * size
   },
 
+  elapsedTime: function () {
+    var now        = new Date
+        started_at = this.get('started_at') || now
+
+    return (now - started_at)/1000
+  },
+
+  meanUploadRate: function () {
+    var elapsedTime = this.elapsedTime()
+
+    return elapsedTime > 0 ? this.loadedBytes() / this.elapsedTime() : 0
+  },
+
   isUploading: function () {
     return Boolean(this.get('started_at') && !this.isFinished() && !this.get('error'))
   },

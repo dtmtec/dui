@@ -154,12 +154,14 @@ var UploaderView = Backbone.View.extend({
         loadedBytes        = this._toHumanFileSize(this.model.loadedBytes()),
         size               = this.model.get('size'),
         totalSize          = this._toHumanFileSize(size),
+        rate               = this._toHumanFileSize(this.model.meanUploadRate()) + '/s',
         title              = percentualProgress + " - " + loadedBytes + " - " + totalSize
 
     this.$progress.find('.bar').css('width', percentualProgress)
 
     this._updateDetail('loaded-size', loadedBytes)
     this._updateDetail('percentual',  percentualProgress)
+    this._updateDetail('rate',        rate)
 
     this.$details.find('.uploader-text-progress').attr('title', title)
   },
