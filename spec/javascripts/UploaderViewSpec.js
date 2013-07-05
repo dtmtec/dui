@@ -184,7 +184,7 @@ describe("UploaderView", function() {
     })
 
     it("displays the total size of the file, in human readable format", function() {
-      expect($detailsElement.find('.uploader-total-size')).toHaveText('117.74mb')
+      expect($detailsElement.find('.uploader-total-size')).toHaveText('117.74 mb')
     })
 
     describe("and its progress is updated", function() {
@@ -204,11 +204,11 @@ describe("UploaderView", function() {
       })
 
       it("displays the loaded size of file, now at 11.77mb", function() {
-        expect($detailsElement.find('.uploader-loaded-size')).toHaveText('11.77mb')
+        expect($detailsElement.find('.uploader-loaded-size')).toHaveText('11.77 mb')
       })
 
       it("displays the total size of the file, in human readable format", function() {
-        expect($detailsElement.find('.uploader-total-size')).toHaveText('117.74mb')
+        expect($detailsElement.find('.uploader-total-size')).toHaveText('117.74 mb')
       })
     })
 
@@ -261,11 +261,11 @@ describe("UploaderView", function() {
       })
 
       it("displays the loaded size of file, now at 117.74mb", function() {
-        expect($detailsElement.find('.uploader-loaded-size')).toHaveText('117.74mb')
+        expect($detailsElement.find('.uploader-loaded-size')).toHaveText('117.74 mb')
       })
 
       it("displays the total size of the file, in human readable format", function() {
-        expect($detailsElement.find('.uploader-total-size')).toHaveText('117.74mb')
+        expect($detailsElement.find('.uploader-total-size')).toHaveText('117.74 mb')
       })
 
       it("updates the filename", function() {
@@ -455,7 +455,7 @@ describe("UploaderView", function() {
     })
 
     it("displays the total size of the file, in human readable format", function() {
-      expect($detailsElement.find('.uploader-total-size')).toHaveText('2.29kb')
+      expect($detailsElement.find('.uploader-total-size')).toHaveText('2.29 kb')
     })
   })
 
@@ -501,7 +501,7 @@ describe("UploaderView", function() {
     })
 
     it("displays the total size of the file, in human readable format", function() {
-      expect($detailsElement.find('.uploader-total-size')).toHaveText('941.9mb')
+      expect($detailsElement.find('.uploader-total-size')).toHaveText('941.9 mb')
     })
 
     describe("and the remove button is clicked", function() {
