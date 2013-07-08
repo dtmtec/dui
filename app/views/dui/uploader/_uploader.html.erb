@@ -27,7 +27,7 @@
     <div class="uploader-text-progress">
       <span class="uploader-percentual" data-uploader-after="<%= percentage_separator %>"></span>
       <span class="uploader-loaded-size" data-uploader-after="<%= loaded_to_total_size %>"></span>
-      <span class="uploader-total-size"><%= number_to_human_size(file[:size], separator: '.').downcase if file.present? %></span>
+      <span class="uploader-total-size"><%= number_to_human_size(file[:size], separator: '.').downcase if file.present? && file[:size] %></span>
       <span class="uploader-rate" data-uploader-before="<%= before_rate %>" data-uploader-after="<%= after_rate %>"></span>
     </div>
 
