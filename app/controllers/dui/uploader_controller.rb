@@ -1,7 +1,7 @@
 module Dui
   class UploaderController < Dui::ApplicationController
     def upload
-      path = Rails.root.join('public/system/uploads')
+      path = Rails.root.join('public/system/uploads', params[:bucket], params[:uploadPath])
       FileUtils.mkdir_p(path)
       FileUtils.cp(params[:file].path, path.join(params[:file].original_filename))
 
@@ -9,7 +9,7 @@ module Dui
         name: params[:file].original_filename,
         type: params[:file].content_type,
         size: params[:file].size,
-        url:  "system/uploads/#{params[:file].original_filename}"
+        url:  "/system/uploads/#{params[:bucket]}/#{params["uploadPath"]}/#{params[:file].original_filename}"
       }], root: false
     end
 
