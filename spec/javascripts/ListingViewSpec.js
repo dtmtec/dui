@@ -49,6 +49,20 @@ describe("ListingView", function() {
           expect(listing.parent().find('.loading-overlay')).toBeHidden()
         })
       });
+
+      it("triggers a 'complete' event", function() {
+        var called = false
+
+        view = new ListingView({ el: listing })
+        view.reload()
+
+        view.on('complete', function(){ called = true })
+
+        request = mostRecentAjaxRequest();
+        request.response({status: 200, responseText: 'some data'})
+
+        expect(called).toBeTruthy()
+      });
     });
 
     describe("and the ajax request returns an error", function() {
@@ -66,6 +80,20 @@ describe("ListingView", function() {
         runs(function () {
           expect(listing.parent().find('.loading-overlay')).toBeHidden()
         })
+      });
+
+      it("triggers a 'complete' event", function() {
+        var called = false
+
+        view = new ListingView({ el: listing })
+        view.reload()
+
+        view.on('complete', function(){ called = true })
+
+        request = mostRecentAjaxRequest();
+        request.response({status: 500, responseText: 'some error'})
+
+        expect(called).toBeTruthy()
       });
 
       it("renders a feedback message", function() {

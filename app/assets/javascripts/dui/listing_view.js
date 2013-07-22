@@ -33,6 +33,8 @@ var ListingView = Backbone.View.extend({
 
   complete: function () {
     this.$el.loadingOverlay('hide')
+
+    this.trigger('complete')
   }
 })
 
