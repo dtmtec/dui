@@ -5,7 +5,7 @@
 
       $toggler.click(function () {
         var selector = $toggler.data('toggler')
-        $(selector).toggleClass('toggler-hide')
+        $(selector).toggleClass('toggler-hide').trigger('toggled')
         return false
       })
     })
