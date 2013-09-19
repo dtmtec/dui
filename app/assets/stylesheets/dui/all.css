@@ -14,5 +14,6 @@
  *= require dui/loading_overlay
  *= require dui/uploader
  *= require dui/toggler
+ *= require dui/crud_box
  *= require_self
  */

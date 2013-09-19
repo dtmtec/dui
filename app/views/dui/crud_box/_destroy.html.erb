@@ -1,0 +1,9 @@
+<h4><%= t("confirmable.#{collection_name}.title") %></h4>
+<p><%= t("confirmable.#{collection_name}.body") %></p>
+
+<div class="form-actions">
+  <%= link_to t("confirmable.#{collection_name}.cancel"), '#', data: { close: true }, tabindex: -1 %>
+  <%= button_tag class: 'btn btn-danger', data: { confirmable_confirm: true, disable_with: t("confirmable.#{collection_name}.disable_with") } do %>
+    <%= t("confirmable.#{collection_name}.confirm") %>
+  <% end -%>
+</div>

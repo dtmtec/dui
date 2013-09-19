@@ -19,6 +19,7 @@
 //= require dui/uploader/uploader_view
 //= require dui/multi_select/multi_select_view
 //= require dui/toggler
+//= require dui/crud_box_view
 
 $(function () {
   window.feedbackView = new FeedbackView({ el: $('.feedback') })
