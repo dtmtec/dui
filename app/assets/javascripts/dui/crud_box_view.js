@@ -326,14 +326,3 @@ var CRUDBoxView = Backbone.View.extend({
     this.$(selector).toggleClass('toggler-hide').trigger('toggled')
   }
 })
-
-$(function() {
-  $('.crud-box').each(function(){
-    window.feedbackView = window.feedbackView || new FeedbackView({ el: $('.feedback') })
-
-    var crudBoxView = new CRUDBoxView({
-      el: this,
-      feedbackView: window.feedbackView
-    })
-  })
-})
