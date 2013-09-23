@@ -107,6 +107,12 @@ var CRUDFormView = Backbone.View.extend({
   configureForm: function () {
     this.shouldClose = false
 
+    this.$('data[type="year"]').autoNumeric({
+      vMin: 0,
+      vMax: 9999,
+      aSep: ''
+    })
+
     this.$('[data-type=currency]').autoNumeric({
       aSep: '.',
       aDec: ',',
