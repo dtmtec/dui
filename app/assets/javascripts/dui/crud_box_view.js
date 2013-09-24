@@ -76,7 +76,7 @@ var CRUDFormView = Backbone.View.extend({
     'click [data-close]': 'close',
     'toggled': 'toggled',
 
-    'ajax:success': 'created',
+    'ajax:success': 'success',
     'ajax:error':   'failed',
     'submit form':  'submit',
   },
@@ -136,7 +136,7 @@ var CRUDFormView = Backbone.View.extend({
     this.shouldClose = true
   },
 
-  created: function (event, data) {
+  success: function (event, data) {
     if (this.shouldClose) {
       this.close()
     }
