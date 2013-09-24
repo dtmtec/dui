@@ -26,7 +26,7 @@ var LoadableSelectView = Backbone.View.extend({
   disableSelect: function ($select) {
     var $selectDisable = this.$($select.data('selectable-load'))
 
-    $select.addClass('disabled').attr('disabled', 'disabled')
+    $select.addClass('disabled').prop('disabled', true)
 
     if ($selectDisable.length > 0) {
       this.disableSelect($selectDisable)
@@ -47,18 +47,15 @@ var LoadableSelectView = Backbone.View.extend({
   },
 
   loadData: function () {
-    var obj = {}
-
-    this.$('select[data-selectable-load]').each(function () {
-      obj[this.name] = this.value
-    })
-
-    return obj
+    return _(this.$('select[data-selectable-load]')).inject(function (memo, element) {
+      var $element = $(element)
+      memo[$element.attr('name')] = $element.val()
+      return memo
+    }, {})
   },
 
   updateCurrentChild: function (data) {
-    console.log(data)
-    this.$currentChild.html(data).removeAttr('disabled').removeClass('disabled')
+    this.$currentChild.html(data).prop('disabled', false).removeClass('disabled')
     this.$el.parent().loadingOverlay('hide')
   },
 
