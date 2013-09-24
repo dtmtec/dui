@@ -154,20 +154,8 @@ var CRUDFormView = Backbone.View.extend({
       this.updateForm(response.responseText)
     }
 
-    this.feedbackView.render(this.errorMessage(), 'alert-error', true)
+    this.feedbackView.render(this.$el.data('failed-message'), 'alert-error', true)
     this.focus()
-  },
-
-  errorMessage: function () {
-    var $error = this.$('.alert-error')
-
-    if ($error.length > 0) {
-      var message = $error.text()
-      $error.remove()
-      return message
-    } else {
-      return this.$el.data('failed-message')
-    }
   },
 
   focus: function () {
