@@ -135,7 +135,9 @@ var CRUDFormView = Backbone.View.extend({
     this.focus()
   },
 
-  markToClose: function () { this.shouldClose = true },
+  markToClose: function () {
+    this.shouldClose = true
+  },
 
   created: function (event, data) {
     if (this.shouldClose) {
