@@ -1,19 +1,45 @@
-@import 'compass/css3';
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+@import "compass/css3/opacity";
+@import "compass/css3/transition";
+
+$default-feedback-height: 100px;
+
+.navbar-fixed-top {
+  text-align: center;
+
+  .navbar-inner {
+    text-align: left;
+  }
+}
 
 // Feedback message container, displayed when any error or success message are to be displayed
 .feedback {
+  position: relative;
+
   height: 0;
+  left: 0;
+  right: 0;
+  top: -100px;
+
+  z-index: -1;
+
+  @include transition(top 0.5s ease-out);
+
+  &.feedback-active {
+    top: 0;
+  }
 
   .feedback-content {
-    margin: 0 auto;
+    display: inline-block;
 
-    &.feedback-inline-block {
-      display: inline-block;
-    }
   }
 
   .alert {
     position: relative;
+
+    text-align: left;
+
     cursor: pointer;
     margin-bottom: 0;
 
@@ -24,6 +50,8 @@
       position: absolute;
       right: 10px;
       top: 5px;
+
+      @include transition(opacity 0.2s ease);
     }
 
     &:hover .close {

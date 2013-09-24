@@ -1,16 +1,15 @@
 var FeedbackView = Backbone.View.extend({
-  _queue: [],
-
   events: {
     'click .feedback-content': 'close'
   },
 
   initialize: function () {
+    this._queue = []
+
     this.$template = this.$('script')
     this.$content  = this.$('.feedback-content')
 
     _(this.options).defaults({
-      animationDuration: 400,
       delay: 10000,
       queueDelay: 2000
     })
@@ -19,7 +18,7 @@ var FeedbackView = Backbone.View.extend({
   },
 
   render: function (message, message_type, now) {
-    if (!now && this._isBeingDisplayed()) {
+    if (now == false && this._isBeingDisplayed()) {
       this.queue(message, message_type)
     } else {
       this._cancelDelayedClose()
@@ -43,16 +42,14 @@ var FeedbackView = Backbone.View.extend({
 
     if (this.hasContent()) {
       this._displayed = true
-      this._updateWidth()
-      this.$el.show()
-      this.$content.slideDown(this.options.animationDuration)
+      this.$el.addClass('feedback-active')
     }
   },
 
   close: function () {
     this._cancelDelayedClose()
     this._displayed = false
-    this.$content.slideUp(this.options.animationDuration, this._dequeue)
+    this.$el.removeClass('feedback-active')
 
     return false
   },
@@ -80,17 +77,6 @@ var FeedbackView = Backbone.View.extend({
       message: message,
       message_type: message_type
     }))
-  },
-
-  _updateWidth: function () {
-    var width,
-        clonedContent = this.$content.clone()
-
-    this.$el.append(clonedContent)
-    width = clonedContent.show().addClass('feedback-inline-block').width('auto').hide().width()
-    clonedContent.remove()
-
-    this.$content.removeClass('feedback-inline-block').width(width)
   },
 
   _delayedClose: function (delayFor) {
