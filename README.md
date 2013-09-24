@@ -10,6 +10,7 @@ DTM UI provides a set of UI components for applications built with Rails, Backbo
 * Twitter Bootsrap
 * SASS
 * Compass
+* [Inherited Resources][https://github.com/josevalim/inherited_resources]
 
 ## Installation
 
