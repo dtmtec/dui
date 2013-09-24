@@ -19,5 +19,5 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.2.8"
   s.add_dependency "sass-rails"
   s.add_dependency "compass-rails"
-  s.add_dependency "inherited_resources", "~> 1.3.1"
+  s.add_dependency "inherited_resources"
 end
