@@ -1,0 +1,96 @@
+/*
+ * A set of mixins to implement common patterns of components.
+ */
+
+@import "compass/css3/transition";
+
+$default-fade-duration: 0.2s;
+$default-fade-transition-function: ease;
+
+$default-overlay-background-color: rgba(255, 255, 255, 0.6);
+$default-overlay-z-index: 100;
+
+@mixin ellipsis-overflow {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin fade-out($duration: $default-fade-duration, $transition-function: $default-fade-transition-function) {
+  visibility: hidden;
+  opacity: 0;
+
+  @include transition(visibility $duration $transition-function, opacity $duration $transition-function);
+}
+
+@mixin fade-in {
+  visibility: visible;
+  opacity: 1;
+}
+
+@mixin overlay-before(
+    $background-color: $default-overlay-background-color,
+    $z-index: $default-overlay-z-index,
+    $fade-duration: $default-fade-duration,
+    $fade-transition-function: $default-fade-transition-function
+  ) {
+
+  &:before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: $z-index;
+
+    display: block;
+
+    @include fade-out($fade-duration, $fade-transition-function);
+
+    background-color: $background-color;
+  }
+
+  &.active-overlay {
+    &:before {
+      @include fade-in;
+    }
+  }
+}
+
+@mixin loading-after(
+    $z-index: $default-overlay-z-index,
+    $fade-duration: $default-fade-duration,
+    $fade-transition-function: $default-fade-transition-function
+  ) {
+
+  &:after {
+    content: "";
+
+    position: absolute;
+    display: block;
+
+    left: 0;
+    right: 0;
+    top: 50%;
+    margin-top: -11px;
+
+    width: 100%;
+    height: 22px;
+
+    z-index: $z-index;
+
+    background: transparent image-url('ajax-loader-medium.gif') no-repeat center;
+
+    @include fade-out($fade-duration, $fade-transition-function);;
+  }
+
+  &.active-overlay {
+    &:after {
+      @include fade-in;
+    }
+  }
+}
+

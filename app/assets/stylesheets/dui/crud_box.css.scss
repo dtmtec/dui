@@ -49,7 +49,7 @@
       position: absolute;
       top: 0;
       right: 15px;
-      z-index: 1;
+      z-index: 110;
       background-color: whitesmoke;
       padding: 15px 16px;
       margin: -1px 0 0;
@@ -92,8 +92,45 @@
         margin-bottom: 0;
       }
     }
+  }
 
-    .loading-overlay { z-index: 0; }
+  .input-append, .input-prepend {
+    display: inline;
+    margin-bottom: 0;
+
+    & + .help-inline {
+      margin: 6px 0 0 5px;
+    }
+  }
+
+  table {
+    th, td {
+      vertical-align: middle;
+    }
+
+    .action-column {
+      padding: 0 4px;
+
+      a {
+        display: block;
+        padding: 12px 0;
+
+        position: relative;
+
+        @include border-radius(4px);
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.1);
+        }
+
+        i {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          margin: -8px 0 0 -8px;
+        }
+      }
+    }
   }
 }
 

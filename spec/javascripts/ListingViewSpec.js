@@ -30,7 +30,8 @@ describe("ListingView", function() {
       view = new ListingView({ el: listing })
       view.reload()
 
-      expect(listing.parent().find('.loading-overlay')).toBeVisible()
+      expect(listing.hasClass('loading-overlay')).toBeTruthy()
+      expect(listing.hasClass('active-overlay')).toBeTruthy()
     });
 
     describe("and the ajax request is successfull", function() {
@@ -42,11 +43,11 @@ describe("ListingView", function() {
         request.response({status: 200, responseText: 'some data'})
 
         waitsFor(function () {
-          return listing.parent().find('.loading-overlay').is(':hidden')
+          return !listing.hasClass('active-overlay')
         }, 100)
 
         runs(function () {
-          expect(listing.parent().find('.loading-overlay')).toBeHidden()
+          expect(listing.hasClass('active-overlay')).toBeFalsy()
         })
       });
 
@@ -74,11 +75,11 @@ describe("ListingView", function() {
         request.response({status: 500, responseText: 'some error'})
 
         waitsFor(function () {
-          return listing.parent().find('.loading-overlay').is(':hidden')
+          return !listing.hasClass('active-overlay')
         }, 100)
 
         runs(function () {
-          expect(listing.parent().find('.loading-overlay')).toBeHidden()
+          expect(listing.hasClass('active-overlay')).toBeFalsy()
         })
       });
 

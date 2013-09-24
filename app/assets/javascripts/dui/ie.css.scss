@@ -1,0 +1,15 @@
+/*
+ * IE 8 specific styles. Include this file if you want to support IE8.
+ */
+
+.normal-overlay {
+  &:before {
+    background: transparent image-url('dui/bg_white_60.png') repeat center;
+  }
+}
+
+.loading-overlay {
+  &:before {
+    background: transparent image-url('dui/bg_white_60.png') repeat center;
+  }
+}
