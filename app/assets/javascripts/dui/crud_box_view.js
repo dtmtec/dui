@@ -95,9 +95,8 @@ var CRUDFormView = Backbone.View.extend({
   },
 
   updateForm: function (data) {
-    this.$('form').off().replaceWith(data)
+    this.$('form').loadingOverlay('hide').off().replaceWith(data)
     this.$('form').trigger('shown')
-    this.$('.loading-overlay').remove()
     this.configureForm()
   },
 
