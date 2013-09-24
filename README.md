@@ -6,7 +6,7 @@ DTM UI provides a set of UI components for applications built with Rails, Backbo
 
 * Rails
 * jQuery
-* Backbone JS
+* Backbone JS (>= 1.0.0)
 * Twitter Bootsrap
 * SASS
 * Compass

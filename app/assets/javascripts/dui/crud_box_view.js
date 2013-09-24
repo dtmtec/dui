@@ -285,7 +285,7 @@ var CRUDBoxView = Backbone.View.extend({
       feedbackView: this.feedbackView
     })
 
-    this.confirmableView.on('confirmable:confirmed', this.listingView.reload, this.listingView)
+    this.listingView.listenTo(this.confirmableView, 'confirmable:confirmed', this.listingView.reload)
   },
 
   setUpNewFormView: function(){
@@ -294,8 +294,8 @@ var CRUDBoxView = Backbone.View.extend({
       feedbackView: this.feedbackView
     })
 
-    this.newFormView.on('finished', this.listingView.reload, this.listingView)
-    this.newFormView.on('closed', this.removeListingOverlay, this)
+    this.listingView.listenTo(this.newFormView, 'finished', this.listingView.reload)
+    this.listenTo(this.newFormView, 'closed', this.removeListingOverlay)
   },
 
   setUpEditFormView: function(){
@@ -304,9 +304,8 @@ var CRUDBoxView = Backbone.View.extend({
       feedbackView: this.feedbackView
     })
 
-    this.editFormView.on('finished', this.listingView.reload, this.listingView)
-    // this.listingView.listenTo(this.editFormView, 'finished', this.listingView.reload)
-    this.editFormView.on('closed', this.removeListingOverlay, this)
+    this.listingView.listenTo(this.editFormView, 'finished', this.listingView.reload)
+    this.listenTo(this.editFormView, 'closed', this.removeListingOverlay)
   },
 
   loadEditForm: function(event){
