@@ -188,7 +188,7 @@ var CRUDFormView = Backbone.View.extend({
 
   close: function(){
     this.$('.error').removeClass('error').find('span.help-inline').remove()
-    this.$el.addClass('toggler-hide')
+    this.$el.parents('.crud-box').removeClass('new-form-opened edit-form-opened destroy-form-opened')
     this.trigger('closed')
 
     return false
@@ -228,12 +228,26 @@ var CRUDDestroyView = Backbone.View.extend({
   },
 
   hide: function () {
-    this.$el.addClass('toggler-hide')
+    this.toggleDestroyForm();
+    this.trigger('hideLoadOverlay')
     return false
   },
 
   toggled: function (event) {
-    $($(event.currentTarget).data('toggler-close')).addClass('toggler-hide')
+    this.toggleDestroyForm();
+    this.trigger('showLoadOverlay')
+  },
+
+  toggleDestroyForm: function() {
+    this.$el.parents('.crud-box').toggleClass('destroy-form-opened')
+  },
+
+  toggleLoadingOverlay: function() {
+    if(this.$el.hasClass('new-form-opened')) {
+      this.listingView.$el.loadingOverlay('hide')
+    } else {
+      this.listingView.$el.loadingOverlay('show')
+    }
   },
 
   confirm: function (event) {
@@ -245,7 +259,7 @@ var CRUDDestroyView = Backbone.View.extend({
 
 var CRUDBoxView = Backbone.View.extend({
   events: {
-    'click [data-toggle]': 'toggleForm',
+    'click [data-add-button]': 'toggleNewForm',
     'click [data-update-button]': 'loadEditForm'
   },
 
@@ -254,24 +268,41 @@ var CRUDBoxView = Backbone.View.extend({
 
     this.feedbackView = this.options.feedbackView
 
-    this.listingView = new ListingView({
-      el: this.$('.crud-box-list'),
-      feedbackView: this.feedbackView
-    })
-
+    this.setUpListingView()
     this.setUpConfirmableView()
     this.setUpNewFormView()
     this.setUpEditFormView()
   },
 
+  setUpListingView: function() {
+    this.listingView = new ListingView({
+      el: this.$('.crud-box-list'),
+      feedbackView: this.feedbackView
+    })
+  },
+
   setUpConfirmableView: function(){
+    this.crudDestroyView = new CRUDDestroyView({
+      el: this.$('.crud-box-destroy-form')
+    })
+
     this.confirmableView = new ConfirmableView({
       el: this.$('.crud-box-list'),
-      modal: new CRUDDestroyView({ el: this.$('.crud-box-destroy-form') }),
+      modal: this.crudDestroyView,
       feedbackView: this.feedbackView
     })
 
     this.listingView.listenTo(this.confirmableView, 'confirmable:confirmed', this.listingView.reload)
+    this.listingView.listenTo(this.crudDestroyView, 'showLoadOverlay', this.showLoadOverlay)
+    this.listingView.listenTo(this.crudDestroyView, 'hideLoadOverlay', this.hideLoadOverlay)
+  },
+
+  showLoadOverlay: function() {
+    this.listingView.$el.loadingOverlay('show')
+  },
+
+  hideLoadOverlay: function() {
+    this.listingView.$el.loadingOverlay('hide')
   },
 
   setUpNewFormView: function(){
@@ -297,17 +328,25 @@ var CRUDBoxView = Backbone.View.extend({
   loadEditForm: function(event){
     this.listingView.$el.loadingOverlay('show')
     this.editFormView.loadPath(event.currentTarget.href)
+    this.$el.addClass('edit-form-opened')
 
     return false
   },
 
-  removeListingOverlay: function(){
-    this.listingView.$el.loadingOverlay('hide')
+  toggleNewForm: function(event) {
+    this.toggleLoadingOverlay()
+    this.$el.toggleClass('new-form-opened')
   },
 
-  toggleForm: function(event) {
-    var selector = $(event.currentTarget).data('toggle')
+  toggleLoadingOverlay: function() {
+    if(this.$el.hasClass('new-form-opened')) {
+      this.listingView.$el.loadingOverlay('hide')
+    } else {
+      this.listingView.$el.loadingOverlay('show')
+    }
+  },
 
-    this.$(selector).toggleClass('toggler-hide').trigger('toggled')
+  removeListingOverlay: function(){
+    this.listingView.$el.loadingOverlay('hide')
   }
 })

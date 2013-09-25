@@ -1,14 +1,14 @@
 <div id="<%= collection_name.titleize.parameterize %>" class="crud-box">
   <div class="crud-box-header">
     <div class="crud-box-actions">
-      <a class="btn btn-small" data-toggle=".crud-box-new-form">
+      <a class="btn btn-small" data-add-button="true">
         <i class="icon-plus-sign"></i> <%= t("interface.#{collection_name}.add") %>
       </a>
     </div>
     <h3><%= t("interface.supplier.#{collection_name}.title") %></h3>
   </div>
   <div class="crud-box-content">
-    <div class="crud-box-new-form toggler-hide"
+    <div class="crud-box-new-form"
          data-toggler-close=".crud-box-edit-form, .crud-box-destroy-form"
          data-success-message="<%= t("flash.#{collection_name}.create.notice",
                                     resource_name: model.class.model_name.human) %>"
@@ -17,7 +17,7 @@
         <%= render "dui/crud_box/form_head", resource: model %>
     </div>
 
-    <div class="crud-box-edit-form toggler-hide"
+    <div class="crud-box-edit-form"
          data-toggler-close=".crud-box-new-form, .crud-box-destroy-form"
          data-error-message="<%= t("flash.#{collection_name}.edit.alert") %>"
          data-success-message="<%= t("flash.#{collection_name}.update.notice", resource_name: model.class.model_name.human) %>"
@@ -26,7 +26,7 @@
       <%= render "dui/crud_box/form_head", resource: model %>
     </div>
 
-    <div class="crud-box-destroy-form toggler-hide"
+    <div class="crud-box-destroy-form"
          data-toggler-close=".crud-box-new-form, .crud-box-edit-form">
 
       <%= render "dui/crud_box/destroy", resource: model,

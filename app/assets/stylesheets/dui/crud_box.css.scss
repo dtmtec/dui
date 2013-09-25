@@ -6,6 +6,30 @@
 .crud-box {
   margin-bottom: 20px;
 
+  &.new-form-opened {
+    .crud-box-content {
+      .crud-box-new-form {
+        top: 0px;
+      }
+    }
+  }
+
+  &.edit-form-opened {
+    .crud-box-content {
+      .crud-box-edit-form {
+        top: 0px;
+      }
+    }
+  }
+
+  &.destroy-form-opened {
+    .crud-box-content {
+      .crud-box-destroy-form {
+        top: 0px;
+      }
+    }
+  }
+
   .crud-box-header {
     position: relative;
     padding: 0 15px;
@@ -47,7 +71,7 @@
 
     .crud-box-new-form, .crud-box-edit-form, .crud-box-destroy-form {
       position: absolute;
-      top: 0;
+      top: -100%;
       right: 15px;
       z-index: 110;
       background-color: whitesmoke;
@@ -58,11 +82,6 @@
       @include transition(top 0.5s ease-in-out, box-shadow 0.5s ease-out);
       @include box-shadow(0 0px 18px -4px rgba(0, 0, 0, 0.4));
       width: 400px;
-
-      &.toggler-hide {
-        top: -100%;
-        @include box-shadow(0 0px 18px -4px rgba(0, 0, 0, 0.4));
-      }
 
       .form-actions {
         padding: 15px 0 0;
