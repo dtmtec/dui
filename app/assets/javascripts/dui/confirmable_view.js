@@ -96,7 +96,7 @@ var ConfirmableModalView = Backbone.View.extend({
   initialize: function () {
     this.template = this.options.template || this.template
 
-    this.modalId = this.hasModalOptionsId() ? this.options.modalOptions.id : 'confirmable-modal'
+    this.modalId = this.options.id || 'confirmable-modal'
 
     this.$el.attr('id', this.modalId)
   },
@@ -145,10 +145,5 @@ var ConfirmableModalView = Backbone.View.extend({
     if (!this.confirmed) {
       this.trigger('confirmable:dismiss')
     }
-  },
-
-  hasModalOptionsId: function() {
-    return (!_(this.options.modalOptions).isUndefined()
-            && !_(this.options.modalOptions.id).isUndefined())
   }
 })

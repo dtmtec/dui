@@ -14,7 +14,7 @@ describe("ConfirmableModalView", function() {
 
     beforeEach(function() {
       otherView = new ConfirmableModalView({
-        modalOptions: { id: "other-confirmable-modal" }
+        id: "other-confirmable-modal"
       })
     });
 
@@ -50,7 +50,7 @@ describe("ConfirmableModalView", function() {
 
       beforeEach(function() {
         anotherView = new ConfirmableModalView({
-          modalOptions: { id: "other-confirmable-modal" }
+          id: "other-confirmable-modal"
         })
       })
 
