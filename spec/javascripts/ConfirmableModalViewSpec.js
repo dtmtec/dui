@@ -9,6 +9,67 @@ describe("ConfirmableModalView", function() {
     $('.modal, .modal-backdrop').remove()
   })
 
+  describe("when it has a specific id", function() {
+    var otherView;
+
+    beforeEach(function() {
+      otherView = new ConfirmableModalView({
+        modalOptions: { id: "other-confirmable-modal" }
+      })
+    });
+
+    describe("when it is initialized", function() {
+      it("sets the element id with the specific id", function() {
+        otherView.render()
+        expect(otherView.$el).toHaveAttr("id", "other-confirmable-modal")
+      });
+    })
+
+    describe("when it is rendered", function() {
+      it("appends a #other-confirmable-modal to the body", function() {
+        otherView.render()
+
+        waitsFor(function() {
+          return $('#other-confirmable-modal').is(':visible')
+        }, 500)
+
+        runs(function () {
+          expect($('#other-confirmable-modal')).toBeVisible()
+        })
+      })
+    })
+
+    it("has a different element than the default view", function() {
+      view.render()
+      otherView.render()
+      expect(view.$el).not.toEqual(otherView.$el)
+    })
+
+    describe("and there is an another view with the same specific id", function() {
+      var anotherView
+
+      beforeEach(function() {
+        anotherView = new ConfirmableModalView({
+          modalOptions: { id: "other-confirmable-modal" }
+        })
+      })
+
+      it("uses the same element", function() {
+        anotherView.render()
+        otherView.render()
+
+        expect(otherView.$el.get(0)).toEqual(anotherView.$el.get(0))
+      })
+    })
+  })
+
+  describe("when it is initialized", function() {
+    it("uses the default id", function() {
+      view.render()
+      expect(view.$el).toHaveAttr("id", "confirmable-modal")
+    });
+  })
+
   describe("when it is rendered", function() {
     it("appends a #confirmable-modal to the body", function() {
       view.render()

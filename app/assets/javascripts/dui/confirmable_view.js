@@ -69,7 +69,9 @@ var ConfirmableModalView = Backbone.View.extend({
     'hide': 'dismiss'
   },
 
-  el: $('<div id="confirmable-modal" class="modal fade hide"></div>'),
+  el: function() {
+    return $('<div class="modal fade hide"></div>')
+  },
 
   template: [
     '<div class="modal-header">',
@@ -93,13 +95,17 @@ var ConfirmableModalView = Backbone.View.extend({
 
   initialize: function () {
     this.template = this.options.template || this.template
+
+    this.modalId = this.hasModalOptionsId() ? this.options.modalOptions.id : 'confirmable-modal'
+
+    this.$el.attr('id', this.modalId)
   },
 
   render: function (labels) {
     if (!this.isAppended()) {
       this.create()
     } else {
-      this.setElement($('#confirmable-modal'))
+      this.setElement($('#' + this.modalId))
     }
 
     this.$el.html(this.renderContent(labels))
@@ -120,7 +126,8 @@ var ConfirmableModalView = Backbone.View.extend({
   },
 
   isAppended: function () {
-    return $('#confirmable-modal').length > 0
+    var id = '#' + this.$el.attr('id')
+    return $(id).length > 0
   },
 
   create: function () {
@@ -138,5 +145,10 @@ var ConfirmableModalView = Backbone.View.extend({
     if (!this.confirmed) {
       this.trigger('confirmable:dismiss')
     }
+  },
+
+  hasModalOptionsId: function() {
+    return (!_(this.options.modalOptions).isUndefined()
+            && !_(this.options.modalOptions.id).isUndefined())
   }
 })
