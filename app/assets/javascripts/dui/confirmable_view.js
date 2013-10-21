@@ -81,7 +81,7 @@ var ConfirmableModalView = Backbone.View.extend({
     '<div class="modal-body">{{{body}}}</div>',
     '<div class="modal-footer">',
       '<a href="#" class="btn" data-dismiss="modal">{{cancel}}</a>',
-      '<a href="#" class="btn btn-danger" data-confirmable-confirm="true" data-disable-with="{{disable_with}}">{{confirm}}</a>',
+      '<a href="#" class="btn" data-confirmable-confirm="true" data-disable-with="{{disable_with}}">{{confirm}}</a>',
     '</div>'
   ].join('\n'),
 
@@ -95,8 +95,8 @@ var ConfirmableModalView = Backbone.View.extend({
 
   initialize: function () {
     this.template = this.options.template || this.template
-
     this.modalId = this.options.id || 'confirmable-modal'
+    this.submitBtnClass = this.options.submitBtnClass || 'btn-danger'
 
     this.$el.attr('id', this.modalId)
   },
@@ -109,6 +109,7 @@ var ConfirmableModalView = Backbone.View.extend({
     }
 
     this.$el.html(this.renderContent(labels))
+    this.$el.find('[data-confirmable-confirm=true]').addClass(this.submitBtnClass)
     this.$el.modal('show')
     this.delegateEvents()
     this.confirmed = false
