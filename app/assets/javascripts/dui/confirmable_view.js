@@ -8,8 +8,10 @@ var ConfirmableView = Backbone.View.extend({
 
     this.feedbackView = this.options.feedbackView
 
-    this.messages = this.$el.data('confirmable-messages')
-    this.labels = this.$el.data('confirmable-labels')
+    this.labelsPrefix = this.options.labelsPrefix || 'confirmable'
+
+    this.messages = this.$el.data(this.labelsPrefix + '-messages')
+    this.labels = this.$el.data(this.labelsPrefix + '-labels')
 
     this.modal = this.options.modal || new ConfirmableModalView()
     this.modal.on('confirmable:confirm', this.confirm, this)

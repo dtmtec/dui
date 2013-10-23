@@ -261,6 +261,26 @@ describe("ConfirmableView", function() {
       });
     });
 
+    describe("with custom labels using labels prefix", function() {
+      var labels
+
+      beforeEach(function() {
+        container = $('#confirmable-prefix-labels')
+        link = container.find('a')
+        view = new ConfirmableView({ el: container, labelsPrefix: 'prefix' })
+
+        labels = container.data('prefix-labels')
+      });
+
+      it("renders modal with title, body and button labels from data prefix", function() {
+        spyOn(view.modal, "render")
+
+        link.click()
+
+        expect(view.modal.render).toHaveBeenCalledWith(labels)
+      });
+    })
+
     describe("with multiple links", function() {
       beforeEach(function() {
         container = $('#confirmable-multiple')
