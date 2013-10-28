@@ -98,11 +98,11 @@ var CRUDFormView = Backbone.View.extend({
     this.$('form').loadingOverlay('hide').off().replaceWith(data)
     this.$('form').trigger('shown')
     this.configureForm()
+
+    this.trigger('load:success')
   },
 
   configureForm: function () {
-    this.shouldClose = false
-
     this.$('[data-type=currency]').autoNumeric({
       aSep: '.',
       aDec: ',',
@@ -128,7 +128,11 @@ var CRUDFormView = Backbone.View.extend({
       placement: 'left'
     })
 
-    this.focus()
+    if (!this.shouldClose) {
+      _.delay(this.focus, 500)
+    }
+
+    this.shouldClose = false
   },
 
   markToClose: function () {
@@ -136,13 +140,16 @@ var CRUDFormView = Backbone.View.extend({
   },
 
   success: function (event, data) {
-    if (this.shouldClose) {
+    var shouldClose = this.shouldClose
+
+    this.feedbackView.render(this.$el.data('success-message'), 'alert-success', true)
+    this.updateForm(data)
+
+    if (shouldClose) {
       this.close()
     }
 
-    this.feedbackView.render(this.$el.data('success-message'), 'alert-success', true)
     this.trigger('finished')
-    this.updateForm(data)
   },
 
   failed: function (event, response) {
@@ -180,6 +187,8 @@ var CRUDFormView = Backbone.View.extend({
     if (this.feedbackView) {
       this.feedbackView.render(this.$el.data('error-message'), 'alert-error', true)
     }
+
+    this.trigger('load:error')
   },
 
   complete: function () {
@@ -197,7 +206,7 @@ var CRUDFormView = Backbone.View.extend({
   toggled: function (event) {
     $($(event.currentTarget).data('toggler-close')).addClass('toggler-hide')
 
-    setTimeout(this.focus, 300)
+    _.delay(this.focus, 500)
   },
 
   submit: function(){
@@ -323,14 +332,19 @@ var CRUDBoxView = Backbone.View.extend({
 
     this.listingView.listenTo(this.editFormView, 'finished', this.listingView.reload)
     this.listenTo(this.editFormView, 'closed', this.removeListingOverlay)
+    this.listenTo(this.editFormView, 'load:error', this.removeListingOverlay)
+    this.listenTo(this.editFormView, 'load:success', this.showEditForm)
   },
 
   loadEditForm: function(event){
     this.listingView.$el.loadingOverlay('show')
     this.editFormView.loadPath(event.currentTarget.href)
-    this.$el.addClass('edit-form-opened')
 
     return false
+  },
+
+  showEditForm: function () {
+    this.$el.addClass('edit-form-opened')
   },
 
   toggleNewForm: function(event) {
