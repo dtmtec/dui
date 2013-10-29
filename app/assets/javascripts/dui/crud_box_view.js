@@ -123,6 +123,8 @@ var CRUDFormView = Backbone.View.extend({
       vMax: '9999'
     })
 
+    this.$('[rel=datepicker]').datepicker()
+
     this.$(".error .help-inline").tooltip({
       title: function () { return $(this).text() },
       placement: 'left'
