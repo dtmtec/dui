@@ -1,5 +1,7 @@
 # DUI
 
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/dtmtec/dui/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 DTM UI provides a set of UI components for applications built with Rails, Backbone and Twitter Bootstrap.
 
 ## Requirements
