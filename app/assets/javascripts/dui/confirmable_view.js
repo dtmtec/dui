@@ -19,8 +19,16 @@ var ConfirmableView = Backbone.View.extend({
 
   open: function (event) {
     this.$current = $(event.currentTarget)
-    this.render()
+
+    if(this.shouldOpen()) {
+      this.render()
+    }
+
     return false
+  },
+
+  shouldOpen: function() {
+    return !(this.$current.hasClass('disabled'))
   },
 
   render: function () {

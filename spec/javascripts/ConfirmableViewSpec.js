@@ -316,5 +316,20 @@ describe("ConfirmableView", function() {
         expect(modal.render).toHaveBeenCalled()
       });
     });
+
+    describe("and the link has a disabled class", function() {
+      beforeEach(function() {
+        link.addClass('disabled')
+      })
+
+      it("doesn't render a modal", function() {
+        view = new ConfirmableView({ el: container })
+        spyOn(view.modal, "render")
+
+        link.click()
+
+        expect(view.modal.render).not.toHaveBeenCalled()
+      });
+    });
   });
 });
