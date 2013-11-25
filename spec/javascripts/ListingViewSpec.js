@@ -4,13 +4,28 @@ describe("ListingView", function() {
   beforeEach(function() {
     LoadingOverlay.fadeDuration = 10
     loadFixtures('listing_view.html')
+    jasmine.Clock.useMock()
     jasmine.Ajax.useMock()
 
     listing = $('.listing-wrapper')
   });
 
-  describe("when reloading", function() {
+  describe("A ListingView with a searchInput", function() {
+    it("calls the reload method after the input value changes", function() {
+      var inputField = $('.search-field')
 
+      spyOn(ListingView.prototype, 'reload')
+
+      var view = new ListingView({ el: listing, searchEl: inputField })
+
+      inputField.val('anything').trigger('keyup')
+      jasmine.Clock.tick(301)
+
+      expect(view.reload).toHaveBeenCalled()
+    })
+  });
+
+  describe("when reloading", function() {
     it("sends an GET ajax request to load listing, and render the contents of the listing with the response text", function() {
       var data = '<table><tbody><tr><td>some listing data</td></tr></tbody></table>'
 
