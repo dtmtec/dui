@@ -1,6 +1,7 @@
 <input type="text" class="search-field"/>
 
-<div class="listing-container">
+<div class="listing-container"
+      data-initial-listing-data='{ "itemCount": 21 }'>
   <div class="listing-wrapper" data-url="/products" data-error-message="some error message">
     <table class="table table-striped">
       <thead>
@@ -27,7 +28,7 @@
   <div class="listing-wrapper-ordered"
     data-url="/products"
     data-error-message="some error message"
-    data-initial-listing-data='{ "order_field": "parameterized-name", "order_direction": "desc" }'>
+    data-initial-listing-data='{ "order_field": "parameterized-name", "order_direction": "desc", "itemCount": 21 }'>
     <table class="table table-striped">
       <thead>
         <th data-order="parameterized-name">Name</th>

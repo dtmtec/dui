@@ -6,26 +6,38 @@ var ListingView = Backbone.View.extend({
   initialize: function () {
     _(this).bindAll('render', 'reloadError', 'complete', 'search')
 
+    this.$paginationContainerEl = this.options.paginationContainerEl
     this.feedbackView = this.options.feedbackView
-    this.searchEl     = this.options.searchEl
+    this.$searchEl = this.options.searchEl
 
-    this.configureSearch()
-    this.setOrderClass()
-  },
-
-  configureSearch: function() {
     this.model     = new Listing(this.$el.data('initial-listing-data'))
     this.model.url = this.$el.data('url')
 
-    if(!_(this.searchEl).isUndefined()) {
-      this.searchEl.searchableField().on('searchable.search', this.search)
-    }
+    this.configureSearch()
+    this.configurePagination()
+    this.setOrderClass()
 
     this.listenTo(this.model, 'change', this.reload)
   },
 
+  configureSearch: function() {
+    if(!_(this.$searchEl).isUndefined()) {
+      this.$searchEl.searchableField().on('searchable.search', this.search)
+    }
+  },
+
+  configurePagination: function() {
+    if (!_(this.$paginationContainerEl).isUndefined()) {
+      this.pagerView = new PagerView({
+        model: this.model
+      })
+
+      this.$paginationContainerEl.html(this.pagerView.render().$el)
+    }
+  },
+
   search: function(e, term) {
-    this.model.set({ term: term })
+    this.model.set({ term: term, currentPage: 1 })
   },
 
   order: function(e) {
@@ -45,7 +57,7 @@ var ListingView = Backbone.View.extend({
       success: this.render,
       error: this.reloadError,
       complete: this.complete,
-      data: this.model.attributes
+      data: this.model.toJSON()
     })
   },
 
@@ -73,6 +85,10 @@ var ListingView = Backbone.View.extend({
 
   complete: function () {
     this.$el.loadingOverlay('hide')
+
+    if (this.pagerView) {
+      this.pagerView.render()
+    }
 
     this.trigger('complete')
   },

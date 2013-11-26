@@ -1,0 +1,1 @@
+var PagerItem = Backbone.Model.extend({ })

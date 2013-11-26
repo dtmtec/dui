@@ -12,7 +12,11 @@
 //
 //= require dui/feedback_view
 //= require dui/confirmable_view
+//= require dui/pager
 //= require dui/listing
+//= require dui/pager_item
+//= require dui/pager_item_view
+//= require dui/pager_view
 //= require dui/listing_view
 //= require dui/loading_overlay
 //= require dui/movable

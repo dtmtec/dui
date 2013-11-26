@@ -68,7 +68,7 @@ describe("ListingView", function() {
       request = mostRecentAjaxRequest();
       request.response({status: 200, responseText: data})
 
-      expect(request.url).toBe(listing.data('url'))
+      expect(request.url.split('?')[0]).toBe(listing.data('url'))
       expect(request.method).toBe('GET')
 
       expect(listing.html()).toBe(data)
@@ -103,9 +103,8 @@ describe("ListingView", function() {
         var called = false
 
         view = new ListingView({ el: listing })
-        view.reload()
-
         view.on('complete', function(){ called = true })
+        view.reload()
 
         request = mostRecentAjaxRequest();
         request.response({status: 200, responseText: 'some data'})
