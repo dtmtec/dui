@@ -8,6 +8,7 @@ describe("ListingView", function() {
     jasmine.Ajax.useMock()
 
     listing = $('.listing-wrapper')
+    listingWithData = $('.listing-wrapper-ordered')
   });
 
   describe("A ListingView with a searchInput", function() {
@@ -16,13 +17,47 @@ describe("ListingView", function() {
 
       spyOn(ListingView.prototype, 'reload')
 
-      var view = new ListingView({ el: listing, searchEl: inputField })
+      view = new ListingView({ el: listing, searchEl: inputField })
 
       inputField.val('anything').trigger('keyup')
       jasmine.Clock.tick(301)
 
       expect(view.reload).toHaveBeenCalled()
     })
+  });
+
+  describe("A ListingView with order data", function() {
+    describe("when ListingView has initial data", function() {
+
+      it("starts model with data-initial-listing-data", function() {
+        view = new ListingView({ el: listingWithData })
+
+        expect(view.model.get('order_field')).toEqual('parameterized-name')
+        expect(view.model.get('order_direction')).toEqual('desc')
+      })
+
+      it("adds order classes to order element", function() {
+        view = new ListingView({ el: listingWithData })
+
+        view.render()
+
+        var orderElement = $('[data-order=parameterized-name]')
+
+        expect(orderElement.hasClass('selected')).toBeTruthy()
+        expect(orderElement.hasClass('desc')).toBeTruthy()
+      })
+    });
+
+    describe("when click on dom element with data-order", function() {
+      it("calls the reload method", function() {
+        spyOn(ListingView.prototype, 'reload')
+        view = new ListingView({ el: listingWithData })
+
+        view.model.changeOrder('parameterized-name')
+
+        expect(view.reload).toHaveBeenCalled()
+      })
+    });
   });
 
   describe("when reloading", function() {

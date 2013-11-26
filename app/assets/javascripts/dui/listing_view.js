@@ -1,4 +1,8 @@
 var ListingView = Backbone.View.extend({
+  events: {
+    'click [data-order]': 'order'
+  },
+
   initialize: function () {
     _(this).bindAll('render', 'reloadError', 'complete', 'search')
 
@@ -9,7 +13,7 @@ var ListingView = Backbone.View.extend({
   },
 
   configureSearch: function() {
-    this.model     = new Listing
+    this.model     = new Listing(this.$el.data('initial-listing-data'))
     this.model.url = this.$el.data('url')
 
     if(!_(this.searchEl).isUndefined()) {
@@ -21,6 +25,12 @@ var ListingView = Backbone.View.extend({
 
   search: function(e, term) {
     this.model.set({ term: term })
+  },
+
+  order: function(e) {
+    element = $(e.currentTarget)
+
+    this.model.changeOrder(element.data('order'))
   },
 
   reload: function () {
@@ -49,6 +59,8 @@ var ListingView = Backbone.View.extend({
       this.$el.html(data).loadingOverlay('show')
     }
 
+    this.setOrderClass()
+
     return this
   },
 
@@ -62,6 +74,10 @@ var ListingView = Backbone.View.extend({
     this.$el.loadingOverlay('hide')
 
     this.trigger('complete')
+  },
+
+  setOrderClass: function () {
+    $('[data-order=' + this.model.get('order_field') + ']').addClass('selected ' + this.model.get('order_direction'))
   }
 })
 

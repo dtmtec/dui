@@ -4,7 +4,33 @@
   <div class="listing-wrapper" data-url="/products" data-error-message="some error message">
     <table class="table table-striped">
       <thead>
-        <th>Name</th>
+        <th data-order="name">Name</th>
+        <th class="center">Actions</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>MacBook</td>
+          <td><a href="/product/1" data-confirmable=true>Remover</a></td>
+        </tr>
+        <tr>
+          <td>iTv</td>
+          <td><a href="/product/1" data-confirmable=true>Remover</a></td>
+        </tr>
+        <tr>
+          <td>iPad</td>
+          <td><a href="/product/1" data-confirmable=true>Remover</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="listing-wrapper-ordered"
+    data-url="/products"
+    data-error-message="some error message"
+    data-initial-listing-data='{ "order_field": "parameterized-name", "order_direction": "desc" }'>
+    <table class="table table-striped">
+      <thead>
+        <th data-order="parameterized-name">Name</th>
         <th class="center">Actions</th>
       </thead>
       <tbody>
