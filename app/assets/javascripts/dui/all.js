@@ -12,6 +12,7 @@
 //
 //= require dui/feedback_view
 //= require dui/confirmable_view
+//= require dui/listing
 //= require dui/listing_view
 //= require dui/loading_overlay
 //= require dui/movable

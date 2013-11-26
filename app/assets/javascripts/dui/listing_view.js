@@ -1,6 +1,3 @@
-var Listing = Backbone.Model.extend({
-})
-
 var ListingView = Backbone.View.extend({
   initialize: function () {
     _(this).bindAll('render', 'reloadError', 'complete', 'search')
