@@ -17,7 +17,10 @@ var ListingView = Backbone.View.extend({
     this.configurePagination()
     this.setOrderClass()
 
-    this.listenTo(this.model, 'change', this.reload)
+    this.listenTo(this.model, 'change:term',            this.reload)
+    this.listenTo(this.model, 'change:currentPage',     this.reload)
+    this.listenTo(this.model, 'change:order_field',     this.reload)
+    this.listenTo(this.model, 'change:order_direction', this.reload)
   },
 
   configureSearch: function() {
@@ -87,6 +90,8 @@ var ListingView = Backbone.View.extend({
     this.$el.loadingOverlay('hide')
 
     if (this.pagerView) {
+      this.model.set({ itemCount: this.$('table').data('item-count') })
+
       this.pagerView.render()
     }
 

@@ -42,7 +42,7 @@ var Pager = Backbone.Model.extend({
   },
 
   clearPagerItems: function() {
-    this.set('items', new Backbone.Collection, { silent: true })
+    this.set('items', new Backbone.Collection)
   },
 
   addNumbers: function() {
