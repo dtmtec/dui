@@ -39,8 +39,6 @@ describe("ListingView", function() {
       it("adds order classes to order element", function() {
         view = new ListingView({ el: listingWithData })
 
-        view.render()
-
         var orderElement = $('[data-order=parameterized-name]')
 
         expect(orderElement.hasClass('selected')).toBeTruthy()

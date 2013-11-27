@@ -10,6 +10,7 @@ var ListingView = Backbone.View.extend({
     this.searchEl     = this.options.searchEl
 
     this.configureSearch()
+    this.setOrderClass()
   },
 
   configureSearch: function() {
