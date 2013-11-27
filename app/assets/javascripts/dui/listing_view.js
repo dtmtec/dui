@@ -7,26 +7,22 @@ var ListingView = Backbone.View.extend({
     _(this).bindAll('render', 'reloadError', 'complete', 'search')
 
     this.$paginationContainerEl = this.options.paginationContainerEl
-    this.feedbackView = this.options.feedbackView
-    this.$searchEl = this.options.searchEl
+    this.feedbackView           = this.options.feedbackView
+    this.$searchEl              = this.options.searchEl
 
-    this.model     = new Listing(this.$el.data('initial-listing-data'))
+    this.initialListingData     = this.$el.data('initial-listing-data')
+
+    this.model     = new Listing(this.initialListingData)
     this.model.url = this.$el.data('url')
 
-    this.configureSearch()
     this.configurePagination()
-    this.setOrderClass()
+    this.configureOrdenation()
+    this.configureSearch()
 
     this.listenTo(this.model, 'change:term',            this.reload)
     this.listenTo(this.model, 'change:currentPage',     this.reload)
     this.listenTo(this.model, 'change:order_field',     this.reload)
     this.listenTo(this.model, 'change:order_direction', this.reload)
-  },
-
-  configureSearch: function() {
-    if(!_(this.$searchEl).isUndefined()) {
-      this.$searchEl.searchableField().on('searchable.search', this.search)
-    }
   },
 
   configurePagination: function() {
@@ -39,14 +35,23 @@ var ListingView = Backbone.View.extend({
     }
   },
 
+  configureOrdenation: function () {
+    $('[data-order=' + this.model.get('order_field') + ']').addClass('selected ' + this.model.get('order_direction'))
+  },
+
+  configureSearch: function() {
+    if(!_(this.$searchEl).isUndefined()) {
+      this.$searchEl.searchableField().on('searchable.search', this.search)
+    }
+  },
+
   search: function(e, term) {
     this.model.set({ term: term, currentPage: 1 })
   },
 
   order: function(e) {
-    element = $(e.currentTarget)
-
-    this.model.changeOrder(element.data('order'))
+    var order = $(e.currentTarget).data('order')
+    this.model.changeOrder(order)
   },
 
   reload: function () {
@@ -55,12 +60,12 @@ var ListingView = Backbone.View.extend({
     this.abortSearch()
 
     this.lastRequest = $.ajax({
-      url: this.$el.data('url'),
+      url:      this.$el.data('url'),
       dataType: this.$el.data('data-type') || 'html',
-      success: this.render,
-      error: this.reloadError,
+      success:  this.render,
+      error:    this.reloadError,
       complete: this.complete,
-      data: this.model.toJSON()
+      data:     this.model.toJSON()
     })
   },
 
@@ -75,8 +80,6 @@ var ListingView = Backbone.View.extend({
       this.$el.html(data).loadingOverlay('show')
     }
 
-    this.setOrderClass()
-
     return this
   },
 
@@ -87,19 +90,23 @@ var ListingView = Backbone.View.extend({
   },
 
   complete: function () {
+    this.configureOrdenation()
+    this.reconfigurePagination()
+
     this.$el.loadingOverlay('hide')
-
-    if (this.pagerView) {
-      this.model.set({ itemCount: this.$('table').data('item-count') })
-
-      this.pagerView.render()
-    }
-
     this.trigger('complete')
   },
 
-  setOrderClass: function () {
-    $('[data-order=' + this.model.get('order_field') + ']').addClass('selected ' + this.model.get('order_direction'))
+  reconfigurePagination: function() {
+    if (this.pagerView) {
+      this.model.set({ itemCount: this.$('table').data('item-count') })
+
+      if (this.model.shouldPaginate()) {
+        this.pagerView.render()
+      } else {
+        this.pagerView.clearEl()
+      }
+    }
   }
 })
 
