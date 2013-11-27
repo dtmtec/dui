@@ -7,10 +7,9 @@ var ListingView = Backbone.View.extend({
     _(this).bindAll('render', 'reloadError', 'complete', 'search')
 
     this.$paginationContainerEl = this.options.paginationContainerEl
+    this.initialListingData     = this.$el.data('initial-listing-data')
     this.feedbackView           = this.options.feedbackView
     this.$searchEl              = this.options.searchEl
-
-    this.initialListingData     = this.$el.data('initial-listing-data')
 
     this.model     = new Listing(this.initialListingData)
     this.model.url = this.$el.data('url')

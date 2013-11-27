@@ -1,7 +1,6 @@
 var Pager = Backbone.Model.extend({
   defaults: function () {
     return {
-      perPage: 10,
       currentPage: 1,
       items: new Backbone.Collection
     }
@@ -89,6 +88,7 @@ var Pager = Backbone.Model.extend({
   toJSON: function () {
     var attributes = _(this.attributes).clone()
     delete attributes['items']
+
     return attributes
   }
 })

@@ -28,6 +28,6 @@ var PagerView = Backbone.View.extend({
 
     this.model.set({ currentPage: parseInt(currentPage) })
 
-    return false;
+    return false
   }
 })

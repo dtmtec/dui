@@ -1,17 +1,23 @@
 describe("ListingView", function() {
-  var view, listing
+  var view, listing, orderableListingWrapper,
+      paginableListingWrapper, paginationContainerEl
 
   beforeEach(function() {
     LoadingOverlay.fadeDuration = 10
+
     loadFixtures('listing_view.html')
+
     jasmine.Clock.useMock()
     jasmine.Ajax.useMock()
 
-    listing = $('.listing-wrapper')
-    listingWithData = $('.listing-wrapper-ordered')
+    listing                 = $('.listing-wrapper')
+    orderableListingWrapper = $('.listing-wrapper-ordered')
+    paginableListingWrapper = $('.listing-wrapper-paginated')
+
+    paginationContainerEl = $('.pagination-container')
   });
 
-  describe("A ListingView with a searchInput", function() {
+  describe("A ListingView with search", function() {
     it("calls the reload method after the input value changes", function() {
       var inputField = $('.search-field')
 
@@ -26,18 +32,74 @@ describe("ListingView", function() {
     })
   });
 
-  describe("A ListingView with order data", function() {
+  describe("A ListingView with pagination", function() {
+    it("renders right number of items", function() {
+      view = new ListingView({
+        el: paginableListingWrapper,
+        paginationContainerEl: paginationContainerEl
+      })
+
+      expect(paginationContainerEl.find('li').length).toEqual(view.model.get('items').length)
+    })
+
+    it("renders the first page and the current page disabled", function() {
+      view = new ListingView({
+        el: paginableListingWrapper,
+        paginationContainerEl: paginationContainerEl
+      })
+
+      var disabledPagerItems = paginationContainerEl.find('.disabled-pager-item')
+
+      var firstPageItem   = disabledPagerItems[0]
+      var currentPageItem = disabledPagerItems[1]
+
+      expect(disabledPagerItems.length).toEqual(2)
+
+      expect($(firstPageItem).text()).toEqual('<')
+      expect($(currentPageItem).text()).toEqual('1')
+    })
+
+    describe("when the an item is clicked", function() {
+      it("sets the currentPage attribute", function() {
+        view = new ListingView({
+          el: paginableListingWrapper,
+          paginationContainerEl: paginationContainerEl
+        })
+
+        paginationContainerEl.find('[data-real-value=3]')
+                             .trigger('click')
+
+        expect(view.model.get('currentPage')).toEqual(3)
+      })
+
+      it("calls the reload method", function() {
+        spyOn(ListingView.prototype, 'reload')
+
+        view = new ListingView({
+          el: paginableListingWrapper,
+          paginationContainerEl: paginationContainerEl
+        })
+
+        paginationContainerEl.find('[data-real-value=3]')
+                             .trigger('click')
+
+        expect(view.reload).toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe("A ListingView with ordenation", function() {
     describe("when ListingView has initial data", function() {
 
       it("starts model with data-initial-listing-data", function() {
-        view = new ListingView({ el: listingWithData })
+        view = new ListingView({ el: orderableListingWrapper })
 
         expect(view.model.get('order_field')).toEqual('parameterized-name')
         expect(view.model.get('order_direction')).toEqual('desc')
       })
 
       it("adds order classes to order element", function() {
-        view = new ListingView({ el: listingWithData })
+        view = new ListingView({ el: orderableListingWrapper })
 
         var orderElement = $('[data-order=parameterized-name]')
 
@@ -49,7 +111,7 @@ describe("ListingView", function() {
     describe("when click on dom element with data-order", function() {
       it("calls the reload method", function() {
         spyOn(ListingView.prototype, 'reload')
-        view = new ListingView({ el: listingWithData })
+        view = new ListingView({ el: orderableListingWrapper })
 
         view.model.changeOrder('parameterized-name')
 

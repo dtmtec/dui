@@ -1,9 +1,11 @@
-<input type="text" class="search-field"/>
+<input type="text" class="search-field" />
 
-<div class="listing-container"
-      data-initial-listing-data='{ "itemCount": 10 }'>
-  <div class="listing-wrapper" data-url="/products" data-error-message="some error message">
-    <table class="table table-striped" data-item-count="10">
+<div class="listing-container">
+  <div class="listing-wrapper"
+       data-url="/products"
+       data-error-message="some error message">
+
+    <table class="table table-striped">
       <thead>
         <th data-order="name">Name</th>
         <th class="center">Actions</th>
@@ -25,10 +27,11 @@
     </table>
   </div>
 
-  <div class="listing-wrapper-ordered"
-    data-url="/products"
-    data-error-message="some error message"
-    data-initial-listing-data='{ "order_field": "parameterized-name", "order_direction": "desc", "itemCount": 10 }'>
+  <div class="listing-wrapper-paginated"
+       data-url="/products"
+       data-error-message="some error message"
+       data-initial-listing-data='{ "itemCount": 10, "perPage": 2 }'>
+
     <table class="table table-striped">
       <thead>
         <th data-order="parameterized-name">Name</th>
@@ -50,4 +53,34 @@
       </tbody>
     </table>
   </div>
+
+  <div class="listing-wrapper-ordered"
+       data-url="/products"
+       data-error-message="some error message"
+       data-initial-listing-data='{ "order_field": "parameterized-name", "order_direction": "desc"}'>
+
+    <table class="table table-striped">
+      <thead>
+        <th data-order="parameterized-name">Name</th>
+        <th class="center">Actions</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>MacBook</td>
+          <td><a href="/product/1" data-confirmable=true>Remover</a></td>
+        </tr>
+        <tr>
+          <td>iTv</td>
+          <td><a href="/product/1" data-confirmable=true>Remover</a></td>
+        </tr>
+        <tr>
+          <td>iPad</td>
+          <td><a href="/product/1" data-confirmable=true>Remover</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="pagination-container">
 </div>
