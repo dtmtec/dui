@@ -1,9 +1,10 @@
 var Pager = Backbone.Model.extend({
   defaults: function () {
     return {
+      displayedPages: 4,
       currentPage: 1,
       items: new Backbone.Collection,
-      labels: { first: 'First', previous: 'Previous', next: 'Next', last: 'Last' }
+      labels: { first: 'First', previous: 'Previous', ellipsis: '&hellip;', next: 'Next', last: 'Last' }
     }
   },
 
@@ -38,7 +39,17 @@ var Pager = Backbone.Model.extend({
 
     this.addFirstPage()
     this.addPreviousPage()
+
+    if (this.shouldAddPreviousElipsis()) {
+      this.addEllipis()
+    }
+
     this.addNumbers()
+
+    if (this.shouldAddNextElipsis()) {
+      this.addEllipis()
+    }
+
     this.addNextPage()
     this.addLastPage()
   },
@@ -48,15 +59,23 @@ var Pager = Backbone.Model.extend({
   },
 
   addNumbers: function() {
-    _(this.totalPageCount()).times(function(i) {
+    _(this.pageRange()).each(function(page) {
         this.get('items').add(new PagerItem({
           type: 'page',
-          value: i + 1,
-          realValue: i + 1,
-          current: this.get('currentPage') == (i + 1),
-          disabled: this.isDisabled(i)
+          value: page,
+          realValue: page,
+          current: this.get('currentPage') == page,
+          disabled: this.isDisabled(page)
         }))
       }, this)
+  },
+
+  addEllipis: function () {
+    this.get('items').add(new PagerItem({
+      type: 'ellipsis',
+      value: this.get('labels')['ellipsis'],
+      disabled: true
+    }))
   },
 
   addFirstPage: function() {
@@ -95,13 +114,34 @@ var Pager = Backbone.Model.extend({
     }))
   },
 
-  isDisabled: function(i) {
-    if (_(i).isNumber()) {
-      return (i + 1) === this.get('currentPage')
+  pageRange: function () {
+    var currentPage = this.get('currentPage'),
+        displayedPages = this.get('displayedPages'),
+        start = Math.max(currentPage - displayedPages, 1),
+        end   = Math.min(currentPage + displayedPages, this.totalPageCount()) + 1
+
+    if (this.totalPageCount() == 1) {
+      return []
+    }
+
+    return _.range(start, end)
+  },
+
+  shouldAddPreviousElipsis: function() {
+    return this.get('currentPage') > this.get('displayedPages') + 1
+  },
+
+  shouldAddNextElipsis: function() {
+    return this.get('currentPage') < this.totalPageCount() - this.get('displayedPages')
+  },
+
+  isDisabled: function(page) {
+    if (_(page).isNumber()) {
+      return this.get('currentPage') === page
     } else {
-      if (i ===  'first') {
+      if (page ===  'first') {
         return _(this.previousPage()).isUndefined()
-      } else if (i === 'last') {
+      } else if (page === 'last') {
         return _(this.nextPage()).isUndefined()
       }
     }
