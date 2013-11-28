@@ -161,6 +161,19 @@ describe("ListingView", function() {
         })
       });
 
+      it("closes the feedback message", function() {
+        var feedbackView = new FeedbackView({el: $('.feedback')})
+        view = new ListingView({ el: listing, feedbackView: feedbackView })
+        spyOn(feedbackView, 'close')
+
+        view.reload()
+
+        request = mostRecentAjaxRequest();
+        request.response({status: 200, responseText: 'some data'})
+
+        expect(feedbackView.close).toHaveBeenCalled()
+      });
+
       it("triggers a 'complete' event", function() {
         var called = false
 

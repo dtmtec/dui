@@ -77,6 +77,10 @@ var ListingView = Backbone.View.extend({
   render: function (data) {
     if (data) {
       this.$el.html(data).loadingOverlay('show')
+
+      if (this.feedbackView) {
+        this.feedbackView.close()
+      }
     }
 
     return this
