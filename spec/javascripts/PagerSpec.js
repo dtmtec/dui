@@ -72,7 +72,7 @@ describe("Pager", function() {
     it("returns the correct item value", function() {
       pager.set({ itemCount: 10, perPage: 2, currentPage: 1 })
 
-      expect(pager.getItems().pluck('value')).toEqual(['<', 1, 2, 3, 4, 5, '>'])
+      expect(pager.getItems().pluck('value')).toEqual(['First', 1, 2, 3, 4, 5, 'Last'])
     })
 
     it("returns the correct disabled pager item", function() {

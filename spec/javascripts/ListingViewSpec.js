@@ -55,7 +55,7 @@ describe("ListingView", function() {
 
       expect(disabledPagerItems.length).toEqual(2)
 
-      expect($(firstPageItem).text()).toEqual('<')
+      expect($(firstPageItem).text()).toEqual('First')
       expect($(currentPageItem).text()).toEqual('1')
     })
 

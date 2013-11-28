@@ -2,7 +2,8 @@ var Pager = Backbone.Model.extend({
   defaults: function () {
     return {
       currentPage: 1,
-      items: new Backbone.Collection
+      items: new Backbone.Collection,
+      labels: { first: 'First', last: 'Last' }
     }
   },
 
@@ -35,9 +36,9 @@ var Pager = Backbone.Model.extend({
   configurePagerItems: function() {
     this.clearPagerItems()
 
-    this.addLeftArrow()
+    this.addFirstPage()
     this.addNumbers()
-    this.addRightArrow()
+    this.addLastPage()
   },
 
   clearPagerItems: function() {
@@ -49,23 +50,24 @@ var Pager = Backbone.Model.extend({
         this.get('items').add(new PagerItem({
           value: i + 1,
           realValue: i + 1,
-          disabled: this.isDisabled(i) }))
+          disabled: this.isDisabled(i)
+        }))
       }, this)
   },
 
-  addLeftArrow: function() {
+  addFirstPage: function() {
     this.get('items').add(new PagerItem({
-      value: '<',
+      value: this.get('labels')['first'],
       realValue: 1,
-      disabled: this.isDisabled('<')
+      disabled: this.isDisabled('first')
     }))
   },
 
-  addRightArrow: function() {
+  addLastPage: function() {
     this.get('items').add(new PagerItem({
-      value: '>',
+      value: this.get('labels')['last'],
       realValue: this.totalPageCount(),
-      disabled: this.isDisabled('>')
+      disabled: this.isDisabled('last')
     }))
   },
 
@@ -73,9 +75,9 @@ var Pager = Backbone.Model.extend({
     if (_(i).isNumber()) {
       return (i + 1) === this.get('currentPage')
     } else {
-      if (i ===  '<') {
+      if (i ===  'first') {
         return _(this.previousPage()).isUndefined()
-      } else if (i === '>') {
+      } else if (i === 'last') {
         return _(this.nextPage()).isUndefined()
       }
     }

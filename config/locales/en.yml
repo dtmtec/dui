@@ -11,4 +11,8 @@ en:
       uploading: "Uploading file, please wait..."
       abort: Cancel upload
       remove: Remove file
-
+  pager:
+    first: First
+    last: Last
+    next: Next
+    previous: Previous

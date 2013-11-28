@@ -26,7 +26,8 @@ var ListingView = Backbone.View.extend({
   configurePager: function() {
     if (!_(this.$paginationContainerEl).isUndefined()) {
       this.pagerView = new PagerView({
-        model: this.model
+        model:  this.model,
+        labels: this.$paginationContainerEl.data('labels')
       })
 
       this.$paginationContainerEl.html(this.pagerView.render().$el)
@@ -101,15 +102,7 @@ var ListingView = Backbone.View.extend({
   },
 
   reconfigurePager: function() {
-    if (this.pagerView) {
-      this.model.set({ itemCount: this.$('table').data('item-count') })
-
-      if (this.model.shouldPaginate()) {
-        this.pagerView.render()
-      } else {
-        this.pagerView.clearEl()
-      }
-    }
+    this.model.set({ itemCount: this.$('table').data('item-count') })
   }
 })
 

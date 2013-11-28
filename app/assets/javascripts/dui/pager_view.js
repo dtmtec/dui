@@ -6,10 +6,16 @@ var PagerView = Backbone.View.extend({
     'click li a': 'paginate'
   },
 
-  render: function() {
-    this.clearEl()
+  initialize: function() {
+    if (this.options.labels) {
+      this.model.set({ labels: this.options.labels })
+    }
 
-    this.$el.append('<ul>')
+    this.listenTo(this.model, 'change:itemCount change:currentPage', this.render)
+  },
+
+  render: function() {
+    this.$el.html('<ul>')
 
     this.model.getItems().each(function(item) {
       var pagerItemView = new PagerItemView({ model: item })
@@ -19,14 +25,10 @@ var PagerView = Backbone.View.extend({
     return this
   },
 
-  clearEl: function() {
-    this.$el.html('')
-  },
-
   paginate: function(e) {
     var currentPage = $(e.currentTarget).data('real-value')
 
-    this.model.set({ currentPage: parseInt(currentPage) })
+    this.model.set({ currentPage: parseInt(currentPage, 10) })
 
     return false
   }
