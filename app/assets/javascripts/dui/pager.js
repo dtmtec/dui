@@ -3,7 +3,7 @@ var Pager = Backbone.Model.extend({
     return {
       currentPage: 1,
       items: new Backbone.Collection,
-      labels: { first: 'First', last: 'Last' }
+      labels: { first: 'First', previous: 'Previous', next: 'Next', last: 'Last' }
     }
   },
 
@@ -37,12 +37,14 @@ var Pager = Backbone.Model.extend({
     this.clearPagerItems()
 
     this.addFirstPage()
+    this.addPreviousPage()
     this.addNumbers()
+    this.addNextPage()
     this.addLastPage()
   },
 
   clearPagerItems: function() {
-    this.set('items', new Backbone.Collection)
+    this.get('items').reset()
   },
 
   addNumbers: function() {
@@ -60,6 +62,22 @@ var Pager = Backbone.Model.extend({
       value: this.get('labels')['first'],
       realValue: 1,
       disabled: this.isDisabled('first')
+    }))
+  },
+
+  addPreviousPage: function() {
+    this.get('items').add(new PagerItem({
+      value: this.get('labels')['previous'],
+      realValue: this.previousPage(),
+      disabled: this.isDisabled('first')
+    }))
+  },
+
+  addNextPage: function() {
+    this.get('items').add(new PagerItem({
+      value: this.get('labels')['next'],
+      realValue: this.nextPage(),
+      disabled: this.isDisabled('last')
     }))
   },
 

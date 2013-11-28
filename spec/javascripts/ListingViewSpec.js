@@ -50,12 +50,14 @@ describe("ListingView", function() {
 
       var disabledPagerItems = paginationContainerEl.find('.disabled-pager-item')
 
-      var firstPageItem   = disabledPagerItems[0]
-      var currentPageItem = disabledPagerItems[1]
+      var firstPageItem    = disabledPagerItems[0]
+      var previousPageItem = disabledPagerItems[1]
+      var currentPageItem  = disabledPagerItems[2]
 
-      expect(disabledPagerItems.length).toEqual(2)
+      expect(disabledPagerItems.length).toEqual(3)
 
       expect($(firstPageItem).text()).toEqual('First')
+      expect($(previousPageItem).text()).toEqual('Previous')
       expect($(currentPageItem).text()).toEqual('1')
     })
 

@@ -66,31 +66,35 @@ describe("Pager", function() {
     it("returns the correct pager items count", function() {
       pager.set({ itemCount: 10, perPage: 2, currentPage: 1 })
 
-      expect(pager.getItems().length).toEqual(7)
+      expect(pager.getItems().length).toEqual(9)
     })
 
     it("returns the correct item value", function() {
       pager.set({ itemCount: 10, perPage: 2, currentPage: 1 })
 
-      expect(pager.getItems().pluck('value')).toEqual(['First', 1, 2, 3, 4, 5, 'Last'])
+      expect(pager.getItems().pluck('value')).toEqual(['First', 'Previous', 1, 2, 3, 4, 5, 'Next', 'Last'])
+    })
+
+    it("returns the correct item real value", function() {
+      pager.set({ itemCount: 10, perPage: 2, currentPage: 1 })
+      expect(pager.getItems().pluck('realValue')).toEqual([1, undefined, 1, 2, 3, 4, 5, 2, 5])
+
+      pager.set({ itemCount: 10, perPage: 2, currentPage: 4 })
+      expect(pager.getItems().pluck('realValue')).toEqual([1, 3, 1, 2, 3, 4, 5, 5, 5])
+
+      pager.set({ itemCount: 10, perPage: 2, currentPage: 5 })
+      expect(pager.getItems().pluck('realValue')).toEqual([1, 4, 1, 2, 3, 4, 5, undefined, 5])
     })
 
     it("returns the correct disabled pager item", function() {
       pager.set({ itemCount: 10, perPage: 2, currentPage: 4 })
+      expect(pager.getItems().pluck('disabled')).toEqual([false, false, false, false, false, true, false, false, false])
 
-      expect(pager.getItems().pluck('disabled')).toEqual([false, false, false, false, true, false, false])
-    })
-
-    it("returns the correct disabled pager item", function() {
       pager.set({ itemCount: 10, perPage: 2, currentPage: 1 })
+      expect(pager.getItems().pluck('disabled')).toEqual([true, true, true, false, false, false, false, false, false])
 
-      expect(pager.getItems().pluck('disabled')).toEqual([true, true, false, false, false, false, false])
-    })
-
-    it("returns the correct disabled pager item", function() {
       pager.set({ itemCount: 10, perPage: 2, currentPage: 5 })
-
-      expect(pager.getItems().pluck('disabled')).toEqual([false, false, false, false, false, true, true])
+      expect(pager.getItems().pluck('disabled')).toEqual([false, false, false, false, false, false, true, true, true])
     })
   })
 })
