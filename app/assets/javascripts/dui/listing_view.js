@@ -7,15 +7,14 @@ var ListingView = Backbone.View.extend({
     _(this).bindAll('render', 'reloadError', 'complete', 'search')
 
     this.$paginationContainerEl = this.options.paginationContainerEl
-    this.initialListingData     = this.$el.data('initial-listing-data')
     this.feedbackView           = this.options.feedbackView
     this.$searchEl              = this.options.searchEl
 
-    this.model     = new Listing(this.initialListingData)
+    this.model     = new Listing(this.$el.data('initial-listing-data'))
     this.model.url = this.$el.data('url')
 
-    this.configurePagination()
-    this.configureOrdenation()
+    this.configurePager()
+    this.configureOrder()
     this.configureSearch()
 
     this.listenTo(this.model, 'change:term',            this.reload)
@@ -24,7 +23,7 @@ var ListingView = Backbone.View.extend({
     this.listenTo(this.model, 'change:order_direction', this.reload)
   },
 
-  configurePagination: function() {
+  configurePager: function() {
     if (!_(this.$paginationContainerEl).isUndefined()) {
       this.pagerView = new PagerView({
         model: this.model
@@ -34,8 +33,9 @@ var ListingView = Backbone.View.extend({
     }
   },
 
-  configureOrdenation: function () {
-    $('[data-order=' + this.model.get('order_field') + ']').addClass('selected ' + this.model.get('order_direction'))
+  configureOrder: function () {
+    this.$('[data-order=' + this.model.get('order_field') + ']')
+        .addClass('selected ' + this.model.get('order_direction'))
   },
 
   configureSearch: function() {
@@ -93,14 +93,14 @@ var ListingView = Backbone.View.extend({
   },
 
   complete: function () {
-    this.configureOrdenation()
-    this.reconfigurePagination()
+    this.configureOrder()
+    this.reconfigurePager()
 
     this.$el.loadingOverlay('hide')
     this.trigger('complete')
   },
 
-  reconfigurePagination: function() {
+  reconfigurePager: function() {
     if (this.pagerView) {
       this.model.set({ itemCount: this.$('table').data('item-count') })
 
