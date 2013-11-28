@@ -2,29 +2,29 @@ var Pager = Backbone.Model.extend({
   defaults: function () {
     return {
       displayedPages: 4,
-      currentPage: 1,
+      current_page: 1,
       items: new Backbone.Collection,
       labels: { first: 'First', previous: 'Previous', ellipsis: '&hellip;', next: 'Next', last: 'Last' }
     }
   },
 
   totalPageCount: function() {
-    if (this.get('perPage') === 0) {
+    if (this.get('per_page') === 0) {
       return 0
     } else {
-      return Math.ceil(this.get('itemCount') / this.get('perPage'))
+      return Math.ceil(this.get('item_count') / this.get('per_page'))
     }
   },
 
   nextPage: function() {
-    if (this.get('currentPage') < this.totalPageCount()) {
-      return this.get('currentPage') + 1
+    if (this.get('current_page') < this.totalPageCount()) {
+      return this.get('current_page') + 1
     }
   },
 
   previousPage: function() {
-    if (this.get('currentPage') > 1) {
-      return this.get('currentPage') - 1
+    if (this.get('current_page') > 1) {
+      return this.get('current_page') - 1
     }
   },
 
@@ -64,7 +64,7 @@ var Pager = Backbone.Model.extend({
           type: 'page',
           value: page,
           realValue: page,
-          current: this.get('currentPage') == page,
+          current: this.get('current_page') == page,
           disabled: this.isDisabled(page)
         }))
       }, this)
@@ -115,7 +115,7 @@ var Pager = Backbone.Model.extend({
   },
 
   pageRange: function () {
-    var currentPage = this.get('currentPage'),
+    var currentPage = this.get('current_page'),
         displayedPages = this.get('displayedPages'),
         start = Math.max(currentPage - displayedPages, 1),
         end   = Math.min(currentPage + displayedPages, this.totalPageCount()) + 1
@@ -128,16 +128,16 @@ var Pager = Backbone.Model.extend({
   },
 
   shouldAddPreviousElipsis: function() {
-    return this.get('currentPage') > this.get('displayedPages') + 1
+    return this.get('current_page') > this.get('displayedPages') + 1
   },
 
   shouldAddNextElipsis: function() {
-    return this.get('currentPage') < this.totalPageCount() - this.get('displayedPages')
+    return this.get('current_page') < this.totalPageCount() - this.get('displayedPages')
   },
 
   isDisabled: function(page) {
     if (_(page).isNumber()) {
-      return this.get('currentPage') === page
+      return this.get('current_page') === page
     } else {
       if (page ===  'first') {
         return _(this.previousPage()).isUndefined()

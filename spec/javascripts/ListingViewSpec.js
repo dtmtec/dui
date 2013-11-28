@@ -71,7 +71,7 @@ describe("ListingView", function() {
         paginationContainerEl.find('[data-real-value=3]')
                              .trigger('click')
 
-        expect(view.model.get('currentPage')).toEqual(3)
+        expect(view.model.get('current_page')).toEqual(3)
       })
 
       it("calls the reload method", function() {

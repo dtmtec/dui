@@ -11,7 +11,7 @@ var PagerView = Backbone.View.extend({
       this.model.set({ labels: this.options.labels })
     }
 
-    this.listenTo(this.model, 'change:itemCount change:currentPage', this.render)
+    this.listenTo(this.model, 'change:item_count change:current_page', this.render)
   },
 
   render: function() {
@@ -26,9 +26,9 @@ var PagerView = Backbone.View.extend({
   },
 
   paginate: function(e) {
-    var currentPage = $(e.currentTarget).data('real-value')
+    var current_page = $(e.currentTarget).data('real-value')
 
-    this.model.set({ currentPage: parseInt(currentPage, 10) })
+    this.model.set({ current_page: parseInt(current_page, 10) })
 
     return false
   }

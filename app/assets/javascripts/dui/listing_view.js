@@ -18,7 +18,7 @@ var ListingView = Backbone.View.extend({
     this.configureSearch()
 
     this.listenTo(this.model, 'change:term',            this.reload)
-    this.listenTo(this.model, 'change:currentPage',     this.reload)
+    this.listenTo(this.model, 'change:current_page',     this.reload)
     this.listenTo(this.model, 'change:order_field',     this.reload)
     this.listenTo(this.model, 'change:order_direction', this.reload)
   },
@@ -46,7 +46,7 @@ var ListingView = Backbone.View.extend({
   },
 
   search: function(e, term) {
-    this.model.set({ term: term, currentPage: 1 })
+    this.model.set({ term: term, current_page: 1 })
   },
 
   order: function(e) {
@@ -104,7 +104,7 @@ var ListingView = Backbone.View.extend({
   },
 
   reconfigurePager: function() {
-    this.model.set({ itemCount: this.$('table').data('item-count') })
+    this.model.set({ item_count: this.$('table').data('item-count') })
   }
 })
 
