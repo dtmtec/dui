@@ -93,12 +93,14 @@ var ListingView = Backbone.View.extend({
     }
   },
 
-  complete: function () {
-    this.configureOrder()
-    this.reconfigurePager()
+  complete: function (jqXHR, textStatus) {
+    if (textStatus !== 'abort') {
+      this.configureOrder()
+      this.reconfigurePager()
+      this.$el.loadingOverlay('hide')
 
-    this.$el.loadingOverlay('hide')
-    this.trigger('complete')
+      this.trigger('complete')
+    }
   },
 
   reconfigurePager: function() {
