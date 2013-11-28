@@ -50,8 +50,10 @@ var Pager = Backbone.Model.extend({
   addNumbers: function() {
     _(this.totalPageCount()).times(function(i) {
         this.get('items').add(new PagerItem({
+          type: 'page',
           value: i + 1,
           realValue: i + 1,
+          current: this.get('currentPage') == (i + 1),
           disabled: this.isDisabled(i)
         }))
       }, this)
@@ -59,6 +61,7 @@ var Pager = Backbone.Model.extend({
 
   addFirstPage: function() {
     this.get('items').add(new PagerItem({
+      type: 'first',
       value: this.get('labels')['first'],
       realValue: 1,
       disabled: this.isDisabled('first')
@@ -67,6 +70,7 @@ var Pager = Backbone.Model.extend({
 
   addPreviousPage: function() {
     this.get('items').add(new PagerItem({
+      type: 'previous',
       value: this.get('labels')['previous'],
       realValue: this.previousPage(),
       disabled: this.isDisabled('first')
@@ -75,6 +79,7 @@ var Pager = Backbone.Model.extend({
 
   addNextPage: function() {
     this.get('items').add(new PagerItem({
+      type: 'next',
       value: this.get('labels')['next'],
       realValue: this.nextPage(),
       disabled: this.isDisabled('last')
@@ -83,6 +88,7 @@ var Pager = Backbone.Model.extend({
 
   addLastPage: function() {
     this.get('items').add(new PagerItem({
+      type: 'last',
       value: this.get('labels')['last'],
       realValue: this.totalPageCount(),
       disabled: this.isDisabled('last')

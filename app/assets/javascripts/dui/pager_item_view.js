@@ -10,6 +10,9 @@ var PagerItemView = Backbone.View.extend({
 
   render: function() {
     this.$el.html(this.templates[this.templateName()].mustache(this.model.toJSON()))
+            .addClass('pager-item-' + this.model.get('type'))
+            .toggleClass('active', this.model.get('current') == true)
+            .toggleClass('pager-item-disabled', this.model.get('disabled'))
 
     return this
   },
