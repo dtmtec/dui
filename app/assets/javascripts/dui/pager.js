@@ -11,6 +11,8 @@ var Pager = Backbone.Model.extend({
   totalPageCount: function() {
     if (this.get('per_page') === 0) {
       return 0
+    } else if (_(this.get('item_count')).isUndefined()) {
+      return 0
     } else {
       return Math.ceil(this.get('item_count') / this.get('per_page'))
     }
