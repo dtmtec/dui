@@ -87,8 +87,8 @@ var ListingView = Backbone.View.extend({
     return this
   },
 
-  reloadError: function () {
-    if (this.feedbackView) {
+  reloadError: function (jqXHR, textStatus) {
+    if (this.feedbackView && textStatus !== 'abort') {
       this.feedbackView.render(this.$el.data('error-message'), 'alert-error', true)
     }
   },
