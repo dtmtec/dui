@@ -155,7 +155,9 @@ var Pager = Backbone.Model.extend({
 
   toJSON: function () {
     var attributes = _(this.attributes).clone()
+
     delete attributes['items']
+    delete attributes['labels']
 
     return attributes
   }
