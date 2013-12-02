@@ -15,4 +15,5 @@ en:
     first: First
     last: Last
     next: Next
+    ellipsis: "&hellip;"
     previous: Previous

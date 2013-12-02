@@ -33,47 +33,7 @@ describe("ListingView", function() {
   });
 
   describe("A ListingView with pagination", function() {
-    it("renders right number of items", function() {
-      view = new ListingView({
-        el: paginableListingWrapper,
-        paginationContainerEl: paginationContainerEl
-      })
-
-      expect(paginationContainerEl.find('li').length).toEqual(view.model.get('items').length)
-    })
-
-    it("renders the first page and the current page disabled", function() {
-      view = new ListingView({
-        el: paginableListingWrapper,
-        paginationContainerEl: paginationContainerEl
-      })
-
-      var disabledPagerItems = paginationContainerEl.find('.disabled-pager-item')
-
-      var firstPageItem    = disabledPagerItems[0]
-      var previousPageItem = disabledPagerItems[1]
-      var currentPageItem  = disabledPagerItems[2]
-
-      expect(disabledPagerItems.length).toEqual(3)
-
-      expect($(firstPageItem).text()).toEqual('First')
-      expect($(previousPageItem).text()).toEqual('Previous')
-      expect($(currentPageItem).text()).toEqual('1')
-    })
-
-    describe("when the an item is clicked", function() {
-      it("sets the currentPage attribute", function() {
-        view = new ListingView({
-          el: paginableListingWrapper,
-          paginationContainerEl: paginationContainerEl
-        })
-
-        paginationContainerEl.find('[data-real-value=3]')
-                             .trigger('click')
-
-        expect(view.model.get('current_page')).toEqual(3)
-      })
-
+    describe("when an pager item is clicked", function() {
       it("calls the reload method", function() {
         spyOn(ListingView.prototype, 'reload')
 
