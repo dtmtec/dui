@@ -18,34 +18,31 @@ describe("ListingView", function() {
   });
 
   describe("A ListingView with search", function() {
-    it("calls the reload method after the input value changes", function() {
+    it("defines the term attribute on the model after the input value changes", function() {
       var inputField = $('.search-field')
-
-      spyOn(ListingView.prototype, 'reload')
 
       view = new ListingView({ el: listing, searchEl: inputField })
 
       inputField.val('anything').trigger('keyup')
-      jasmine.Clock.tick(301)
+      jasmine.Clock.tick(300)
 
-      expect(view.reload).toHaveBeenCalled()
+      expect(view.model.get('term')).toEqual('anything')
     })
   });
 
   describe("A ListingView with pagination", function() {
-    describe("when an pager item is clicked", function() {
-      it("calls the reload method", function() {
-        spyOn(ListingView.prototype, 'reload')
-
+    describe("when the listing model is sync", function() {
+      it("reconfigures the pager", function() {
         view = new ListingView({
           el: paginableListingWrapper,
           paginationContainerEl: paginationContainerEl
         })
 
-        paginationContainerEl.find('[data-real-value=3]')
-                             .trigger('click')
+        spyOn(view, 'reconfigurePager')
 
-        expect(view.reload).toHaveBeenCalled()
+        view.model.trigger('sync', view.model, 'some data')
+
+        expect(view.reconfigurePager).toHaveBeenCalled()
       })
     })
   })
@@ -70,16 +67,6 @@ describe("ListingView", function() {
       })
     });
 
-    describe("when click on dom element with data-order", function() {
-      it("calls the reload method", function() {
-        spyOn(ListingView.prototype, 'reload')
-        view = new ListingView({ el: orderableListingWrapper })
-
-        view.model.changeOrder('parameterized-name')
-
-        expect(view.reload).toHaveBeenCalled()
-      })
-    });
   });
 
   describe("when reloading", function() {

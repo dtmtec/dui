@@ -1,4 +1,4 @@
-var ListingView = Backbone.View.extend({
+  var ListingView = Backbone.View.extend({
   events: {
     'click [data-order]': 'order'
   },
@@ -12,15 +12,15 @@ var ListingView = Backbone.View.extend({
 
     this.model     = new Listing(this.$el.data('initial-listing-data'))
     this.model.url = this.$el.data('url')
+    this.model.dataType = this.$el.data('data-type') || 'html'
 
     this.configurePager()
     this.configureOrder()
     this.configureSearch()
 
-    this.listenTo(this.model, 'change:term',            this.reload)
-    this.listenTo(this.model, 'change:current_page',     this.reload)
-    this.listenTo(this.model, 'change:order_field',     this.reload)
-    this.listenTo(this.model, 'change:order_direction', this.reload)
+    this.listenTo(this.model, 'request', this.loading)
+    this.listenTo(this.model, 'sync',    this.render)
+    this.listenTo(this.model, 'error',   this.reloadError)
   },
 
   configurePager: function() {
@@ -54,19 +54,16 @@ var ListingView = Backbone.View.extend({
     this.model.changeOrder(order)
   },
 
-  reload: function () {
+  loading: function () {
     this.$el.loadingOverlay('show')
+  },
 
-    this.abortSearch()
+  reload: function() {
+    if (this.lastRequest) {
+      this.lastRequest.abort()
+    }
 
-    this.lastRequest = $.ajax({
-      url:      this.$el.data('url'),
-      dataType: this.$el.data('data-type') || 'html',
-      success:  this.render,
-      error:    this.reloadError,
-      complete: this.complete,
-      data:     this.model.toJSON()
-    })
+    this.lastRequest = this.model.fetch({ dataType: 'html', complete: this.complete })
   },
 
   abortSearch: function() {
@@ -75,32 +72,33 @@ var ListingView = Backbone.View.extend({
     }
   },
 
-  render: function (data) {
+  render: function (model, data) {
     if (data) {
       this.$el.html(data).loadingOverlay('show')
 
       if (this.feedbackView) {
         this.feedbackView.close()
       }
+
+      this.complete()
     }
 
     return this
   },
 
-  reloadError: function (jqXHR, textStatus) {
-    if (this.feedbackView && textStatus !== 'abort') {
+  reloadError: function (model, jqXHR, options) {
+    if (this.feedbackView && jqXHR.statusText !== 'abort') {
       this.feedbackView.render(this.$el.data('error-message'), 'alert-error', true)
+      this.complete()
     }
   },
 
-  complete: function (jqXHR, textStatus) {
-    if (textStatus !== 'abort') {
-      this.configureOrder()
-      this.reconfigurePager()
-      this.$el.loadingOverlay('hide')
+  complete: function () {
+    this.configureOrder()
+    this.reconfigurePager()
+    this.$el.loadingOverlay('hide')
 
-      this.trigger('complete')
-    }
+    this.trigger('complete')
   },
 
   reconfigurePager: function() {
