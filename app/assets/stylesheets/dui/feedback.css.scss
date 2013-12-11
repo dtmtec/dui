@@ -47,12 +47,13 @@ $default-feedback-height: 100px;
 
     cursor: pointer;
     margin-bottom: 0;
+    padding: 9px 34px 9px 15px;
 
     @include border-top-radius(0px);
     @include box-shadow(rgba(0, 0, 0, 0.5) 0 4px 15px -5px);
 
     .close {
-      top: 0;
+      top: 1px;
       @include transition(opacity 0.2s ease);
     }
 
