@@ -1,8 +1,9 @@
 PATH
   remote: .
   specs:
-    dui (0.1.0)
+    dui (0.2.0)
       compass-rails
+      font-awesome-sass
       inherited_resources
       rails (>= 3.2.8)
       sass-rails
@@ -76,6 +77,8 @@ GEM
     erubis (2.7.0)
     execjs (2.0.2)
     ffi (1.9.3)
+    font-awesome-sass (4.0.2)
+      sass-rails (>= 3.1.1)
     fssm (0.2.10)
     has_scope (0.6.0.rc)
       actionpack (>= 3.2, < 5)
@@ -160,7 +163,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.37)
+    tzinfo (0.3.38)
     websocket (1.0.7)
 
 PLATFORMS

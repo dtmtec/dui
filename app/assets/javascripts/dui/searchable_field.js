@@ -4,7 +4,12 @@
   function SearchableField(field) {
     this.field = $(field);
     this.field.data('search-term', '');
-    this.closeButton = this.field.parent().find('.clear-search');
+
+    if (this.field.parent().is('.input-group')) {
+      this.closeButton = this.field.parent().parent().find('.clear-search');
+    } else {
+      this.closeButton = this.field.parent().find('.clear-search');
+    }
 
     this.setup();
   }
@@ -23,7 +28,7 @@
       var term         = $.trim(this.field.val()),
           previousTerm = this.field.data('search-term');
 
-      this.closeButton.toggle(term.length > 0);
+      this.closeButton.toggleClass('hide', term.length == 0);
 
       if (previousTerm !== term) {
         this.field.data('search-term', term);
@@ -47,7 +52,7 @@
         this.load();
       }
 
-      this.closeButton.hide();
+      this.closeButton.addClass('hide');
 
       return false;
     },

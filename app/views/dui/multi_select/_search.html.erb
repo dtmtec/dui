@@ -1,5 +1,8 @@
-<div class="multi-select-search input-prepend">
-  <span class="add-on"><i class="icon-search"></i></span>
-  <%= text_field_tag "search", nil, placeholder: search_placeholder %>
+<div class="multi-select-search">
+  <div class="input-group">
+    <span class="input-group-addon"><i class="icon icon-search"></i></span>
+    <%= text_field_tag "search", nil, placeholder: search_placeholder, class: 'form-control input-sm' %>
+  </div>
+
   <a class="close clear-search hide" href="#">&times;</a>
 </div>

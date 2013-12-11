@@ -1,5 +1,5 @@
-<%= content_tag :div, class: "multi-select #{additional_classes}", data: data do %>
-  <div class="available" data-url="<%= available_url %>">
+<%= content_tag :div, class: "multi-select row #{additional_classes}", data: data do %>
+  <div class="available col-sm-6" data-url="<%= available_url %>">
     <%= render 'dui/multi_select/title', title: available_title %>
 
     <div class="multi-select-actions">
@@ -15,7 +15,7 @@
     <%= render available_template, message: no_available_items_message %>
   </div>
 
-  <div class="selected">
+  <div class="selected col-sm-6">
     <%= render 'dui/multi_select/title', title: selected_title %>
 
     <div class="multi-select-actions">
