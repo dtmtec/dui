@@ -3,12 +3,14 @@
 @import "compass/css3/opacity";
 @import "compass/css3/transition";
 
+@import "dui/mixins";
+
 $default-feedback-height: 100px;
 
 .navbar-fixed-top {
   text-align: center;
 
-  .navbar-inner {
+  .navbar-inner, .navbar-container {
     text-align: left;
   }
 }
@@ -24,15 +26,18 @@ $default-feedback-height: 100px;
 
   z-index: -1;
 
-  @include transition(top 0.5s ease-out);
+  opacity: 0;
+  visibility: hidden;
+
+  @include transition(top 0.5s ease-out, opacity 0.5s ease-in-out, visibility 0.5s ease-in-out);
 
   &.feedback-active {
     top: 0;
+    @include fade-in;
   }
 
   .feedback-content {
     display: inline-block;
-
   }
 
   .alert {
@@ -47,16 +52,11 @@ $default-feedback-height: 100px;
     @include box-shadow(rgba(0, 0, 0, 0.5) 0 4px 15px -5px);
 
     .close {
-      position: absolute;
-      right: 10px;
-      top: 5px;
-
+      top: 0;
       @include transition(opacity 0.2s ease);
     }
 
     &:hover .close {
-      color: black;
-
       @include opacity(0.4);
     }
   }
