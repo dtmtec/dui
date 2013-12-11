@@ -1,20 +1,23 @@
 @import "compass/css3/border-radius";
 @import "compass/css3/box-shadow";
 
+@import "dui/mixins";
+
+$multi-select-title-background-color: #f4f4f4;
+$multi-select-title-background-color: #f4f4f4;
+
+$multi-select-available-button-background-color: rgb(135, 184, 127);
+$multi-select-available-button-hover-background-color: rgb(98, 155, 88);
+
+$multi-select-selected-button-background-color: rgb(209, 91, 71);
+$multi-select-selected-button-hover-background-color: rgb(183, 70, 53);
+
+$multi-select-available-background-color: #e3fbe1;
+$multi-select-selected-background-color: #fdeeee;
+
 .multi-select {
-  .multi-select-icon {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    opacity: 0.6;
-  }
-
   .multi-select-title {
-    background-color: #f4f4f4;
+    background-color: $multi-select-title-background-color;
     height: 28px;
     padding-left: 12px;
 
@@ -25,90 +28,94 @@
 
   .multi-select-actions {
     position: relative;
-    background-color: #f4f4f4;
+    background-color: $multi-select-title-background-color;
     margin-top: 1px;
-    padding: 0 12px;
+    padding: 5px 80px 5px 12px;
     height: 40px;
 
     .multi-select-search {
-      margin-top: 6px;
       position: relative;
-      display: inline-block;
+
+      input {
+        padding-right: 20px;
+      }
 
       .clear-search {
         position: absolute;
-        top: 2px;
-        right: 5px;
+        top: 0px;
+        right: 7px;
         z-index: 3;
+        line-height: 30px;
         float: none;
-      }
-
-      input {
-        width: 280px;
-        padding-right: 18px;
       }
     }
 
     .multi-select-all-button {
       position: absolute;
-      top: 9px;
+      top: 50%;
       right: 10px;
+
+      margin-top: -13px;
+
+      width: 60px;
+
+      text-align: center;
       text-transform: lowercase;
-      padding: 2px 21px 2px 2px;
-      width: 40px;
-      font-size: 11px;
 
-      .multi-select-icon { top: 1px; }
-
-      &:hover .multi-select-icon { opacity: 1; }
+      &:after {
+        @include font-awesome-element;
+      }
     }
   }
 
+  .available, .selected {
+    margin-bottom: 10px;
+  }
+
   .available {
-    width: 50%;
-    float: left;
-
-    .multi-select-title {
-      margin-right: 7px;
+    li > label:after {
+      content: "\f0a9";
+      color: $multi-select-available-button-background-color;
     }
 
-    .multi-select-actions {
-      margin-right: 7px;
-    }
+    .multi-select-all-button {
+      border-color: $multi-select-available-button-background-color;
+      background-color: $multi-select-available-button-background-color !important;
 
-    .multi-select-icon {
-      background-image: image-url("dui/add.png");
+      &:hover {
+        border-color: $multi-select-available-button-background-color;
+        background-color: $multi-select-available-button-hover-background-color !important;
+      }
+
+      &:after {
+        content: "\f0a9";
+      }
     }
   }
 
   .selected {
-    width: 50%;
-    float: left;
-
-    .multi-select-title {
-      margin-left: 7px;
+    li > label:after {
+      content: "\f0a8";
+      color: $multi-select-selected-button-background-color;
     }
 
-    .multi-select-actions {
-      margin-left: 7px;
-    }
+    .multi-select-all-button, .multi-select-all-button:focus {
+      border-color: $multi-select-selected-button-background-color;
+      background-color: $multi-select-selected-button-background-color !important;
 
-    .multi-select-content {
-      padding-left: 7px;
-      padding-right: 0;
+      &:hover {
+        border-color: $multi-select-selected-button-background-color;
+        background-color: $multi-select-selected-button-hover-background-color !important;
+      }
+
+      &:after {
+        content: "\f0a8";
+      }
     }
 
     li:hover {
-      background-color: #fdeeee;
+      background-color: $multi-select-selected-background-color;
     }
-
-    .multi-select-icon {
-      background-image: image-url("dui/remove.png");
-    }
-  }
-
-  .multi-select-content {
-    padding: 3px 7px 8px 0px;
   }
 
   ul {
@@ -118,7 +125,7 @@
     overflow-y: auto;
   }
 
-  .no-items-message {
+  li.no-items-message {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow-x: hidden;
@@ -136,38 +143,46 @@
     position: relative;
 
     color: #666;
-    padding: 0px 26px 0 12px;
     border-bottom: 1px solid #E4F0F0;
     text-transform: uppercase;
 
     &:hover {
-      background-color: #e3fbe1;
+      background-color: $multi-select-available-background-color;
 
-      label { color: #000; }
-      .multi-select-icon { opacity: 1; }
+      label {
+        color: #000;
+
+        &:after {
+          opacity: 1;
+        }
+      }
     }
 
-    &:last-child { border-bottom-width: 0; }
+    &:last-child {
+      border-bottom-width: 0;
+    }
 
     label {
-      padding: 4px 0;
-      margin: 0;
-      font-size: 12px;
-      float: none;
-      width: auto;
-      cursor: pointer;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow-x: hidden;
       display: block;
+      width: auto;
+      float: none;
 
-      .multi-select-icon {
-        width: 26px;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        height: auto;
-        background: transparent none no-repeat center 5px;
+      margin: 0;
+      padding: 0px 26px 2px 12px;
+
+      cursor: pointer;
+
+      @include ellipsis-overflow;
+
+      &:after {
+        @include font-awesome-element;
+
+        position: absolute;
+        right: 7px;
+        top: 50%;
+        margin-top: -7px;
+
+        opacity: 0.6;
       }
     }
   }
@@ -175,7 +190,7 @@
 
 .dark-multi-select {
   .multi-select-content {
-    background-color: #f4f4f4;
+    background-color: $multi-select-title-background-color;
     padding: 4px 12px 12px;
 
     ul {
@@ -195,25 +210,13 @@
     }
   }
 
-  .available {
-    .multi-select-title {
-      margin-right: 0;
-    }
-
-    .multi-select-actions {
-      margin-right: 0;
-    }
-  }
-
   .selected {
     .multi-select-title {
       background-color: #F0F0F0;
-      margin-left: 0;
     }
 
     .multi-select-actions {
       background-color: #F0F0F0;
-      margin-left: 0;
     }
 
     .multi-select-content {
