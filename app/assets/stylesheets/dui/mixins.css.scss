@@ -35,7 +35,7 @@ $default-overlay-z-index: 100;
     $fade-transition-function: $default-fade-transition-function
   ) {
 
-  &:before {
+  &:before, .overlay-background {
     content: "";
 
     position: absolute;
@@ -54,7 +54,7 @@ $default-overlay-z-index: 100;
   }
 
   &.active-overlay {
-    &:before {
+    &:before, .overlay-background {
       @include fade-in;
     }
   }
@@ -67,24 +67,26 @@ $default-overlay-z-index: 100;
   ) {
 
   &:after {
-    content: "";
+    content: "\f110";
 
     position: absolute;
-    display: block;
 
-    left: 0;
-    right: 0;
     top: 50%;
-    margin-top: -11px;
+    left: 50%;
+    font-size: 200%;
 
-    width: 100%;
-    height: 22px;
+    width: 23px;
+    height: 26px;
+
+    margin: -13px 0 0 -11px;
+
+    color: #57645f;
 
     z-index: $z-index;
 
-    background: transparent image-url('ajax-loader-medium.gif') no-repeat center;
-
-    @include fade-out($fade-duration, $fade-transition-function);;
+    @include font-awesome-element;
+    @include animation(spin 2s infinite linear);
+    @include fade-out($fade-duration, $fade-transition-function);
   }
 
   &.active-overlay {

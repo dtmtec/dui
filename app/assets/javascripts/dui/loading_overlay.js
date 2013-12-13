@@ -9,6 +9,10 @@
   LoadingOverlay.prototype = {
     show: function () {
       this.$element.addClass('active-overlay')
+
+      if ($('html').hasClass('ie8') && this.$element.find('.overlay-background').length == 0) {
+        this.$element.append('<span class="overlay-background"><i class="icon icon-spinner"></i></span>')
+      }
     },
 
     hide: function () {
