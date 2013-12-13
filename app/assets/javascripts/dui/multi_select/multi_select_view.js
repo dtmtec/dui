@@ -141,11 +141,11 @@ var MultiSelectView = Backbone.View.extend({
   },
 
   showLoading: function () {
-    this.$availableContainer.loadingOverlay('show')
+    this.$('.available .multi-select-content').loadingOverlay('show')
   },
 
   hideLoading: function () {
-    this.$availableContainer.loadingOverlay('hide')
+    this.$('.available .multi-select-content').loadingOverlay('hide')
   },
 
   getAvailable: function () {

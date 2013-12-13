@@ -2,14 +2,33 @@
  * IE 8 specific styles. Include this file if you want to support IE8.
  */
 
+@import "dui/mixins";
+
 .normal-overlay {
-  &:before {
+  .overlay-background {
     background: transparent image-url('dui/bg_white_60.png') repeat center;
   }
 }
 
 .loading-overlay {
-  &:before {
+  .overlay-background {
     background: transparent image-url('dui/bg_white_60.png') repeat center;
+
+    text-align: center;
+
+    i {
+      font-size: 200%;
+
+      width: 23px;
+      height: 26px;
+
+      margin: 40px auto 0;
+
+      color: #57645f !important;
+    }
+  }
+
+  &:after {
+    display: none;
   }
 }
