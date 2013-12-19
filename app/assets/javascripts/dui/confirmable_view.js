@@ -81,26 +81,30 @@ var ConfirmableModalView = Backbone.View.extend({
   },
 
   el: function() {
-    return $('<div class="modal confirmable-modal fade hide"></div>')
+    return $('<div class="modal confirmable-modal fade"></div>')
   },
 
   template: [
-    '<div class="modal-header">',
-      '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>',
-      '<h3>{{title}}</h3>',
-    '</div>',
-    '<div class="modal-body">',
-      '{{{body}}}',
-      '{{#confirmation_text}}',
-        '<div class="modal-confirmation-text">',
-          '<p>{{{ confirmation_label_html }}}</p>',
-          '<input type="text" data-confirmation-text="{{confirmation_text}}"/>',
-        '</div>' ,
-      '{{/confirmation_text}}',
-    '</div>',
-    '<div class="modal-footer">',
-      '<a href="#" class="btn" data-dismiss="modal">{{cancel}}</a>',
-      '<a href="#" class="btn {{#confirmation_text}}disabled{{/confirmation_text}}" data-confirmable-confirm="true" data-disable-with="{{disable_with}}">{{confirm}}</a>',
+    '<div class="modal-dialog">',
+      '<div class="modal-content">',
+        '<div class="modal-header">',
+          '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>',
+          '<h3>{{title}}</h3>',
+        '</div>',
+        '<div class="modal-body">',
+          '{{{body}}}',
+          '{{#confirmation_text}}',
+            '<div class="modal-confirmation-text">',
+              '<p>{{{ confirmation_label_html }}}</p>',
+              '<input type="text" data-confirmation-text="{{confirmation_text}}"/>',
+            '</div>' ,
+          '{{/confirmation_text}}',
+        '</div>',
+        '<div class="modal-footer">',
+          '<button class="btn btn-default" data-dismiss="modal"><i class="icon icon-times-circle"></i>{{cancel}}</button>',
+          '<button class="btn" data-confirmable-confirm="true" data-disable-with="{{disable_with}}"><i class="icon"></i>{{confirm}}</button>',
+        '</div>',
+      '</div>',
     '</div>'
   ].join('\n'),
 
@@ -116,6 +120,7 @@ var ConfirmableModalView = Backbone.View.extend({
     this.template = this.options.template || this.template
     this.modalId = this.options.id || 'confirmable-modal'
     this.submitBtnClass = this.options.submitBtnClass || 'btn-danger'
+    this.submitIconClass = this.options.submitIconClass || 'icon-trash-o'
 
     this.$el.attr('id', this.modalId)
   },
@@ -129,6 +134,8 @@ var ConfirmableModalView = Backbone.View.extend({
 
     this.$el.html(this.renderContent(labels))
     this.$el.find('[data-confirmable-confirm=true]').addClass(this.submitBtnClass)
+            .find('.icon').addClass(this.submitIconClass)
+
     this.$el.modal('show')
     this.delegateEvents()
 
@@ -162,7 +169,7 @@ var ConfirmableModalView = Backbone.View.extend({
 
   confirm: function () {
     if (!this.$('[data-confirmable-confirm]').hasClass('disabled')) {
-      $.rails.disableElement(this.$('[data-confirmable-confirm]'))
+      $.rails.disableElement(this.$('[data-confirmable-confirm]').prop('disabled', true))
       this.trigger('confirmable:confirm')
       this.confirmed = true
     }
