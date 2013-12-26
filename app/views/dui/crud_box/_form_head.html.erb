@@ -1,7 +1,8 @@
 <%= simple_form_for resource,
                       url: crud_box_url_for(resource),
                       html: { class: "#{resource.class.name.underscore}_form",
-                      data: { remote: true, type: 'html' }} do |form| %>
+                      data: { remote: true, type: 'html' }},
+                      builder: Dui.form_builder do |form| %>
 
   <%= render "#{resource.class.name.underscore.pluralize}/form_body",
                 form: form, resource: resource %>

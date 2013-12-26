@@ -1,13 +1,13 @@
-<div id="<%= collection_name.titleize.parameterize %>" class="crud-box">
-  <div class="crud-box-header">
-    <div class="crud-box-actions">
-      <a class="btn btn-small" data-add-button="true">
-        <i class="icon-plus-sign"></i> <%= t("interface.#{collection_name}.add") %>
-      </a>
+<div id="<%= collection_name.titleize.parameterize %>" class="crud-box widget-box">
+  <div class="crud-box-header widget-header">
+    <div class="widget-toolbar no-border">
+      <button class="btn btn-default btn-primary btn-xs" data-add-button="true">
+        <i class="icon icon-plus-circle"></i> <%= t("interface.#{collection_name}.add") %>
+      </button>
     </div>
-    <h3><%= t("interface.#{collection_name}.title") %></h3>
+    <h5><%= t("interface.#{collection_name}.title") %></h5>
   </div>
-  <div class="crud-box-content">
+  <div class="crud-box-content widget-body">
     <div class="crud-box-new-form"
          data-toggler-close=".crud-box-edit-form, .crud-box-destroy-form"
          data-success-message="<%= t("flash.#{collection_name}.create.notice",
