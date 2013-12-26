@@ -7,6 +7,7 @@ PATH
       inherited_resources
       rails (>= 3.2.8)
       sass-rails
+      simple_form (~> 2.1.1)
 
 GEM
   remote: http://rubygems.org/
@@ -153,6 +154,9 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0.4)
+    simple_form (2.1.1)
+      actionpack (~> 3.0)
+      activemodel (~> 3.0)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
