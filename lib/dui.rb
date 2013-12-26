@@ -1,4 +1,5 @@
 require "dui/engine"
+require "simple_form"
 
 module Dui
   mattr_accessor :uploader_server_host
@@ -12,4 +13,7 @@ module Dui
 
   mattr_accessor :uploader_pusher_channel
   @@uploader_pusher_channel = ENV['UPLOADER_PUSHER_CHANNEL'] || 'cloud-uploader'
+
+  mattr_accessor :form_builder
+  @@form_builder = ::SimpleForm::FormBuilder
 end
