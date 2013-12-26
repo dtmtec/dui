@@ -110,19 +110,6 @@ describe("ListingView", function() {
         })
       });
 
-      it("closes the feedback message", function() {
-        var feedbackView = new FeedbackView({el: $('.feedback')})
-        view = new ListingView({ el: listing, feedbackView: feedbackView })
-        spyOn(feedbackView, 'close')
-
-        view.reload()
-
-        request = mostRecentAjaxRequest();
-        request.response({status: 200, responseText: 'some data'})
-
-        expect(feedbackView.close).toHaveBeenCalled()
-      });
-
       it("triggers a 'complete' event", function() {
         var called = false
 
@@ -135,6 +122,52 @@ describe("ListingView", function() {
 
         expect(called).toBeTruthy()
       });
+
+      describe("and view has a feedbackView", function() {
+        var feedbackView = new FeedbackView({el: $('.feedback')})
+
+        it("after render sets closeFeedback variable to false", function() {
+          view = new ListingView({ el: listing, feedbackView: feedbackView })
+          view.closeFeedback = true
+
+          view.reload()
+
+          request = mostRecentAjaxRequest();
+          request.response({status: 200, responseText: 'some data'})
+
+          expect(view.closeFeedback).toEqual(false)
+        })
+
+        describe("when closeFeedback variable is false", function() {
+          it("don't closes the feedback message", function() {
+            view = new ListingView({ el: listing, feedbackView: feedbackView })
+            view.closeFeedback = false
+            spyOn(feedbackView, 'close')
+
+            view.reload()
+
+            request = mostRecentAjaxRequest();
+            request.response({status: 200, responseText: 'some data'})
+
+            expect(feedbackView.close).not.toHaveBeenCalled()
+          })
+        })
+
+        describe("when closeFeedback variable is true", function() {
+          it("closes the feedback message", function() {
+            view = new ListingView({ el: listing, feedbackView: feedbackView })
+            view.closeFeedback = true
+            spyOn(feedbackView, 'close')
+
+            view.reload()
+
+            request = mostRecentAjaxRequest();
+            request.response({status: 200, responseText: 'some data'})
+
+            expect(feedbackView.close).toHaveBeenCalled()
+          })
+        });
+      })
     });
 
     describe("and the ajax request returns an error", function() {
@@ -180,6 +213,19 @@ describe("ListingView", function() {
 
         expect(feedbackView.render).toHaveBeenCalledWith(listing.data('error-message'), 'alert-error', true)
       });
+
+      it("sets closeFeedback variable to close feedback message", function() {
+        var feedbackView = new FeedbackView({el: $('.feedback')})
+        spyOn(feedbackView, 'render')
+
+        view = new ListingView({ el: listing, feedbackView: feedbackView })
+        view.reload()
+
+        request = mostRecentAjaxRequest();
+        request.response({status: 500, responseText: 'some error'})
+
+        expect(view.closeFeedback).toEqual(true)
+      })
     });
   });
 });

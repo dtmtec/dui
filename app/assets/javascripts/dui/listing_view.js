@@ -9,6 +9,7 @@
     this.$paginationContainerEl = this.options.paginationContainerEl
     this.feedbackView           = this.options.feedbackView
     this.$searchEl              = this.options.searchEl
+    this.closeFeedback          = false
 
     this.model     = new Listing(this.$el.data('initial-listing-data'))
     this.model.url = this.$el.data('url')
@@ -76,8 +77,9 @@
     if (data) {
       this.$el.html(data).loadingOverlay('show')
 
-      if (this.feedbackView) {
+      if (this.feedbackView && this.closeFeedback) {
         this.feedbackView.close()
+        this.closeFeedback = false
       }
 
       this.complete()
@@ -89,6 +91,7 @@
   reloadError: function (model, jqXHR, options) {
     if (this.feedbackView && jqXHR.statusText !== 'abort') {
       this.feedbackView.render(this.$el.data('error-message'), 'alert-error', true)
+      this.closeFeedback = true
       this.complete()
     }
   },
