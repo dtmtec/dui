@@ -61,7 +61,7 @@ var LoadableSelectView = Backbone.View.extend({
 
   loadError: function () {
     if (this.feedbackView) {
-      this.feedbackView.render(this.$el.data('error-message'), 'alert-error', true)
+      this.feedbackView.render(this.$el.data('error-message'), 'alert-danger', true)
     }
   },
 
@@ -125,11 +125,6 @@ var CRUDFormView = Backbone.View.extend({
 
     this.$('[rel=datepicker]').datepicker()
 
-    this.$(".error .help-inline").tooltip({
-      title: function () { return $(this).text() },
-      placement: 'left'
-    })
-
     if (!this.shouldClose) {
       _.delay(this.focus, 500)
     }
@@ -159,7 +154,7 @@ var CRUDFormView = Backbone.View.extend({
       this.updateForm(response.responseText)
     }
 
-    this.feedbackView.render(this.$el.data('failed-message'), 'alert-error', true)
+    this.feedbackView.render(this.$el.data('failed-message'), 'alert-danger', true)
     this.focus()
   },
 
@@ -187,7 +182,7 @@ var CRUDFormView = Backbone.View.extend({
 
   loadError: function () {
     if (this.feedbackView) {
-      this.feedbackView.render(this.$el.data('error-message'), 'alert-error', true)
+      this.feedbackView.render(this.$el.data('error-message'), 'alert-danger', true)
     }
 
     this.trigger('load:error')
@@ -198,7 +193,7 @@ var CRUDFormView = Backbone.View.extend({
   },
 
   close: function(){
-    this.$('.error').removeClass('error').find('span.help-inline').remove()
+    this.$('.error').removeClass('has-error').find('span.help-inline').remove()
     this.$el.parents('.crud-box').removeClass('new-form-opened edit-form-opened destroy-form-opened')
     this.trigger('closed')
 

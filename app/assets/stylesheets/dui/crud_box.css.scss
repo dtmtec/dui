@@ -38,6 +38,12 @@
     @include filter-gradient(#f9f9f9, #efefef, vertical);
     @include background-image(linear-gradient(#f9f9f9, #efefef));
 
+    .widget-toolbar {
+      button {
+        line-height: 1.5;
+      }
+    }
+
     .crud-box-actions {
       position: absolute;
       right: 15px;
