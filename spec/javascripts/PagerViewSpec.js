@@ -1,11 +1,11 @@
 describe("PagerView", function() {
-  var paginationContainerEl, pagerLabels, model, view
+  var $paginationContainerEl, pagerLabels, model, view
 
   beforeEach(function() {
     loadFixtures('pager_view.html')
 
-    paginationContainerEl = $('.pagination-container')
-    pagerLabels = paginationContainerEl.data('labels')
+    $paginationContainerEl = $('.pagination-container')
+    pagerLabels = $paginationContainerEl.data('labels')
     model = new Pager({ item_count: 10, per_page: 2 })
   })
 
@@ -14,9 +14,9 @@ describe("PagerView", function() {
       model:  model
     })
 
-    paginationContainerEl.html(view.render().$el)
+    $paginationContainerEl.html(view.render().$el)
 
-    expect($('li', paginationContainerEl).length).toEqual(model.get('items').length)
+    expect($('li', $paginationContainerEl).length).toEqual(model.get('items').length)
   })
 
   it("renders with default labels", function() {
@@ -24,7 +24,7 @@ describe("PagerView", function() {
       model:  model
     })
 
-    paginationContainerEl.html(view.render().$el)
+    $paginationContainerEl.html(view.render().$el)
 
     expect($('.pager-item-first    span').text()).toEqual(model.get('labels').first)
     expect($('.pager-item-previous span').text()).toEqual(model.get('labels').previous)
@@ -39,7 +39,7 @@ describe("PagerView", function() {
       labels: pagerLabels
     })
 
-    paginationContainerEl.html(view.render().$el)
+    $paginationContainerEl.html(view.render().$el)
 
     expect($('.pager-item-first    span').text()).toEqual(pagerLabels.first)
     expect($('.pager-item-previous span').text()).toEqual(pagerLabels.previous)
@@ -79,7 +79,7 @@ describe("PagerView", function() {
       model:  model
     })
 
-    paginationContainerEl.html(view.render().$el)
+    $paginationContainerEl.html(view.render().$el)
 
     expect(model.get('current_page')).toEqual(1)
 
@@ -94,9 +94,9 @@ describe("PagerView", function() {
         model:  model
       })
 
-      paginationContainerEl.html(view.render().$el)
+      $paginationContainerEl.html(view.render().$el)
 
-      var disabledPagerItems = $('.disabled-pager-item', paginationContainerEl)
+      var disabledPagerItems = $('.disabled-pager-item', $paginationContainerEl)
 
       var firstPagerItem    = $('.pager-item-first       span')
       var previousPagerItem = $('.pager-item-previous    span')
@@ -116,9 +116,9 @@ describe("PagerView", function() {
       model:  model
       })
 
-      paginationContainerEl.html(view.render().$el)
+      $paginationContainerEl.html(view.render().$el)
 
-      var disabledPagerItems = $('.disabled-pager-item', paginationContainerEl)
+      var disabledPagerItems = $('.disabled-pager-item', $paginationContainerEl)
 
       var firstPageItem    = disabledPagerItems[0]
       var previousPageItem = disabledPagerItems[1]
@@ -135,9 +135,9 @@ describe("PagerView", function() {
         model:  model
       })
 
-      paginationContainerEl.html(view.render().$el)
+      $paginationContainerEl.html(view.render().$el)
 
-      var disabledPagerItems = $('.disabled-pager-item', paginationContainerEl)
+      var disabledPagerItems = $('.disabled-pager-item', $paginationContainerEl)
 
       var lastPagerItem    = $('.pager-item-last        span')
       var nextPagerItem    = $('.pager-item-next        span')
@@ -149,5 +149,42 @@ describe("PagerView", function() {
       expect($(nextPagerItem).text()).toEqual('Next')
       expect($(currentPagerItem).text()).toEqual('5')
     })
+  })
+
+  it("doesn't render when there is only one page", function() {
+    model.set({ item_count: 1 })
+
+    view  = new PagerView({
+      model: model
+    })
+
+    $paginationContainerEl.html(view.render().$el)
+
+    expect($paginationContainerEl.find('li').length).toEqual(0)
+  })
+
+  it("renders the correct pager class", function() {
+    view  = new PagerView({
+      model: model,
+      size: 'large'
+    })
+
+    $paginationContainerEl.html(view.render().$el)
+    expect($paginationContainerEl.find('ul').attr('class')).toEqual('pagination pagination-lg')
+
+    view  = new PagerView({
+      model: model,
+      size: 'small'
+    })
+
+    $paginationContainerEl.html(view.render().$el)
+    expect($paginationContainerEl.find('ul').attr('class')).toEqual('pagination pagination-sm')
+
+    view  = new PagerView({
+      model: model,
+    })
+
+    $paginationContainerEl.html(view.render().$el)
+    expect($paginationContainerEl.find('ul').attr('class')).toEqual('pagination')
   })
 })

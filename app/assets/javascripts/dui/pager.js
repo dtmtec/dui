@@ -31,7 +31,11 @@ var Pager = Backbone.Model.extend({
   },
 
   getItems: function() {
-    this.configurePagerItems()
+    if (this.shouldPaginate()) {
+      this.configurePagerItems()
+    } else {
+      this.clearPagerItems();
+    }
 
     return this.get('items')
   },
