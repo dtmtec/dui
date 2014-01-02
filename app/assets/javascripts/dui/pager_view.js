@@ -1,6 +1,5 @@
 var PagerView = Backbone.View.extend({
   tagName: 'div',
-  className: 'pagination',
 
   events: {
     'click li a': 'paginate'
@@ -11,11 +10,13 @@ var PagerView = Backbone.View.extend({
       this.model.set({ labels: this.options.labels })
     }
 
+    this.size = this.options.size
+
     this.listenTo(this.model, 'change:item_count change:current_page pager_reset', this.render)
   },
 
   render: function() {
-    this.$el.html('<ul>')
+    this.$el.html(this.pagerList())
 
     this.model.getItems().each(function(item) {
       var pagerItemView = new PagerItemView({ model: item })
@@ -31,5 +32,17 @@ var PagerView = Backbone.View.extend({
     this.model.set({ current_page: parseInt(current_page, 10) })
 
     return false
+  },
+
+  pagerList: function() {
+    if (this.size === 'large') {
+      return '<ul class="pagination pagination-lg"></ul>'
+
+    } else if (this.size === 'small') {
+      return '<ul class="pagination pagination-sm"></ul>'
+
+    } else {
+      return '<ul class="pagination"></ul>'
+    }
   }
 })

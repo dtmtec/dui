@@ -29,15 +29,6 @@ describe("Pager", function() {
       pager.set({ item_count: 0, per_page: 0, current_page: 0 })
       expect(pager.nextPage()).toEqual(undefined)
 
-      pager.set({ item_count: 10, per_page: 5, current_page: 1 })
-      expect(pager.nextPage()).toEqual(2)
-
-      pager.set({ item_count: 10, per_page: 5, current_page: 1 })
-      expect(pager.nextPage()).toEqual(2)
-
-      pager.set({ item_count: 10, per_page: 2, current_page: 3 })
-      expect(pager.nextPage()).toEqual(4)
-
       pager.set({ item_count: 10, per_page: 2, current_page: 5 })
       expect(pager.nextPage()).toEqual(undefined)
     })
@@ -46,7 +37,7 @@ describe("Pager", function() {
   describe("#previousPage", function() {
     it("returns the next page", function() {
       pager.set({ item_count: 0, per_page: 0, current_page: 0 })
-      expect(pager.nextPage()).toEqual(undefined)
+      expect(pager.previousPage()).toEqual(undefined)
 
       pager.set({ item_count: 10, per_page: 5, current_page: 1 })
       expect(pager.previousPage()).toEqual(undefined)
