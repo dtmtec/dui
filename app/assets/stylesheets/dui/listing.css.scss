@@ -1,0 +1,29 @@
+th[data-order] {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &.selected {
+
+    span:after {
+      font-family: FontAwesome;
+      display: inline-block;
+      margin-left: 5px;
+      content: '';
+    }
+
+    &.asc {
+      span:after {
+        content: "\f0d7";
+      }
+    }
+
+    &.desc {
+      span:after {
+        content: "\f0d8"
+      }
+    }
+  }
+}
