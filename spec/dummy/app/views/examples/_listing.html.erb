@@ -1,0 +1,16 @@
+<table class="table table-striped" data-item-count="<%= @item_count %>">
+  <thead>
+    <tr>
+      <th data-order="name">Name</th>
+      <th data-order="description">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @collection.each do |item| %>
+    <tr>
+      <td><%= item[:name] %></td>
+      <td><%= item[:description] %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

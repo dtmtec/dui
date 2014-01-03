@@ -1,0 +1,11 @@
+<div class="search-container">
+  <input type="text" name="search" placeholder="Filter list">
+</div>
+
+<div class="listing-container"
+     data-url="<%= listing_path %>"
+     data-initial-listing-data="<%= @initial_listing_data.to_json %>">
+  <%= render 'listing' %>
+</div>
+
+<div class="pagination-container"></div>

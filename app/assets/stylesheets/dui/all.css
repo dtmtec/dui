@@ -15,5 +15,6 @@
  *= require dui/uploader
  *= require dui/toggler
  *= require dui/crud_box
+ *= require dui/listing
  *= require_self
  */

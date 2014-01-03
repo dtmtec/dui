@@ -1,5 +1,6 @@
 Dummy::Application.routes.draw do
   get 'examples' => 'examples#index'
+  get 'listing' => 'examples#listing'
 
   mount Dui::Engine, at: "dui"
 
