@@ -1,6 +1,3 @@
-$order-icon-color: #333;
-$order-icon-size: 5px;
-
 th[data-order] {
   cursor: pointer;
 
@@ -9,30 +6,22 @@ th[data-order] {
   }
 
   &.selected {
-    &:after {
-      content: '';
-      position: relative;
+    span:after {
+      font-family: FontAwesome;
       display: inline-block;
       margin-left: 5px;
-      width: 0;
-      height: 0;
-      border-top: $order-icon-size solid $order-icon-color;
-      border-bottom: $order-icon-size solid $order-icon-color;
-      border-left: $order-icon-size solid transparent;
-      border-right: $order-icon-size solid transparent;
+      content: '';
     }
 
     &.asc {
-      &:after {
-        border-top-color: transparent;
-        top: -$order-icon-size / 2;
+      span:after {
+        content: "\f0d7";
       }
     }
 
     &.desc {
-      &:after {
-        border-bottom-color: transparent;
-        top: $order-icon-size / 2;
+      span:after {
+        content: "\f0d8"
       }
     }
   }
