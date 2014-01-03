@@ -16,6 +16,7 @@
 //= require bootstrap
 //= require underscore
 //= require backbone
+//= require backbone.marionette
 //= require jquery.mustache
 //= require jquery.fileupload
 //= require jquery.iframe-transport

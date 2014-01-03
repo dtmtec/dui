@@ -23,6 +23,7 @@
 //= require dui/searchable_field
 //= require dui/uploader/uploader_view
 //= require dui/multi_select/multi_select_view
+//= require dui/multi_select/marionette_multi_select_view
 //= require dui/toggler
 //= require dui/crud_box_view
 
