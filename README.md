@@ -9,6 +9,7 @@ DTM UI provides a set of UI components for applications built with Rails, Backbo
 * Rails
 * jQuery
 * Backbone JS (>= 1.0.0)
+* Backbone.Marionette (>= 1.1.0)
 * Twitter Bootsrap
 * SASS
 * Compass
@@ -34,9 +35,11 @@ gem 'dui', git: 'https://github.com/dtmtec/dui.git'
 *= require dui/all
 ```
 
-DTM UI does not depend on any backbone or bootstrap gem, so that you can include them the way you like, but if you want you may use these gems to include them:
+DTM UI does not depend on any backbone, marionette or bootstrap gem, so that you
+can include them the way you like, but if you want you may use these gems to include them:
 
-* [rails-backbone](https://github.com/codebrew/backbone-rails)
+* [backbone-on-rails](https://github.com/meleyal/backbone-on-rails)
+* [marionette-rails](https://github.com/chancancode/marionette-rails)
 * [bootstrap-sass](https://github.com/thomas-mcdonald/bootstrap-sass)
 
 ## Components

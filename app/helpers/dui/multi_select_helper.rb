@@ -3,6 +3,8 @@ module Dui
     include Dui::ApplicationHelper
 
     def render_multi_select(options)
+      default_template = options[:use_marionette] ? 'dui/multi_select/marionette_multi_select_template' : 'dui/multi_select/multi_select_template'
+
       render 'dui/multi_select/multi_select', {
         available_url: options[:available_url],
         additional_classes: options[:class] || '',
@@ -10,8 +12,8 @@ module Dui
         all_label: scoped_t('all', options[:scope], :multi_select),
         available_title: scoped_t('available.title', options[:scope], :multi_select),
         selected_title: scoped_t('selected.title', options[:scope], :multi_select),
-        available_template: options[:available_template] || 'dui/multi_select/multi_select_template',
-        selected_template: options[:selected_template] || 'dui/multi_select/multi_select_template',
+        available_template: options[:available_template] || default_template,
+        selected_template: options[:selected_template] || default_template,
         content_template: options[:content_template] || 'dui/multi_select/content',
         no_available_items_message: scoped_t('available.no_items_message', options[:scope], :multi_select),
         no_selected_items_message: scoped_t('selected.no_items_message', options[:scope], :multi_select),
