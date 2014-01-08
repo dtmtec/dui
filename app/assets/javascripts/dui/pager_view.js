@@ -12,7 +12,7 @@ var PagerView = Backbone.View.extend({
 
     this.size = this.options.size
 
-    this.listenTo(this.model, 'change:item_count change:current_page', this.render)
+    this.listenTo(this.model, 'change:item_count change:current_page pager_reset', this.render)
   },
 
   render: function() {

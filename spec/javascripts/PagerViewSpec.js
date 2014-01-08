@@ -74,6 +74,19 @@ describe("PagerView", function() {
     expect(view.render).toHaveBeenCalled()
   })
 
+  it("renders when the pager_reset event is triggered", function() {
+    spyOn(PagerView.prototype, 'render')
+
+    view  = new PagerView({
+      model:  model,
+      labels: pagerLabels
+    })
+
+    model.trigger('pager_reset')
+
+    expect(view.render).toHaveBeenCalled()
+  })
+
   it("changes the current page when a pager item is clicked", function() {
     view  = new PagerView({
       model:  model
