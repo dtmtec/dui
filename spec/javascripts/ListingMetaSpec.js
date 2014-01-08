@@ -42,6 +42,52 @@ describe("ListingMeta", function() {
       listingMeta.set({ filters: { some: 'filter' } })
       expect(called).toBeTruthy()
     })
+
+    it("fetchs the list", function() {
+      listingMeta.on('fetch', function () { called = true })
+      listingMeta.set({ filters: { some: 'filter' } })
+      expect(called).toBeTruthy()
+    })
+  })
+
+  describe("when toggling a filter", function() {
+    describe("and it is not set", function() {
+      it("sets it", function() {
+        listingMeta.toggleFilters('aType', 'aValue')
+        expect(listingMeta.get('filters')).toEqual({ aType: 'aValue' })
+      })
+    })
+
+    describe("and it is set", function() {
+      beforeEach(function () {
+        listingMeta.set({ filters: { aType: 'aValue' } })
+      })
+
+      describe("with the same value", function() {
+        it("unsets it", function() {
+          listingMeta.toggleFilters('aType', 'aValue')
+          expect(listingMeta.get('filters')).toEqual({})
+        })
+      })
+
+      describe("with other value", function() {
+        it("sets it with the new value", function() {
+          listingMeta.toggleFilters('aType', 'otherValue')
+          expect(listingMeta.get('filters')).toEqual({ aType: 'otherValue' })
+        })
+      })
+    })
+
+    describe("and there is another filter type set", function() {
+      beforeEach(function () {
+        listingMeta.set({ filters: { otherType: 'otherValue' } })
+      })
+
+      it("sets a new one, and keep the the other filter type", function() {
+        listingMeta.toggleFilters('aType', 'aValue')
+        expect(listingMeta.get('filters')).toEqual({ otherType: 'otherValue', aType: 'aValue' })
+      })
+    })
   })
 
   describe("when total is changed", function() {
