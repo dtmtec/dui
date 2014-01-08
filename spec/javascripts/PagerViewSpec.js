@@ -74,6 +74,19 @@ describe("PagerView", function() {
     expect(view.render).toHaveBeenCalled()
   })
 
+  it("renders when the pager_reset event is triggered", function() {
+    spyOn(PagerView.prototype, 'render')
+
+    view  = new PagerView({
+      model:  model,
+      labels: pagerLabels
+    })
+
+    model.trigger('pager_reset')
+
+    expect(view.render).toHaveBeenCalled()
+  })
+
   it("changes the current page when a pager item is clicked", function() {
     view  = new PagerView({
       model:  model
@@ -149,5 +162,17 @@ describe("PagerView", function() {
       expect($(nextPagerItem).text()).toEqual('Next')
       expect($(currentPagerItem).text()).toEqual('5')
     })
+  })
+
+  it("doesn't render when there is only one page", function() {
+    model.set({ item_count: 1 })
+
+    view  = new PagerView({
+      model: model
+    })
+
+    $paginationContainerEl.html(view.render().$el)
+
+    expect($paginationContainerEl.find('li').length).toEqual(0)
   })
 })
