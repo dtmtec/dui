@@ -10,10 +10,12 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require dui/backbone.meta_collection
 //= require dui/feedback_view
 //= require dui/confirmable_view
 //= require dui/pager
 //= require dui/listing
+//= require dui/listing_meta.js
 //= require dui/pager_item
 //= require dui/pager_item_view
 //= require dui/pager_view
