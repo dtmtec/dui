@@ -2,6 +2,7 @@
 @import "compass/css3/border-radius";
 @import "compass/css3/box-shadow";
 @import "compass/css3/images";
+@import "dui/mixins";
 
 .crud-box {
   margin-bottom: 20px;
@@ -120,12 +121,30 @@
     }
   }
 
-  .input-append, .input-prepend {
-    display: inline;
-    margin-bottom: 0;
+  .controls {
+    position: relative;
 
-    & + .help-inline {
-      margin: 6px 0 0 5px;
+    .help-block {
+      position: absolute;
+      top: 0px;
+      right: -22px;
+      width: 20px;
+      margin: 0;
+
+      line-height: 34px;
+
+      text-indent: -9999px;
+      cursor: help;
+
+      &:before {
+        content: "\f071";
+        position: absolute;
+        left: 0;
+        text-indent: 0;
+
+        @include font-awesome-element;
+        line-height: inherit;
+      }
     }
   }
 

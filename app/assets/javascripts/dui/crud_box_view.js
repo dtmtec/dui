@@ -91,6 +91,12 @@ var CRUDFormView = Backbone.View.extend({
       feedbackView: this.feedbackView
     })
 
+    this.$el.tooltip({
+      selector: '.help-block',
+      container: 'body',
+      title: function () { return $(this).text() }
+    })
+
     this.configureForm()
   },
 
