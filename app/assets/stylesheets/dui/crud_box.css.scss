@@ -113,7 +113,8 @@
 
     .crud-box-list {
       height: 185px;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
 
       table {
         margin-bottom: 0;
