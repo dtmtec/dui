@@ -171,8 +171,8 @@ describe("PagerView", function() {
       model: model
     })
 
-    $paginationContainerEl.html(view.render().$el)
+    paginationContainerEl.html(view.render().$el)
 
-    expect($paginationContainerEl.find('li').length).toEqual(0)
+    expect(paginationContainerEl.find('li').length).toEqual(0)
   })
 })

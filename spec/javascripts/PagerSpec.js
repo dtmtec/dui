@@ -99,11 +99,6 @@ describe("Pager", function() {
 
     describe("when there are many pages", function () {
       it("returns at most 4 previous pages and 4 next pages and ellipis where needed", function () {
-        pager.set({ item_count: 2, per_page: 2, current_page: 1 })
-        expect(pager.getItems().pluck('value')).toEqual(['First', 'Previous', 'Next', 'Last'])
-        expect(pager.getItems().pluck('disabled')).toEqual([true, true, true, true])
-        expect(pager.getItems().pluck('realValue')).toEqual([1, undefined, undefined, 1])
-
         pager.set({ item_count: 24, per_page: 2, current_page: 1 })
         expect(pager.getItems().pluck('value')).toEqual(['First', 'Previous', 1, 2, 3, 4, 5, '&hellip;', 'Next', 'Last'])
         expect(pager.getItems().pluck('disabled')).toEqual([true, true, true, false, false, false, false, true, false, false])
