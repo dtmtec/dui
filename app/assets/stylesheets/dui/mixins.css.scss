@@ -82,7 +82,7 @@ $default-overlay-z-index: 100;
 
     z-index: $z-index;
 
-    background: transparent image-url('ajax-loader-medium.gif') no-repeat center;
+    background: transparent image-url('dui/ajax-loader-medium.gif') no-repeat center;
 
     @include fade-out($fade-duration, $fade-transition-function);;
   }
