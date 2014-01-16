@@ -9,7 +9,7 @@ gemspec
 gem "jquery-rails"
 
 gem 'bootstrap-sass'   # https://github.com/thomas-mcdonald/bootstrap-sass
-gem 'rails-backbone'
+gem 'backbone-on-rails', '1.0.0'
 gem 'sass-rails'
 gem 'compass-rails'
 gem 'jasmine'
