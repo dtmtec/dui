@@ -162,6 +162,7 @@ var Pager = Backbone.Model.extend({
 
     delete attributes['items']
     delete attributes['labels']
+    delete attributes['displayedPages']
 
     return attributes
   }
