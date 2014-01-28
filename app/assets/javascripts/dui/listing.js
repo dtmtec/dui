@@ -22,7 +22,7 @@ var Listing = Pager.extend({
       this.lastRequest.abort()
     }
 
-    this.lastRequest = this.fetch({ dataType: 'html', data: this.toJSON() })
+    this.lastRequest = this.fetch({ dataType: this.dataType, data: this.toJSON() })
 
     return this.lastRequest
   },
