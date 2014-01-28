@@ -240,10 +240,10 @@ describe("DestroyableListingView", function() {
     var data = '<table><tbody><tr><td>some listing data</td></tr></tbody></table>'
 
     view = new DestroyableListingView({el: listing})
-    spyOn(view, 'reload')
+    spyOn(view.model, 'fetchList')
     view.confirmableView.trigger('confirmable:confirmed')
 
-    expect(view.reload).toHaveBeenCalled()
+    expect(view.model.fetchList).toHaveBeenCalled()
   });
 
   describe("when customizing the modal", function() {
