@@ -62,12 +62,6 @@
     this.model.fetchList()
   },
 
-  abortSearch: function() {
-    if (this.lastRequest) {
-      this.lastRequest.abort()
-    }
-  },
-
   render: function (model, data) {
     if (data) {
       this.$el.html(data).loadingOverlay('show')
