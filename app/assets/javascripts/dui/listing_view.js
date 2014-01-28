@@ -102,7 +102,7 @@
   },
 
   reconfigurePager: function() {
-    this.model.set({ item_count: this.$('table').data('item-count') })
+    this.model.set({ item_count: this.$('[data-item-count]').data('item-count') })
   }
 })
 
