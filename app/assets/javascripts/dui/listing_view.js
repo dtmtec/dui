@@ -59,11 +59,7 @@
   },
 
   reload: function() {
-    if (this.lastRequest) {
-      this.lastRequest.abort()
-    }
-
-    this.lastRequest = this.model.fetch({ dataType: 'html', complete: this.complete })
+    this.model.fetchList()
   },
 
   abortSearch: function() {

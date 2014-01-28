@@ -70,113 +70,130 @@ describe("ListingView", function() {
   });
 
   describe("when reloading", function() {
-    it("sends an GET ajax request to load listing, and render the contents of the listing with the response text", function() {
+    it("fetchs the listing model", function() {
       var data = '<table><tbody><tr><td>some listing data</td></tr></tbody></table>'
 
       view = new ListingView({ el: listing })
+      spyOn(view.model, 'fetchList')
       view.reload()
-
-      request = mostRecentAjaxRequest();
-      request.response({status: 200, responseText: data})
-
-      expect(request.url.split('?')[0]).toBe(listing.data('url'))
-      expect(request.method).toBe('GET')
-
-      expect(listing.html()).toBe(data)
+      expect(view.model.fetchList).toHaveBeenCalled()
     });
+  });
 
+  describe('when a request to reload is made', function () {
     it("displays an overlay over the listing", function() {
       view = new ListingView({ el: listing })
-      view.reload()
+      view.model.trigger('request')
 
       expect(listing.hasClass('loading-overlay')).toBeTruthy()
       expect(listing.hasClass('active-overlay')).toBeTruthy()
     });
+  });
 
-    describe("and the ajax request is successfull", function() {
-      it("hides the overlay", function() {
-        view = new ListingView({ el: listing })
-        view.reload()
+  describe('when the list is reloaded', function () {
+    it("hides the overlay", function() {
+      view = new ListingView({ el: listing })
 
-        request = mostRecentAjaxRequest();
-        request.response({status: 200, responseText: 'some data'})
+      view.model.trigger('request')
+      view.model.trigger('sync', view.model, listing.find('table').html())
 
-        waitsFor(function () {
-          return !listing.hasClass('active-overlay')
-        }, 100)
+      expect(listing.hasClass('active-overlay')).toBeFalsy()
+    });
 
-        runs(function () {
-          expect(listing.hasClass('active-overlay')).toBeFalsy()
-        })
-      });
+    it("closes the feedback message", function() {
+      var feedbackView = new FeedbackView({el: $('.feedback')})
+      view = new ListingView({ el: listing, feedbackView: feedbackView })
+      spyOn(feedbackView, 'close')
 
-      it("closes the feedback message", function() {
-        var feedbackView = new FeedbackView({el: $('.feedback')})
+      view.model.trigger('request')
+      view.model.trigger('sync', view.model, listing.find('table').html())
+
+      expect(feedbackView.close).toHaveBeenCalled()
+    });
+
+    it("triggers a 'complete' event", function() {
+      var called = false
+
+      view = new ListingView({ el: listing })
+      view.on('complete', function(){ called = true })
+
+      view.model.trigger('request')
+      view.model.trigger('sync', view.model, listing.find('table').html())
+
+      expect(called).toBeTruthy()
+    });
+  });
+
+  describe('when there is an error while reloading list', function () {
+    var feedbackView
+
+    beforeEach(function (done) {
+      feedbackView = new FeedbackView({el: $('.feedback')})
+    });
+
+    describe('and it is an abort', function () {
+      it("does not hides the overlay", function() {
         view = new ListingView({ el: listing, feedbackView: feedbackView })
-        spyOn(feedbackView, 'close')
+        view.model.trigger('request')
+        view.model.trigger('error', view.model, { statusText: 'abort' })
 
-        view.reload()
-
-        request = mostRecentAjaxRequest();
-        request.response({status: 200, responseText: 'some data'})
-
-        expect(feedbackView.close).toHaveBeenCalled()
+        expect(listing.hasClass('active-overlay')).toBeTruthy()
       });
 
-      it("triggers a 'complete' event", function() {
+      it("does not triggers a 'complete' event", function() {
         var called = false
 
-        view = new ListingView({ el: listing })
+        view = new ListingView({ el: listing, feedbackView: feedbackView })
         view.on('complete', function(){ called = true })
-        view.reload()
 
-        request = mostRecentAjaxRequest();
-        request.response({status: 200, responseText: 'some data'})
+        view.model.trigger('request')
+        view.model.trigger('error', view.model, { statusText: 'abort' })
 
-        expect(called).toBeTruthy()
+
+        expect(called).toBeFalsy()
+      });
+
+      it("does not render a feedback message", function() {
+        spyOn(feedbackView, 'render')
+
+        view = new ListingView({ el: listing, feedbackView: feedbackView })
+
+        view.model.trigger('request')
+        view.model.trigger('error', view.model, { statusText: 'abort' })
+
+        expect(feedbackView.render).not.toHaveBeenCalled()
       });
     });
 
-    describe("and the ajax request returns an error", function() {
+    describe('and it is not an abort', function () {
       it("hides the overlay", function() {
-        view = new ListingView({ el: listing })
-        view.reload()
+        view = new ListingView({ el: listing, feedbackView: feedbackView })
+        view.model.trigger('request')
+        view.model.trigger('error', view.model, { statusText: 'internal-server-error' })
 
-        request = mostRecentAjaxRequest();
-        request.response({status: 500, responseText: 'some error'})
-
-        waitsFor(function () {
-          return !listing.hasClass('active-overlay')
-        }, 100)
-
-        runs(function () {
-          expect(listing.hasClass('active-overlay')).toBeFalsy()
-        })
+        expect(listing.hasClass('active-overlay')).toBeFalsy()
       });
 
       it("triggers a 'complete' event", function() {
         var called = false
 
-        view = new ListingView({ el: listing })
-        view.reload()
-
+        view = new ListingView({ el: listing, feedbackView: feedbackView })
         view.on('complete', function(){ called = true })
 
-        request = mostRecentAjaxRequest();
-        request.response({status: 500, responseText: 'some error'})
+        view.model.trigger('request')
+        view.model.trigger('error', view.model, { statusText: 'internal-server-error' })
+
 
         expect(called).toBeTruthy()
       });
 
       it("renders a feedback message", function() {
-        var feedbackView = new FeedbackView({el: $('.feedback')})
         spyOn(feedbackView, 'render')
 
         view = new ListingView({ el: listing, feedbackView: feedbackView })
-        view.reload()
 
-        request = mostRecentAjaxRequest();
-        request.response({status: 500, responseText: 'some error'})
+        view.model.trigger('request')
+        view.model.trigger('error', view.model, { statusText: 'internal-server-error' })
 
         expect(feedbackView.render).toHaveBeenCalledWith(listing.data('error-message'), 'alert-error', true)
       });
@@ -223,12 +240,10 @@ describe("DestroyableListingView", function() {
     var data = '<table><tbody><tr><td>some listing data</td></tr></tbody></table>'
 
     view = new DestroyableListingView({el: listing})
+    spyOn(view, 'reload')
     view.confirmableView.trigger('confirmable:confirmed')
 
-    request = mostRecentAjaxRequest();
-    request.response({status: 200, responseText: data})
-
-    expect(listing.html()).toBe(data)
+    expect(view.reload).toHaveBeenCalled()
   });
 
   describe("when customizing the modal", function() {

@@ -80,6 +80,21 @@
       </tbody>
     </table>
   </div>
+
+  <div class="enhanced-listing-wrapper"
+       data-url="/products"
+       data-error-message="some error message"
+       data-initial-listing-data='{}'>
+  </div>
+
+  <script type="text/html" data-template-name="enhanced-listing-item-template">
+    <h3>{{title}}</h3>
+    <p>{{description}}</p>
+  </script>
+
+  <script type="text/html" data-template-name="enhanced-listing-empty-item-template">
+    <p>No items.</p>
+  </script>
 </div>
 
 <div class="pagination-container">
