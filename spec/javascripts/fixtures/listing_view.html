@@ -87,13 +87,22 @@
        data-initial-listing-data='{}'>
   </div>
 
-  <script type="text/html" data-template-name="enhanced-listing-item-template">
-    <h3>{{title}}</h3>
-    <p>{{description}}</p>
+  <script type="text/html" data-template-name="listing-table-composite-view">
+    <thead>
+      <th data-order="name">Name</th>
+      <th data-order="description">Description</th>
+    </thead>
+    <tbody>
+    </tbody>
   </script>
 
-  <script type="text/html" data-template-name="enhanced-listing-empty-item-template">
-    <p>No items.</p>
+  <script type="text/html" data-template-name="listing-table-item-view">
+    <td>{{name}}</td>
+    <td>{{description}}</td>
+  </script>
+
+  <script type="text/html" data-template-name="listing-table-empty-view">
+    <td colspan="2">No items.</td>
   </script>
 </div>
 
