@@ -25,6 +25,7 @@ var EnhancedListingView = Marionette.View.extend({
 
     this.configureCollectionView()
     this.configurePager()
+    this.configureSearch()
   },
 
   configureCollectionView: function () {
@@ -43,6 +44,12 @@ var EnhancedListingView = Marionette.View.extend({
       })
 
       this.$paginationContainerEl.html(this.pagerView.render().$el)
+    }
+  },
+
+  configureSearch: function () {
+    if (this.$searchEl) {
+      this.$searchEl.searchableField().on('searchable.search', _(this.search).bind(this))
     }
   },
 
@@ -70,6 +77,10 @@ var EnhancedListingView = Marionette.View.extend({
       this.feedbackView.render(this.$el.data('error-message'), 'alert-error', true)
       this.$el.loadingOverlay('hide')
     }
+  },
+
+  search: function(e, term) {
+    this.collection.meta.set({ term: term, current_page: 1 })
   },
 
   changeOrder: function (event) {

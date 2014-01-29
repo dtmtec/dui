@@ -189,6 +189,19 @@ describe('EnhancedListingView', function () {
     });
   });
 
+  describe('when typing on the search field element', function () {
+    it('sets the term on the meta model', function (done) {
+      jasmine.Clock.useMock()
+
+      view = createView()
+
+      $searchEl.val('some term').trigger('keyup')
+      jasmine.Clock.tick(300)
+
+      expect(view.collection.meta.get('term')).toEqual('some term')
+    });
+  });
+
   describe('when clicking on an element with [data-order] attribute', function () {
     it('changes the order on the meta collection', function (done) {
       view = createView()
