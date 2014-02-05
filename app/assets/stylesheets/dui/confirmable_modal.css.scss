@@ -1,0 +1,23 @@
+.confirmable-modal {
+	&.error {
+		input[type=text] {
+			border: 1px solid red;
+			background-color: rgba(255, 0, 0, 0.19);
+		}
+	}
+
+	&.correct {
+		input[type=text] {
+			border: 1px solid green;
+			background-color: rgba(0, 128, 0, 0.19);
+		}
+	}
+
+	.modal-confirmation-text {
+		margin: 15px 0;
+
+		p {
+			display: block;
+		}
+	}
+}

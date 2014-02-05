@@ -76,11 +76,12 @@ var ConfirmableModalView = Backbone.View.extend({
   events: {
     'click [data-confirmable-confirm]': 'confirm',
     'click [data-dismiss=modal]': 'dismiss',
+    'keyup [data-confirmation-text]': 'verifyConfirmationText',
     'hide': 'dismiss'
   },
 
   el: function() {
-    return $('<div class="modal fade hide"></div>')
+    return $('<div class="modal confirmable-modal fade hide"></div>')
   },
 
   template: [
@@ -88,10 +89,18 @@ var ConfirmableModalView = Backbone.View.extend({
       '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>',
       '<h3>{{title}}</h3>',
     '</div>',
-    '<div class="modal-body">{{{body}}}</div>',
+    '<div class="modal-body">',
+      '{{{body}}}',
+      '{{#confirmation_text}}',
+        '<div class="modal-confirmation-text">',
+          '<p>{{{ confirmation_label_html }}}</p>',
+          '<input type="text" data-confirmation-text="{{confirmation_text}}"/>',
+        '</div>' ,
+      '{{/confirmation_text}}',
+    '</div>',
     '<div class="modal-footer">',
       '<a href="#" class="btn" data-dismiss="modal">{{cancel}}</a>',
-      '<a href="#" class="btn" data-confirmable-confirm="true" data-disable-with="{{disable_with}}">{{confirm}}</a>',
+      '<a href="#" class="btn {{#confirmation_text}}disabled{{/confirmation_text}}" data-confirmable-confirm="true" data-disable-with="{{disable_with}}">{{confirm}}</a>',
     '</div>'
   ].join('\n'),
 
@@ -122,7 +131,12 @@ var ConfirmableModalView = Backbone.View.extend({
     this.$el.find('[data-confirmable-confirm=true]').addClass(this.submitBtnClass)
     this.$el.modal('show')
     this.delegateEvents()
+
     this.confirmed = false
+
+    if (labels) {
+      this.confirmationText = labels.confirmation_text
+    }
 
     return this
   },
@@ -146,15 +160,38 @@ var ConfirmableModalView = Backbone.View.extend({
   },
 
   confirm: function () {
-    $.rails.disableElement(this.$('[data-confirmable-confirm]'))
-    this.trigger('confirmable:confirm')
-    this.confirmed = true
+    if (!this.$('[data-confirmable-confirm]').hasClass('disabled')) {
+      $.rails.disableElement(this.$('[data-confirmable-confirm]'))
+      this.trigger('confirmable:confirm')
+      this.confirmed = true
+    }
+
     return false
   },
 
   dismiss: function () {
     if (!this.confirmed) {
       this.trigger('confirmable:dismiss')
+      this.$el.removeClass('error')
+      this.$el.removeClass('correct')
+    }
+  },
+
+  verifyConfirmationText: function() {
+    var confirmationInputText = this.$('[data-confirmation-text]')
+
+    var currentText = confirmationInputText.val()
+
+    if (currentText == this.confirmationText) {
+      this.$el.removeClass('error')
+      this.$el.addClass('correct')
+
+      this.$el.find('[data-confirmable-confirm]').removeClass('disabled')
+    } else {
+      this.$el.addClass('error')
+      this.$el.removeClass('correct')
+
+      this.$el.find('[data-confirmable-confirm]').addClass('disabled')
     }
   }
 })

@@ -16,5 +16,6 @@
  *= require dui/toggler
  *= require dui/crud_box
  *= require dui/listing
+ *= require dui/confirmable_modal
  *= require_self
  */
