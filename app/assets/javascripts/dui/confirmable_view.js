@@ -133,6 +133,7 @@ var ConfirmableModalView = Backbone.View.extend({
     this.delegateEvents()
 
     this.confirmed = false
+    this.$el.removeClass('correct')
 
     if (labels) {
       this.confirmationText = labels.confirmation_text
