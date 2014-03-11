@@ -100,7 +100,7 @@ describe("ListingView", function() {
       expect(listing.hasClass('active-overlay')).toBeFalsy()
     });
 
-    it("closes the feedback message", function() {
+    it("does not close the feedback message", function() {
       var feedbackView = new FeedbackView({el: $('.feedback')})
       view = new ListingView({ el: listing, feedbackView: feedbackView })
       spyOn(feedbackView, 'close')
@@ -108,7 +108,7 @@ describe("ListingView", function() {
       view.model.trigger('request')
       view.model.trigger('sync', view.model, listing.find('table').html())
 
-      expect(feedbackView.close).toHaveBeenCalled()
+      expect(feedbackView.close).not.toHaveBeenCalled()
     });
 
     it("triggers a 'complete' event", function() {
@@ -122,6 +122,44 @@ describe("ListingView", function() {
 
       expect(called).toBeTruthy()
     });
+
+    describe("and the feedback view is showing a listing error", function () {
+      it("closes the feedback message", function() {
+        var feedbackView = new FeedbackView({el: $('.feedback')})
+        view = new ListingView({ el: listing, feedbackView: feedbackView })
+        spyOn(feedbackView, 'close')
+
+        // renders the error message
+        view.model.trigger('request')
+        view.model.trigger('error', view.model, { statusText: 'internal-server-error' })
+
+        // reloads the list, successfully, thus we need to remove the error message
+        view.model.trigger('request')
+        view.model.trigger('sync', view.model, listing.find('table').html()) // now
+
+        expect(feedbackView.close).toHaveBeenCalled()
+      });
+
+      it("does not closes the feedback message after a second sync", function() {
+        var feedbackView = new FeedbackView({el: $('.feedback')})
+        view = new ListingView({ el: listing, feedbackView: feedbackView })
+        spyOn(feedbackView, 'close')
+
+        // renders the error message
+        view.model.trigger('request')
+        view.model.trigger('error', view.model, { statusText: 'internal-server-error' })
+
+        // reloads the list, successfully, thus we need to remove the error message
+        view.model.trigger('request')
+        view.model.trigger('sync', view.model, listing.find('table').html()) // now
+
+        // reloads the list again, successfully, no need to remove the error message now
+        view.model.trigger('request')
+        view.model.trigger('sync', view.model, '<tbody></tbody>') // now
+
+        expect(feedbackView.close.calls.length).toEqual(1)
+      });
+    })
   });
 
   describe('when there is an error while reloading list', function () {

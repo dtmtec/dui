@@ -66,7 +66,8 @@
     if (data) {
       this.$el.html(data).loadingOverlay('show')
 
-      if (this.feedbackView) {
+      if (this.feedbackView && this._feedbackViewDisplayingError) {
+        delete this._feedbackViewDisplayingError
         this.feedbackView.close()
       }
 
@@ -78,6 +79,7 @@
 
   reloadError: function (model, jqXHR, options) {
     if (this.feedbackView && jqXHR.statusText !== 'abort') {
+      this._feedbackViewDisplayingError = true
       this.feedbackView.render(this.$el.data('error-message'), 'alert-error', true)
       this.complete()
     }
