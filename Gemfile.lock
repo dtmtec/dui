@@ -7,7 +7,7 @@ PATH
       inherited_resources
       rails (>= 3.2.8)
       sass-rails
-      simple_form (~> 2.1.1)
+      simple_form (>= 2.1.1)
 
 GEM
   remote: http://rubygems.org/

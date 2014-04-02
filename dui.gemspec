@@ -21,5 +21,5 @@ Gem::Specification.new do |s|
   s.add_dependency "compass-rails"
   s.add_dependency "font-awesome-sass"
   s.add_dependency "inherited_resources"
-  s.add_dependency "simple_form", "~> 2.1.1"
+  s.add_dependency "simple_form", ">= 2.1.1"
 end
