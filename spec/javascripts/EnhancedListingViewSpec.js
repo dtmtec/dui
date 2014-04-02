@@ -56,7 +56,7 @@ describe('EnhancedListingView', function () {
   it('renders the PagerView $el and put it inside the pagination container', function (done) {
     view = createView()
 
-    expect($paginationContainerEl.find('> .pagination')).toExist()
+    expect($paginationContainerEl.find('.pagination')).toExist()
   });
 
   it('creates a collection view based on the given class', function (done) {

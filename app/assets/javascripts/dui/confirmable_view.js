@@ -102,7 +102,7 @@ var ConfirmableModalView = Backbone.View.extend({
         '</div>',
         '<div class="modal-footer">',
           '<button class="btn btn-default" data-dismiss="modal"><i class="icon icon-times-circle"></i>{{cancel}}</button>',
-          '<button class="btn" data-confirmable-confirm="true" data-disable-with="{{disable_with}}"><i class="icon"></i>{{confirm}}</button>',
+          '<button class="btn {{#confirmation_text}}disabled{{/confirmation_text}}" data-confirmable-confirm="true" data-disable-with="{{disable_with}}"><i class="icon"></i>{{confirm}}</button>',
         '</div>',
       '</div>',
     '</div>'
