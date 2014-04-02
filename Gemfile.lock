@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dui (0.2.0)
+    dui (0.3.0)
       compass-rails
       font-awesome-sass
       inherited_resources
